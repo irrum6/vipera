@@ -1,0 +1,30 @@
+div.color-box{
+    display: flex;
+    margin-top: 0.5rem;   
+}
+
+div.color-box button,
+div.color-box input,
+div.color-box span{
+    flex-grow: 1;
+    margin: 0;
+    margin-left: 0.25rem;
+    outline: 0;
+}
+
+div.color-box .active,
+div.color-box .active,
+div.color-box .active{
+    border: 0.25rem solid black;
+}
+
+div.color-box button {
+    cursor: url('../images/hand22.png'), pointer;
+    border:0;
+    border-radius: 0.25rem;
+}
+
+div.color-box button[data-color=black].active,
+div.color-box input.active{
+    border: 0.25rem solid orange;
+}

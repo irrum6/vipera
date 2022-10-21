@@ -1,0 +1,54 @@
+div.gwindow {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 60px auto;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-color: #366;
+  border: 4px solid #208080;
+  border-radius: 12px;
+}
+
+div.close {
+  padding: 1vmin;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+button.close {
+  padding: 0;
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
+  font-size: 2rem;
+  font-weight: 900;
+  border: 0;
+  border-radius: 10%;
+  color: black;
+  cursor: pointer;
+}
+
+div.content {
+  background-color: #466; 
+}
+
+
+.bg-red {
+  background-color: #b04080;
+}
+
+.bg-green {
+  background-color: #80b040;
+}
+
+.bg-blue {
+  background-color: #4080b0;
+}
+
+.bg-cyber-teal {
+  background-color: #207780;
+}
+
+.bg-blend {
+  background-color: transparent;
+}

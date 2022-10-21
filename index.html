@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Bad Snake Game</title>
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="icon" href="images/snake2.svg" sizes="any" type="image/svg+xml">
+    <style>
+    </style>
+</head>
+
+<body>
+    <div class="left">
+        <div class="stats" style="margin-bottom: 15px;">
+            <small-display class="score" dtext="Score" dvalue="00" dcolor="orange"></small-display>
+            <small-display class="score" dtext="Score" dvalue="00" dcolor="orange" hide="1"></small-display>
+            <small-display class="score" dtext="Score" dvalue="00" dcolor="orange" hide="1"></small-display>
+            <small-display class="score" dtext="Score" dvalue="00" dcolor="orange" hide="1"></small-display>
+            <small-display id="fps" dtext="FPS" dvalue="00" dcolor="green"></small-display>
+            <small-display id="delta_high" dtext="ΔHigh" dvalue="00" dcolor="red"></small-display>
+            <small-display id="delta_low" dtext="ΔLow" dvalue="00" dcolor="#357" hide="1"></small-display>
+            <small-display id="time" dtext="Time" dvalue="00" dcolor="#357" hide="1"></small-display>
+        </div>
+        <div class="box h90" id="canvas_box">
+            <canvas id="canvas1" width="600" height="400"></canvas>
+        </div>
+    </div>
+    <div class="right">
+        <div class="box h95" id="rightbox">
+            <button id="new" data-app-action="new">New</button>
+            <button id="restart" data-app-action="restart"></button>
+            <button data-app-action="fullscreen" id="fullscreen"></button>
+            <button data-app-action="help" id="help"></button>
+            <button data-app-action="settings" id="settings"></button>
+        </div>
+    </div>
+
+    <gw-window noclose="0">
+        gela
+    </gw-window>
+    <gw-window noclose="1" z="11">
+        gela
+    </gw-window>
+
+    <settings-dialog></settings-dialog>
+    <new-dialog></new-dialog>
+    <div style="display: none;"></div>
+    <template id="dialog_for_settings">
+        <div class="dialog">
+            <div><span class="info name"></span></div>
+            <div><span>Version</span>:<span class="info version"></span></div>
+            <div class="tabselector">
+                <button class="basic btn active">Basic</button>
+                <button class="advanced btn">Advanced</button>
+            </div>
+            <div class="settings basic">
+                <color-box class="snake" player="1" data-text="Snake Color"></color-box>
+                <color-box class="snake" player="2" data-text="Snake Color"></color-box>
+                <color-box class="snake" player="3" data-text="Snake Color"></color-box>
+                <color-box class="snake" player="4" data-text="Snake Color"></color-box>
+                <color-box class="food" data-text="Food Color"></color-box>
+                <color-box class="text" data-text="Text Color"></color-box>
+                <div>
+                    <div><span data-app-translate="1" data-app-text="language"></span>Language</span></div>
+                    <label>English<input type="radio" value="english" name="language"></label>
+                    <label>ქართული<input type="radio" value="georgian" name="language"></label>
+                    <label>Deutsch<input type="radio" value="german" name="language"></label>
+                </div>
+            </div>
+            <div class="settings advanced" style="display: none;">
+                <div><span data-app-translate="1" data-app-text="dark_mode">Dark Mode</span>
+                    <button class="darker"></button>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="show_fps">Show FPS
+                        <input type="checkbox" name="fps">
+                    </label>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="show_fps">Show maximum frame delta
+                        <input type="checkbox" name="delta_high">
+                    </label>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="show_fps">Show minimum frame delta
+                        <input type="checkbox" name="delta_low">
+                    </label>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="show_timers">Show timers on endurance/challenge mode
+                        <input type="checkbox" name="show_timers">
+                    </label>
+                </div>
+            </div>
+            <div style="display: flex;justify-content: center;">
+                <button class="closer"><span data-app-translate="1"
+                        data-app-text="Dismiss">&#11164;&#11164;Dismiss</span></button>
+                <button class="saver" style="margin-left: 0.5rem;"><span data-app-translate="1"
+                        data-app-text="Save">&#10004;Save</span></button>
+            </div>
+        </div>
+    </template>
+    <template id="newgame_dialog_template">
+        <div class="dialog">
+            <div class="tabselector">
+                <button class="basic btn active">New Game</button>
+            </div>
+            <div class="settings basic">
+                <div>
+                    <radio-box class="player" data-names="1;2;3;4" data-values="1;2;3;4"
+                        data-texts="1(Single);2(two);3(three);4(Four)" data-input-name="players"
+                        data-input-label="Players" data-label-name="game_players">
+                    </radio-box>
+                    <radio-box class="moder" data-names="long;endurance;challenge"
+                        data-values="Long;Endurance;Challenge" data-texts="Long;Endurance;Challenge"
+                        data-input-name="mode" data-input-label="Game Mode" data-label-name="game_mode">
+                    </radio-box>
+                    <radio-box class="leveler" data-names="easy;normal;hard;master"
+                        data-values="Easy;Normal;Hard;Master" data-texts="Easy;Normal;Hard;Master"
+                        data-input-name="level" data-input-label="Game Level" data-label-name="game_level">
+                    </radio-box>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="free_bound">Free Bound
+                        <input type="checkbox" checked="true" name="free_bound">
+                    </label>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="disable_collision">Disable player colission
+                        <input type="checkbox" name="disable_collision">
+                    </label>
+                </div>
+                <div>
+                    <label style="margin-left: 16px;" data-app-translate="1" data-app-text="move_over_body">Glide Over
+                        body
+                        <input type="checkbox" name="glide" disabled>
+                    </label>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="Quickswitch">enable Quickswitch
+                        <input type="checkbox" name="quickswitch">
+                    </label>
+                </div>
+            </div>
+            <div style="display: flex;justify-content: center;">
+                <button class="closer"><span data-app-translate="1"
+                        data-app-text="Dismiss">&#11164;&#11164;Dismiss</span></button>
+                <button class="starter" style="margin-left: 0.5rem;"><span data-app-translate="1"
+                        data-app-text="Save">&#10004;Start</span></button>
+            </div>
+        </div>
+    </template>
+    <template id="color_box_template">
+        <div class="color-box">
+            <span class="text" data-app-translate="1" data-app-text="translate_text"></span>
+            <button class="active" data-color="black" style="background-color: black;"></button>
+            <button data-color="red" style="background-color: red;"></button>
+            <button data-color="green" style="background-color: green;"></button>
+            <button data-color="blue" style="background-color: blue;"></button>
+            <button data-color="purple" style="background-color: purple;"></button>
+            <button data-color="violet" style="background-color: violet;"></button>
+            <button data-color="yellow" style="background-color: yellow;"></button>
+            <button data-color="orange" style="background-color: orange;"></button>
+            <input class="activex" type="color">
+        </div>
+    </template>
+    <template id="radiobox_template">
+        <div class="radio-box">
+            <div><span data-app-translate="1" data-app-text="translate_text"></span></div>
+            <div class="radios">
+            </div>
+        </div>
+    </template>
+    <template id="pop_alert_template"> </template>
+    <template id="gwindow_template">
+        <div class="gwindow" draggable="true" ondragstart="">
+            <div class="close">
+                <button class="close no bg-cyber-teal">&#x25cf;</button>
+                <button class="close yes bg-red">&#x25AC;</button>
+            </div>
+            <div class="content"></div>
+        </div>
+    </template>
+    <script src="app.preload.js"></script>
+    <!-- <script src="indexjs.js"></script> -->
+    <script src="index2.js"></script>
+</body>
+
+</html>

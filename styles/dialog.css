@@ -1,0 +1,103 @@
+div.dialog {
+    display: grid;
+    padding: 1rem;
+    grid-template-columns: auto;
+    grid-template-rows: 20px 20px 50px auto auto;
+    visibility: hidden;
+    position: absolute;
+    top: 30vh;
+    left: 30vw;
+    width: 40vw;
+    /* height: 20vh; */
+    background-color: #888;
+    z-index: 4;
+    border-radius: 0.5rem;
+}
+
+div.tabselector {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    padding: 0;
+    background-color: transparent;
+}
+
+div.tabselector button {
+    background-color: black;
+    color: white;
+    margin: 0;
+    /* height: 100%; */
+    font-size: 1.25rem;
+    outline: 0;
+    border: 1px solid black;
+    flex-grow: 1;
+}
+
+div.tabselector button.active {
+    color: black;
+    background-color: white;
+}
+
+div.settings.basic>div {
+    display: block;
+}
+
+div.tabselector button.active::before {
+    content: "◥";
+    margin-right: 0.25rem;
+}
+
+div.tabselector button.active::after {
+    content: "◤";
+    margin-left: 0.25rem;
+}
+
+button.darker {
+    font-size: 1.5rem;
+    padding: 0;
+    background: transparent;
+    outline: 0;
+    border: 0;
+    border: 1px solid black;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    border-radius: 0.25rem;
+    margin: 0;
+    margin-top: 0.25rem;
+}
+
+/* overrided darker */
+
+button.darker {
+    border-top-color: white;
+    border-left-color: white;
+    border-width: 1rem;
+    padding: 0;
+    border-radius: 1rem;
+    transform: rotate(-45deg);
+    outline: 0;
+}
+
+
+/* advanced settings */
+@media screen and (max-width:800px) and (min-aspect-ratio:3/2) {
+    button.darker{
+        border-width:0.5rem;
+        border-radius:0.5rem;
+    }
+    div.dialog {
+        display: grid;
+        padding: 1rem;
+        grid-template-columns: auto;
+        grid-template-rows: 50px auto auto;
+        visibility: hidden;
+        position: absolute;
+        top: 15vh;
+        left: 30vw;
+        width: 40vw;
+        /* height: 20vh; */
+        background-color: #888;
+        z-index: 4;
+        border-radius: 0.5rem;
+    }    
+}
