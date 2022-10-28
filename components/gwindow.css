@@ -1,7 +1,7 @@
 div.gwindow {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 60px auto;
+  grid-template-rows: 60px auto 60px;
   position: absolute;
   left: 0px;
   top: 0px;
@@ -10,17 +10,18 @@ div.gwindow {
   border-radius: 12px;
 }
 
+/* first row upper window controls */
 div.close {
   padding: 1vmin;
   display: flex;
   flex-direction: row-reverse;
 }
 
-button.close {
+div.close>button {
   padding: 0;
-  padding-right: 0.25rem;
-  padding-left: 0.25rem;
-  font-size: 2rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  font-size: 1.75rem;
   font-weight: 900;
   border: 0;
   border-radius: 10%;
@@ -28,11 +29,31 @@ button.close {
   cursor: pointer;
 }
 
+/* middle row - content */
 div.content {
-  background-color: #466; 
+  background-color: #466;
 }
 
+/* thrid row - bottom buttons */
+div.buttons {
+  background-color: #466;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1rem;
+  border-radius: 12px;
+}
 
+div.buttons>button {
+  padding: 0.5rem;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 900;
+  border-radius:8px;
+}
+
+/* color classes */
 .bg-red {
   background-color: #b04080;
 }

@@ -42,7 +42,7 @@ const get_frame = () => {
         }
         requestAnimationFrame(get_frame);
         return;
-    }
+    }    
 
     if (viperaGame.gameover || viperaGame.pause) {
         requestAnimationFrame(get_frame);

@@ -30,7 +30,7 @@ class MontiVipera {
         this.#playerList = [];
         // this players
         this.SetMode(_mode);
-        this.#version = "0.10.2a"
+        this.#version = "0.10.2b"
         this.#name = "Montivipera Redemption"
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
@@ -77,8 +77,8 @@ class MontiVipera {
 
         this.ClearTimers();
         this.resetPlayers();
-
-        this.#numberOfPlayers = n;
+        console.log(typeof n);
+        this.#numberOfPlayers = Number(n);
 
         let x = this.canvas.width / 2;
         let y = this.canvas.height / 2;

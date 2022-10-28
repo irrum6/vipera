@@ -6,7 +6,7 @@ class UIController {
      */
     static DisplayScore(game) {
         let scoreCards = document.body.querySelectorAll(".score");
-        for(let card of scoreCards){
+        for (let card of scoreCards) {
             card.hide();
         }
         for (let i = 0, len = game.players.length; i < len; i++) {
@@ -78,7 +78,7 @@ class UIController {
         time.updateValue(String(game.time));
     }
     static Alert(msg) {
-        PopAlert.OPEN(msg, "OK");
+        PopX.OPEN(msg, msg);
     }
     static DisplayWelcomeScreen(context) {
         context.fillStyle = "black";

@@ -88,8 +88,6 @@ class Utils {
 }
 Object.freeze(Utils);class GWindow extends HTMLElement {
     #domid;
-    #w;
-    #h;
     #name;
     constructor() {
         super();
@@ -105,20 +103,23 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
         shadowRoot.appendChild(clone);
-        this.#h = "";
-        this.#w = "";
         this.#name = "gwindow";
         this.#setup();
 
     }
-    get w() {
-        return this.#w;
-    }
-    get h() {
-        return this.#h;
-    }
     get name() {
         return this.#name;
+    }
+    get content() {
+        return this.#query(".content");
+    }
+
+    get titlebar() {
+        return this.#query(".title");
+    }
+
+    get buttons(){
+        return this.#query(".buttons").children;
     }
     show() {
         let self = document.getElementById(this.#domid);
@@ -133,36 +134,91 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
         return this.shadowRoot.querySelector(s);
     }
     #setup() {
-        let noclose = this.getAttribute("noclose");
-        if ("1" === noclose) {
-            let x = this.#query("button.close.yes");
-            x.style.display = "none";
-        } else {
-            let x = this.#query("button.close.no");
-            x.style.display = "none";
-        }
         this.#domid = this.getAttribute("id");
         let content = this.innerHTML;
         this.#query("div.content").innerHTML = content;
-        let w = this.getAttribute("w");
-        this.style.width = w;
-        let h = this.getAttribute("h");
-        this.style.height = h;
-        this.#h = h;
-        this.#w = w;
         this.#size();
-        let z = this.getAttribute("z")
+        let z = this.getAttribute("z");
+
+        let noclose = this.getAttribute("noclose");
+
+        let buttyes = this.#query("button.close.yes");
+        buttyes.addEventListener('click', this.hide.bind(this));
+
+        let buttno = this.#query("button.close.no");
+
+        if ("1" === noclose) {
+            buttyes.style.display = "none";
+        } else {
+            buttno.style.display = "none";
+        }
     }
     #getMain() {
         return this.#query(".gwindow");
     }
+
     #size() {
         let main = this.#getMain();
         main.style.width = "576px";
         main.style.height = "324px";
+
+        let w = Number(this.getAttribute("w"));
+        let h = Number(this.getAttribute("h"));
+        if (Number.isInteger(w) && w > 0) {
+            main.style.width = `${w}px`;
+        }
+        if (Number.isInteger(h) && h > 0) {
+            main.style.height = `${h}px`;
+        }
     }
+    /**
+     * @param {Number|String} h 
+     * @param {Boolean} literal 
+     */
+    setHeight(h, literal) {
+        let main = this.#getMain();
+        if (literal === true) {
+            main.style.height = h;
+            return;
+        }
+        if (Number.isInteger(h) && h > 0) {
+            main.style.height = `${h}px`;
+        }
+    }
+    /**
+     * @param {Number|String} w 
+     * @param {Boolean} literal 
+     */
+    setWidth(w, literal) {
+        let main = this.#getMain();
+        if (literal === true) {
+            main.style.width = w;
+            return;
+        }
+        if (Number.isInteger(w) && w > 0) {
+            main.style.width = `${w}px`;
+        }
+    }
+    /**
+     * @param {Number} z
+     */
     updateZIndex(z) {
-        
+        let main = this.#getMain();
+        if (Utils.IsWholeNumber(z)) {
+            main.style.zIndex = z;
+        }
+    }
+    /**
+     * 
+     * @param {String} text 
+     * @param {Function} f 
+     */
+    addButton(text, f) {
+        let buttonArea = this.#query("div.buttons");
+        let butt = document.createElement("button");
+        butt.textContent = text;
+        butt.addEventListener("click", f);
+        buttonArea.appendChild(butt);
     }
 
 }
@@ -299,99 +355,59 @@ class SmallDisplay extends HTMLElement {
 }
 
 Object.freeze(SmallDisplay);
-customElements.define("small-display", SmallDisplay);{
-    let template = document.getElementById("pop_alert_template");
-    template.innerHTML = `
-    <style>
-        /* pop-alert */
-        div.pop-container {
-            padding: 0.5rem;
-            position: absolute;
-            top: 40vh;
-            left: 40vw;
-            width: 20vw;
-            display: flex;
-            flex-direction: column;
-            border: 0.25rem solid #606060;
-            background-color: #c0c060;
-            z-index: 9;
-        }
-
-        div.button-box {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        }
-
-        @media screen and (max-aspect-ratio:1/1) {
-            div.pop-container {
-                position: absolute;
-                top: 20vh;
-                left: 5vw;
-                width: 80vw;
-                z-index: 9;
-            }
-        }
-
-        /*dark*/
-        div.pop-container.dark {
-            border: 0.25rem solid #c0c060;
-            background-color: #606060;
-            color: #c0c060;
-            }
-    </style>
-    <div class="pop-container">
-        <div class="text-content">
-            <!-- text here -->
-        </div>
-            <div class="button-box">
-            <span><button name="ok">OK</button></span>
-        </div>
-    </div>`;
-}
-class PopAlert extends HTMLElement {
+customElements.define("small-display", SmallDisplay);class PopX extends GWindow {
     constructor() {
         super();
-        let template = document.getElementById("pop_alert_template");
-        let templateContent = template.content;
-        let clone = templateContent.cloneNode(true);
-        const shadowRoot = this.attachShadow({ mode: 'open' });
-        shadowRoot.appendChild(clone);
+        this.#sizeUp();
+        super.addButton("OK", this.#close.bind(this));
+
+        const stylee = document.createElement('link');
+        stylee.setAttribute('rel', 'stylesheet');
+        stylee.setAttribute('href', 'components/popx.css');
+        this.shadowRoot.appendChild(stylee);
+        // super.shadowRoot.appendChild(stylee);
+        super.hide();
     }
-    query(s) {
-        return this.shadowRoot.querySelector(s);
+    #sizeUp() {
+        super.setWidth(360);
+        super.setHeight(240);
     }
-    open(text, okText) {
-        if (typeof text !== 'string') throw "text must be string";
-        this.query('div.text-content').textContent = text;
-        if (typeof okText !== "string") throw "text must be string";
-        this.query('button[name=ok]').textContent = okText;
-        this.style.display = 'flex';
-        this.query('button').addEventListener('click', (e) => {
-            this.close()
-        });
+    show() {
+        super.show();
     }
-    close() {
-        this.style.display = 'none';
+    #close() {
+        super.hide();
     }
-    setDark() {
-        const cont = this.query('div.pop-container');
-        cont.classList.toggle('dark');
+
+    get buttons() {
+        return super.buttons;
     }
-    static OPEN(text, okText) {
-        const pop = document.body.querySelector('pop-alert');
-        if (pop == null) {
-            let _pop = document.createElement('pop-alert');
-            document.body.appendChild(_pop);
-            let __pop = document.body.querySelector('pop-alert');
-            __pop.open(text, okText);
-            return;
+
+    set text(t) {
+        super.content.innerHTML = t;
+    }
+    set title(tt) {
+        super.titlebar.textContent = tt;
+    }
+
+    set okText(okText) {
+        if (Utils.isFullString(okText)) {
+            super.buttons[0].textContent = okText;
         }
-        pop.open(text, okText);
+    }
+
+    static OPEN(text, title, okText) {
+        // debugger;
+        const pop = document.body.querySelector('pop-x');
+        pop.text = text;
+        pop.okText = okText;
+        if (Utils.isFullString(title)) {
+            pop.title = title;
+        }
+        pop.show();
     }
 }
-Object.freeze(PopAlert);
-customElements.define('pop-alert', PopAlert);class NewGameDialog extends HTMLElement {
+customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
     constructor() {
         super();
         let template = document.getElementById("newgame_dialog_template");
@@ -1243,7 +1259,7 @@ class UIController {
      */
     static DisplayScore(game) {
         let scoreCards = document.body.querySelectorAll(".score");
-        for(let card of scoreCards){
+        for (let card of scoreCards) {
             card.hide();
         }
         for (let i = 0, len = game.players.length; i < len; i++) {
@@ -1315,7 +1331,7 @@ class UIController {
         time.updateValue(String(game.time));
     }
     static Alert(msg) {
-        PopAlert.OPEN(msg, "OK");
+        PopX.OPEN(msg, msg);
     }
     static DisplayWelcomeScreen(context) {
         context.fillStyle = "black";
@@ -1938,7 +1954,7 @@ class MontiVipera {
         this.#playerList = [];
         // this players
         this.SetMode(_mode);
-        this.#version = "0.10.1"
+        this.#version = "0.10.2b"
         this.#name = "Montivipera Redemption"
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
@@ -1985,8 +2001,8 @@ class MontiVipera {
 
         this.ClearTimers();
         this.resetPlayers();
-
-        this.#numberOfPlayers = n;
+        console.log(typeof n);
+        this.#numberOfPlayers = Number(n);
 
         let x = this.canvas.width / 2;
         let y = this.canvas.height / 2;
@@ -2408,4 +2424,4 @@ Object.freeze(MontiVipera);const translateData ={
 const Translator = Object.create(null);
 Translator.translate =()=>{
 
-}//Build Date : 2022-10-21T01:26+04:00
+}//Build Date : 2022-10-28T22:49+04:00

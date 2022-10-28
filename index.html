@@ -37,12 +37,13 @@
         </div>
     </div>
 
-    <gw-window noclose="0">
+    <!-- <gw-window noclose="0" w="800" h="600">
         gela
     </gw-window>
     <gw-window noclose="1" z="11">
         gela
-    </gw-window>
+    </gw-window> -->
+    <pop-x id="popalert"></pop-x>
 
     <settings-dialog></settings-dialog>
     <new-dialog></new-dialog>
@@ -173,14 +174,16 @@
             </div>
         </div>
     </template>
-    <template id="pop_alert_template"> </template>
     <template id="gwindow_template">
         <div class="gwindow" draggable="true" ondragstart="">
             <div class="close">
                 <button class="close no bg-cyber-teal">&#x25cf;</button>
-                <button class="close yes bg-red">&#x25AC;</button>
+                <button class="close yes bg-red">&#x2715;</button>
+                <span class="title"></span>
             </div>
             <div class="content"></div>
+            <div class="buttons">
+            </div>
         </div>
     </template>
     <script src="app.preload.js"></script>
