@@ -30,6 +30,10 @@ div.close>button {
   cursor: pointer;
 }
 
+div.close>span.title {
+  padding: 0.5rem;
+}
+
 /* middle row - content */
 div.content {
   background-color: #466;

@@ -30,7 +30,7 @@ class MontiVipera {
         this.#playerList = [];
         // this players
         this.SetMode(_mode);
-        this.#version = "0.10.2c"
+        this.#version = "0.10.2d"
         this.#name = "Montivipera Redemption"
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
