@@ -1954,7 +1954,7 @@ class MontiVipera {
         this.#playerList = [];
         // this players
         this.SetMode(_mode);
-        this.#version = "0.10.2b"
+        this.#version = "0.10.2c"
         this.#name = "Montivipera Redemption"
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
@@ -2424,4 +2424,4 @@ Object.freeze(MontiVipera);const translateData ={
 const Translator = Object.create(null);
 Translator.translate =()=>{
 
-}//Build Date : 2022-10-28T22:49+04:00
+}//Build Date : 2022-11-03T18:22+04:00

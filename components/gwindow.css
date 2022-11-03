@@ -1,7 +1,7 @@
 div.gwindow {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 60px auto 60px;
+  grid-template-rows: 40px auto 60px;
   position: absolute;
   left: 0px;
   top: 0px;
@@ -12,9 +12,10 @@ div.gwindow {
 
 /* first row upper window controls */
 div.close {
-  padding: 1vmin;
-  display: flex;
-  flex-direction: row-reverse;
+  display: grid;
+  grid-template-columns: auto 40px;
+  grid-template-rows: auto;
+  border-radius: 12px;
 }
 
 div.close>button {
@@ -24,7 +25,7 @@ div.close>button {
   font-size: 1.75rem;
   font-weight: 900;
   border: 0;
-  border-radius: 10%;
+  border-radius: 8px;
   color: black;
   cursor: pointer;
 }
@@ -50,7 +51,7 @@ div.buttons>button {
   padding-left: 0.75rem;
   font-size: 1.25rem;
   font-weight: 900;
-  border-radius:8px;
+  border-radius: 8px;
 }
 
 /* color classes */
