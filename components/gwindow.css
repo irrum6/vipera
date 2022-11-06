@@ -32,6 +32,7 @@ div.close>button {
 
 div.close>span.title {
   padding: 0.5rem;
+  font-size: 1.5rem;
 }
 
 /* middle row - content */

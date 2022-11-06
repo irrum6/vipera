@@ -118,7 +118,7 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
         return this.#query(".title");
     }
 
-    get buttons(){
+    get buttons() {
         return this.#query(".buttons").children;
     }
     show() {
@@ -133,6 +133,7 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
     #query(s) {
         return this.shadowRoot.querySelector(s);
     }
+
     #setup() {
         this.#domid = this.getAttribute("id");
         let content = this.innerHTML;
@@ -359,19 +360,25 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
     constructor() {
         super();
         this.#sizeUp();
+        this.#insertHTML();
         super.addButton("OK", this.#close.bind(this));
 
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
         stylee.setAttribute('href', 'components/popx.css');
         this.shadowRoot.appendChild(stylee);
-        // super.shadowRoot.appendChild(stylee);
         super.hide();
     }
+
+    #query(s) {
+        return this.shadowRoot.querySelector(s);
+    }
+
     #sizeUp() {
         super.setWidth(360);
         super.setHeight(240);
     }
+
     show() {
         super.show();
     }
@@ -379,12 +386,17 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
         super.hide();
     }
 
+    #insertHTML() {
+        super.content.innerHTML = `<p class="text"></p>`;
+    }
+
     get buttons() {
         return super.buttons;
     }
 
     set text(t) {
-        super.content.innerHTML = t;
+        let p = this.#query("p.text");
+        p.textContent = t;
     }
     set title(tt) {
         super.titlebar.textContent = tt;
@@ -2424,4 +2436,4 @@ Object.freeze(MontiVipera);const translateData ={
 const Translator = Object.create(null);
 Translator.translate =()=>{
 
-}//Build Date : 2022-11-03T20:12+04:00
+}//Build Date : 2022-11-06T22:52+04:00

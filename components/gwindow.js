@@ -30,7 +30,7 @@ class GWindow extends HTMLElement {
         return this.#query(".title");
     }
 
-    get buttons(){
+    get buttons() {
         return this.#query(".buttons").children;
     }
     show() {
@@ -45,6 +45,7 @@ class GWindow extends HTMLElement {
     #query(s) {
         return this.shadowRoot.querySelector(s);
     }
+
     #setup() {
         this.#domid = this.getAttribute("id");
         let content = this.innerHTML;
