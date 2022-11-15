@@ -6,7 +6,9 @@ div.content {
     grid-template-rows: auto;
     justify-content: center;
     align-items: center;
-    text-overflow: clip;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
 }
 
 div.buttons>button {
