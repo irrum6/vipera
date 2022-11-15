@@ -364,7 +364,6 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
         this.#initialWidth = 360;
         this.#initialHeight = 240;
         this.#sizeUp();
-        this.#insertHTML();
         super.addButton("OK", this.#close.bind(this));
 
         const stylee = document.createElement('link');
@@ -389,9 +388,28 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
     #close() {
         super.hide();
     }
+    /**
+     * @param {String} text 
+     * @returns Number
+     */
+    #insertContent(text) {
+        let split = text.split("\n");
 
-    #insertHTML() {
-        super.content.innerHTML = `<p class="text"></p>`;
+        console.log(split.length);
+        let stringsArray = [];
+
+        let max = split[0].length;
+        let hmin = split.length * 30 + 100;
+
+        for (const sp of split) {
+            stringsArray.push(`<p>${sp}</p>`);
+            if (sp.length > max) {
+                max = sp.length;
+            }
+        }
+
+        super.content.innerHTML = stringsArray.join("");
+        return { minw: max * 8, hmin };
     }
 
     get buttons() {
@@ -401,10 +419,10 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
      * @param {String} t
      */
     set text(t) {
-        let p = this.#query("p.text");
         let str = String(t);
         let strlen = str.length;
-        p.textContent = str;
+
+        let { minw, hmin } = this.#insertContent(t);
 
         //character length at which we increase height;
         let h_break = 150;
@@ -412,15 +430,21 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
         let w_break = 375;
         //auto height adjustment for longer texts
         if (strlen > h_break) {
-            let h = Math.floor(strlen / h_break * this.#initialHeight);
-            this.setHeight(h);
+            let h = Math.floor(strlen / h_break * this.#initialHeight) + 100;
+            h = Math.max(h, hmin);
+            super.setHeight(h);
+            //add some width as well
+            let w = Math.max(this.#initialWidth + 30, minw)
+            super.setWidth(w);
         }
+        //if text is larger
         if (strlen > w_break) {
             let upsizeRatio = Math.sqrt(strlen / w_break);
             //+100 to account top and bottom bars
             let h = Math.floor(upsizeRatio * this.#initialHeight) + 100;
             //+1 to account rounding errors
             let w = Math.floor(upsizeRatio * this.#initialWidth) + 1;
+            w = Math.max(w, minw);
             //clip if size limit hit
             let wmax = Math.floor(window.innerWidth * 0.8) + 1;
             let hmax = Math.floor(window.innerHeight * 0.8) + 1;
@@ -430,10 +454,10 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
             }
             if (h > hmax) {
                 h = hmax;
-            }           
+            }
             //finnally update size to fit content
-            this.setHeight(h);
-            this.setWidth(w);
+            super.setHeight(h);
+            super.setWidth(w);
         }
     }
     /**
@@ -501,18 +525,18 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
         }
         glide.disabled = true;
     }
-    #getInputByName(name){
+    #getInputByName(name) {
         let selector = `input[name=${name}]`;
         return this.query(selector);
     }
-    #getChecked(name){
+    #getChecked(name) {
         return this.#getInputByName(name).checked;
     }
     startNewGame(game, e) {
         const unbounded = this.#getChecked("free_bound");
         const disableCollision = this.#getChecked("disable_collision");
-        const glide = this.#getChecked("glide");        
-        const fastSwitch = this.#getChecked("quickswitch");        
+        const glide = this.#getChecked("glide");
+        const fastSwitch = this.#getChecked("quickswitch");
 
         const mode = this.query('radio-box.moder').GetValue();
         const level = this.query('radio-box.leveler').GetValue();
@@ -525,6 +549,8 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
         game.GetFrame();
         if (n > 1) {
             game.DisplayMultiControls();
+        } else {
+            game.DisplayControls();
         }
     }
     open(game) {
@@ -1395,31 +1421,29 @@ class UIController {
     static Alert(msg) {
         PopX.OPEN(msg, msg);
     }
-    static DisplayWelcomeScreen(context) {
-        context.fillStyle = "black";
-        context.beginPath();
-        context.font = "24px Arial";
-        context.fillText(`Welcome to Montivipera Redemption`, 300, 60);
-        context.fillText("use arrow keys to navigate", 300, 100);
-        context.fillText("Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen", 300, 140);
-        context.fillText("'m' to display/dissmis settings dialog , 'n' to open/close new game dialog", 300, 180);
-        context.closePath();
+    static DisplayWelcomeScreen() {
+        let text = `Welcome to Montivipera Redemption.
+            use arrow keys to navigate.
+            Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
+            'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.`;
+
+        let title = "Welcome";
+        PopX.OPEN(text, title);
     }
-    static DisplayMultiPlayerControls(context) {
-        context.fillStyle = "black";
-        context.beginPath();
-        context.font = "20px Arial";
-        context.fillText("Your are playing local machine mulitplayer", 300, 210);
-        context.fillText("Game supports up to 4 players", 300, 240);
-        context.fillText("First player uses Arrow controls", 300, 270);
-        context.fillText("Second Player uses WASD controls", 300, 300);
-        context.fillText("Third player can use numpad (must be present on keyboard)", 300, 330);
-        context.fillText("With following controls : 8-UP, 4-LEFT, 5-Down, 6-RIGHT", 300, 360);
-        context.fillText("4th player can use UHJK keys ", 300, 390);
-        context.fillText("with following controls : U-UP, H-LEFT, J-DOWN, K-RIGHT", 300, 420);
-        context.fillText("Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen", 300, 450);
-        context.fillText("'m' to display/dissmis settings dialog , 'n' to open/close new game dialog", 300, 480);
-        context.closePath();
+    static DisplayMultiPlayerControls() {
+        let text = `Your are playing local machine mulitplayer.
+        Game supports up to 4 players.
+        First player uses Arrow controls.
+        Second Player uses WASD controls.
+        Third player can use UHJK keys.
+        with following controls : U-UP, H-LEFT, J-DOWN, K-RIGHT.
+        4th player can use numpad (must be present on keyboard).
+        With following controls : 8-UP, 4-LEFT, 5-Down, 6-RIGHT.
+        Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen
+        'm' to display/dissmis settings dialog , 'n' to open/close new game dialog`;
+
+        let title = "Welcome";
+        PopX.OPEN(text, title);
     }
 }const Directions = {
     Left: 1,
@@ -2006,6 +2030,8 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
+        this.#version = "0.10.2f";
+        this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
         this.metrics = {};//fps
@@ -2016,8 +2042,6 @@ class MontiVipera {
         this.#playerList = [];
         // this players
         this.SetMode(_mode);
-        this.#version = "0.10.2e"
-        this.#name = "Montivipera Redemption"
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
         this.#language = Languages.English;
@@ -2413,12 +2437,12 @@ class MontiVipera {
             this.GoFullScreen();
         }
     }
-    DisplayScore() {
-
-    }
+    
     DisplayMultiControls() {
-        const { renderingContext } = this;
-        UIController.DisplayMultiPlayerControls(renderingContext);
+        UIController.DisplayMultiPlayerControls();
+    }
+    DisplayControls() {
+        UIController.DisplayWelcomeScreen();
     }
     DisplayNewGameMenu() {
         NewGameDialog.OpenClose(this, false);
@@ -2486,4 +2510,4 @@ Object.freeze(MontiVipera);const translateData ={
 const Translator = Object.create(null);
 Translator.translate =()=>{
 
-}//Build Date : 2022-11-15T22:20+04:00
+}//Build Date : 2022-11-15T23:35+04:00

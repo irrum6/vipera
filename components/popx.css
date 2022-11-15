@@ -9,6 +9,13 @@ div.content {
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-word;
+    white-space: normal;
+}
+
+div.content>p {
+    padding-left: 0.75rem;
+    white-space: normal;
+    margin: 4px;
 }
 
 div.buttons>button {

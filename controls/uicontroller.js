@@ -80,30 +80,28 @@ class UIController {
     static Alert(msg) {
         PopX.OPEN(msg, msg);
     }
-    static DisplayWelcomeScreen(context) {
-        context.fillStyle = "black";
-        context.beginPath();
-        context.font = "24px Arial";
-        context.fillText(`Welcome to Montivipera Redemption`, 300, 60);
-        context.fillText("use arrow keys to navigate", 300, 100);
-        context.fillText("Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen", 300, 140);
-        context.fillText("'m' to display/dissmis settings dialog , 'n' to open/close new game dialog", 300, 180);
-        context.closePath();
+    static DisplayWelcomeScreen() {
+        let text = `Welcome to Montivipera Redemption.
+            use arrow keys to navigate.
+            Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
+            'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.`;
+
+        let title = "Welcome";
+        PopX.OPEN(text, title);
     }
-    static DisplayMultiPlayerControls(context) {
-        context.fillStyle = "black";
-        context.beginPath();
-        context.font = "20px Arial";
-        context.fillText("Your are playing local machine mulitplayer", 300, 210);
-        context.fillText("Game supports up to 4 players", 300, 240);
-        context.fillText("First player uses Arrow controls", 300, 270);
-        context.fillText("Second Player uses WASD controls", 300, 300);
-        context.fillText("Third player can use numpad (must be present on keyboard)", 300, 330);
-        context.fillText("With following controls : 8-UP, 4-LEFT, 5-Down, 6-RIGHT", 300, 360);
-        context.fillText("4th player can use UHJK keys ", 300, 390);
-        context.fillText("with following controls : U-UP, H-LEFT, J-DOWN, K-RIGHT", 300, 420);
-        context.fillText("Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen", 300, 450);
-        context.fillText("'m' to display/dissmis settings dialog , 'n' to open/close new game dialog", 300, 480);
-        context.closePath();
+    static DisplayMultiPlayerControls() {
+        let text = `Your are playing local machine mulitplayer.
+        Game supports up to 4 players.
+        First player uses Arrow controls.
+        Second Player uses WASD controls.
+        Third player can use UHJK keys.
+        with following controls : U-UP, H-LEFT, J-DOWN, K-RIGHT.
+        4th player can use numpad (must be present on keyboard).
+        With following controls : 8-UP, 4-LEFT, 5-Down, 6-RIGHT.
+        Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen
+        'm' to display/dissmis settings dialog , 'n' to open/close new game dialog`;
+
+        let title = "Welcome";
+        PopX.OPEN(text, title);
     }
 }

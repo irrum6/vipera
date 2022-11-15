@@ -20,6 +20,8 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
+        this.#version = "0.10.2f";
+        this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
         this.metrics = {};//fps
@@ -30,8 +32,6 @@ class MontiVipera {
         this.#playerList = [];
         // this players
         this.SetMode(_mode);
-        this.#version = "0.10.2e"
-        this.#name = "Montivipera Redemption"
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
         this.#language = Languages.English;
@@ -427,12 +427,12 @@ class MontiVipera {
             this.GoFullScreen();
         }
     }
-    DisplayScore() {
-
-    }
+    
     DisplayMultiControls() {
-        const { renderingContext } = this;
-        UIController.DisplayMultiPlayerControls(renderingContext);
+        UIController.DisplayMultiPlayerControls();
+    }
+    DisplayControls() {
+        UIController.DisplayWelcomeScreen();
     }
     DisplayNewGameMenu() {
         NewGameDialog.OpenClose(this, false);

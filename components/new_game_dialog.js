@@ -37,18 +37,18 @@ class NewGameDialog extends HTMLElement {
         }
         glide.disabled = true;
     }
-    #getInputByName(name){
+    #getInputByName(name) {
         let selector = `input[name=${name}]`;
         return this.query(selector);
     }
-    #getChecked(name){
+    #getChecked(name) {
         return this.#getInputByName(name).checked;
     }
     startNewGame(game, e) {
         const unbounded = this.#getChecked("free_bound");
         const disableCollision = this.#getChecked("disable_collision");
-        const glide = this.#getChecked("glide");        
-        const fastSwitch = this.#getChecked("quickswitch");        
+        const glide = this.#getChecked("glide");
+        const fastSwitch = this.#getChecked("quickswitch");
 
         const mode = this.query('radio-box.moder').GetValue();
         const level = this.query('radio-box.leveler').GetValue();
@@ -61,6 +61,8 @@ class NewGameDialog extends HTMLElement {
         game.GetFrame();
         if (n > 1) {
             game.DisplayMultiControls();
+        } else {
+            game.DisplayControls();
         }
     }
     open(game) {
