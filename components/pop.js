@@ -63,6 +63,17 @@ class PopX extends GWindow {
             let h = Math.floor(upsizeRatio * this.#initialHeight) + 100;
             //+1 to account rounding errors
             let w = Math.floor(upsizeRatio * this.#initialWidth) + 1;
+            //clip if size limit hit
+            let wmax = Math.floor(window.innerWidth * 0.8) + 1;
+            let hmax = Math.floor(window.innerHeight * 0.8) + 1;
+
+            if (w > wmax) {
+                w = wmax;
+            }
+            if (h > hmax) {
+                h = hmax;
+            }           
+            //finnally update size to fit content
             this.setHeight(h);
             this.setWidth(w);
         }
@@ -73,7 +84,9 @@ class PopX extends GWindow {
     set title(tt) {
         super.titlebar.textContent = tt;
     }
-
+    /**
+     * @param{String} okText
+     */
     set okText(okText) {
         if (Utils.isFullString(okText)) {
             super.buttons[0].textContent = okText;
