@@ -8,25 +8,6 @@ let style = window.getComputedStyle(canvas.parentElement);
 canvas.width = style.width.replace("px", ""); //*0.95;
 canvas.height = style.height.replace("px", ""); //*0.95;
 
-let left = document.body.querySelector("div.left");
-left[on]("fullscreenchange", (e) => {
-    if (document.fullscreenElement) {
-        window.savedCanvasWidth = canvas.width;
-        window.savedCanvasHeight = canvas.height;
-        let style = window.getComputedStyle(canvas.parentElement);
-        // debugger;
-        canvas.width = style.width.replace("px", ""); //*0.95;
-        canvas.height = style.height.replace("px", ""); //*0.95;
-        context.fillStyle = 'grey';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-    } else {
-        canvas.width = window.savedCanvasWidth;
-        canvas.height = window.savedCanvasHeight;
-        context.fillStyle = 'grey';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-    }
-    left.style.backgroundColor = "grey";
-})
 context.imageSmoothingEnabled = true;
 
 const viperaGame = new MontiVipera(Modes["Long"], canvas, context);

@@ -458,11 +458,18 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
         }
         glide.disabled = true;
     }
+    #getInputByName(name){
+        let selector = `input[name=${name}]`;
+        return this.query(selector);
+    }
+    #getChecked(name){
+        return this.#getInputByName(name).checked;
+    }
     startNewGame(game, e) {
-        const unbounded = this.query('input[name=free_bound]').checked;
-        const disableCollision = this.query('input[name=disable_collision]').checked;
-        const glide = this.query('input[name=glide]').checked;
-        const fastSwitch = this.query('input[name=quickswitch]').checked;
+        const unbounded = this.#getChecked("free_bound");
+        const disableCollision = this.#getChecked("disable_collision");
+        const glide = this.#getChecked("glide");        
+        const fastSwitch = this.#getChecked("quickswitch");        
 
         const mode = this.query('radio-box.moder').GetValue();
         const level = this.query('radio-box.leveler').GetValue();
@@ -1486,7 +1493,7 @@ class Player extends Vipera {
         if (!Directions.valid(d)) {
             throw "Error: not a valid direction";
         }
-        if (Directions.opposite(d, this.direction) && !game.settings.fastSwtich) {
+        if (Directions.opposite(d, this.direction) && !game.settings.fastSwitch) {
             //do nothing and return;
             return;
         }
@@ -1966,7 +1973,7 @@ class MontiVipera {
         this.#playerList = [];
         // this players
         this.SetMode(_mode);
-        this.#version = "0.10.2d"
+        this.#version = "0.10.2e"
         this.#name = "Montivipera Redemption"
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
@@ -2436,4 +2443,4 @@ Object.freeze(MontiVipera);const translateData ={
 const Translator = Object.create(null);
 Translator.translate =()=>{
 
-}//Build Date : 2022-11-06T22:52+04:00
+}//Build Date : 2022-11-15T18:22+04:00

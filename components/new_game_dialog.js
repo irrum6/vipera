@@ -37,11 +37,18 @@ class NewGameDialog extends HTMLElement {
         }
         glide.disabled = true;
     }
+    #getInputByName(name){
+        let selector = `input[name=${name}]`;
+        return this.query(selector);
+    }
+    #getChecked(name){
+        return this.#getInputByName(name).checked;
+    }
     startNewGame(game, e) {
-        const unbounded = this.query('input[name=free_bound]').checked;
-        const disableCollision = this.query('input[name=disable_collision]').checked;
-        const glide = this.query('input[name=glide]').checked;
-        const fastSwitch = this.query('input[name=quickswitch]').checked;
+        const unbounded = this.#getChecked("free_bound");
+        const disableCollision = this.#getChecked("disable_collision");
+        const glide = this.#getChecked("glide");        
+        const fastSwitch = this.#getChecked("quickswitch");        
 
         const mode = this.query('radio-box.moder').GetValue();
         const level = this.query('radio-box.leveler').GetValue();

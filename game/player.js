@@ -113,7 +113,7 @@ class Player extends Vipera {
         if (!Directions.valid(d)) {
             throw "Error: not a valid direction";
         }
-        if (Directions.opposite(d, this.direction) && !game.settings.fastSwtich) {
+        if (Directions.opposite(d, this.direction) && !game.settings.fastSwitch) {
             //do nothing and return;
             return;
         }
