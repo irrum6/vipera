@@ -58,7 +58,7 @@ class Enumer {
      * @param {Value} v 
      */
     valid(v) {
-        debugger;
+        // debugger;
         if (typeof v !== "string") {
             return false;
         }
@@ -2559,4 +2559,4 @@ Object.freeze(MontiVipera);const translateData ={
 const Translator = Object.create(null);
 Translator.translate =()=>{
 
-}//Build Date : 2022-11-17T09:53+04:00
+}//Build Date : 2022-11-17T09:55+04:00
