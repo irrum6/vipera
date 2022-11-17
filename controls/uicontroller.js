@@ -84,7 +84,8 @@ class UIController {
         let text = `Welcome to Montivipera Redemption.
             use arrow keys to navigate.
             Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
-            'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.`;
+            'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
+            'g' to play music.`;
 
         let title = "Welcome";
         PopX.OPEN(text, title);
@@ -99,9 +100,25 @@ class UIController {
         4th player can use numpad (must be present on keyboard).
         With following controls : 8-UP, 4-LEFT, 5-Down, 6-RIGHT.
         Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen
-        'm' to display/dissmis settings dialog , 'n' to open/close new game dialog`;
+        'm' to display/dissmis settings dialog , 'n' to open/close new game dialog
+        'g' to play music.
+        `;
 
         let title = "Welcome";
-        PopX.OPEN(text, title);
+        PopX.OPEN(text, title, "OK");
+    }
+
+    static onPlay = false;
+    static playSound() {
+        if (UIController.onPlay) {
+            console.log(1);
+            return;
+        }
+        let audio = query("audio");
+        audio.play();
+        UIController.onPlay = true;
+        audio[on]('ended', () => {
+            UIController.onPlay = false;
+        });
     }
 }

@@ -4,11 +4,11 @@ Modes.makeGetters();
 Modes.close();
 const Level = new Enumer();
 Level.addOptions(["Easy", "Normal", "Hard", "Master"]);
-Modes.makeGetters();
+Level.makeGetters();
 Level.close();
 const Languages = new Enumer();
 Languages.addOptions(["English", "Georgian", "German"]);
-Modes.makeGetters();
+Languages.makeGetters();
 Languages.close();
 
 class MontiVipera {
@@ -44,7 +44,6 @@ class MontiVipera {
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
         this.#language = Languages.English;
-        //this.level = "easy";
     }
     get version() {
         return this.#version;
@@ -164,16 +163,16 @@ class MontiVipera {
         //pixel per 1/10 second
         let v = 2;
         switch (this.level) {
-            case Level.Easy:
+            case Level.EASY:
                 v = 2;
                 break;
-            case Level.Normal:
+            case Level.NORMAL:
                 v = 4;
                 break;
-            case Level.Hard:
+            case Level.HARD:
                 v = 6;
                 break;
-            case Level.Master:
+            case Level.MASTER:
                 v = 8;
                 break;
             default:
@@ -209,14 +208,14 @@ class MontiVipera {
     GetEnduranceInterval() {
         let i = 20;
         switch (this.level) {
-            case Level.Easy:
+            case Level.EASY:
                 i = 20;
                 break;
-            case Level.Normal:
+            case Level.NORMAL:
                 i = 10;
                 break;
-            case Level.Hard:
-            case Level.Master:
+            case Level.HARD:
+            case Level.MASTER:
                 i = 5;
                 break;
             default:
@@ -237,7 +236,7 @@ class MontiVipera {
         }
         let inter = this.GetEnduranceInterval();
         let interval = inter * 1000;
-        if (this.level !== Level.Master) {
+        if (this.level !== Level.MASTER) {
             this.food = null;
         }
 
@@ -254,7 +253,7 @@ class MontiVipera {
             }
             for (const p of this.players) {
                 p.AddMass();
-                if (this.level !== Level.Master) {
+                if (this.level !== Level.MASTER) {
                     p.score++;
                 }
             }
@@ -273,16 +272,16 @@ class MontiVipera {
     GetChallengeInterval() {
         let i = 20;
         switch (this.level) {
-            case Level.Easy:
+            case Level.EASY:
                 i = 30;
                 break;
-            case Level.Normal:
+            case Level.NORMAL:
                 i = 20;
                 break;
-            case Level.Hard:
+            case Level.HARD:
                 i = 10;
                 break;
-            case Level.Master:
+            case Level.MASTER:
                 i = 5;
                 break;
             default:
@@ -463,6 +462,9 @@ class MontiVipera {
     }
     UpdateSettings(s) {
         this.settings.update(s);
+    }
+    playMusic() {
+        UIController.playSound();
     }
 }
 

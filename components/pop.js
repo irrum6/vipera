@@ -116,8 +116,13 @@ class PopX extends GWindow {
             super.buttons[0].textContent = okText;
         }
     }
-
-    static OPEN(text, title, okText) {
+    /**
+     * @param {String} text 
+     * @param {String} title 
+     * @param {String} okText 
+     * @param {Number} fade 
+     */
+    static OPEN(text, title, okText, fade) {
         // debugger;
         const pop = document.body.querySelector('pop-x');
         pop.text = text;
@@ -126,6 +131,12 @@ class PopX extends GWindow {
             pop.title = title;
         }
         pop.show();
+
+        if (Number.isInteger(fade) && fade > 0) {
+            const t = window.setTimeout(() => {
+                pop.hide();
+            }, fade * 1000);
+        }
     }
 }
 customElements.define('pop-x', PopX);

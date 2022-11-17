@@ -46,13 +46,6 @@ class Enumer {
         }
     }
 
-    values(){
-        return this.#values;
-    }
-    //commented for now
-    // [Symbol.iterator]() {
-    //     return this.values[Symbol.iterator]();
-    // }
     /**
      * Check if value is valid enum property
      * @param {Value} v 
@@ -514,8 +507,13 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
             super.buttons[0].textContent = okText;
         }
     }
-
-    static OPEN(text, title, okText) {
+    /**
+     * @param {String} text 
+     * @param {String} title 
+     * @param {String} okText 
+     * @param {Number} fade 
+     */
+    static OPEN(text, title, okText, fade) {
         // debugger;
         const pop = document.body.querySelector('pop-x');
         pop.text = text;
@@ -524,6 +522,12 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
             pop.title = title;
         }
         pop.show();
+
+        if (Number.isInteger(fade) && fade > 0) {
+            const t = window.setTimeout(() => {
+                pop.hide();
+            }, fade * 1000);
+        }
     }
 }
 customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
@@ -1171,6 +1175,9 @@ class KeyBoardController extends ActionController {
                 //p pause Resume
                 game.ToggleResume();
                 break;
+            case "g":
+            case "G":
+                game.playMusic();
             default:
                 game.KeyEvent(key);
         }
@@ -1465,7 +1472,8 @@ class UIController {
         let text = `Welcome to Montivipera Redemption.
             use arrow keys to navigate.
             Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
-            'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.`;
+            'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
+            'g' to play music.`;
 
         let title = "Welcome";
         PopX.OPEN(text, title);
@@ -1480,10 +1488,26 @@ class UIController {
         4th player can use numpad (must be present on keyboard).
         With following controls : 8-UP, 4-LEFT, 5-Down, 6-RIGHT.
         Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen
-        'm' to display/dissmis settings dialog , 'n' to open/close new game dialog`;
+        'm' to display/dissmis settings dialog , 'n' to open/close new game dialog
+        'g' to play music.
+        `;
 
         let title = "Welcome";
-        PopX.OPEN(text, title);
+        PopX.OPEN(text, title, "OK");
+    }
+
+    static onPlay = false;
+    static playSound() {
+        if (UIController.onPlay) {
+            console.log(1);
+            return;
+        }
+        let audio = query("audio");
+        audio.play();
+        UIController.onPlay = true;
+        audio[on]('ended', () => {
+            UIController.onPlay = false;
+        });
     }
 }const Directions = {
     Left: 1,
@@ -2054,11 +2078,11 @@ Modes.makeGetters();
 Modes.close();
 const Level = new Enumer();
 Level.addOptions(["Easy", "Normal", "Hard", "Master"]);
-Modes.makeGetters();
+Level.makeGetters();
 Level.close();
 const Languages = new Enumer();
 Languages.addOptions(["English", "Georgian", "German"]);
-Modes.makeGetters();
+Languages.makeGetters();
 Languages.close();
 
 class MontiVipera {
@@ -2094,7 +2118,6 @@ class MontiVipera {
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
         this.#language = Languages.English;
-        //this.level = "easy";
     }
     get version() {
         return this.#version;
@@ -2214,16 +2237,16 @@ class MontiVipera {
         //pixel per 1/10 second
         let v = 2;
         switch (this.level) {
-            case Level.Easy:
+            case Level.EASY:
                 v = 2;
                 break;
-            case Level.Normal:
+            case Level.NORMAL:
                 v = 4;
                 break;
-            case Level.Hard:
+            case Level.HARD:
                 v = 6;
                 break;
-            case Level.Master:
+            case Level.MASTER:
                 v = 8;
                 break;
             default:
@@ -2259,14 +2282,14 @@ class MontiVipera {
     GetEnduranceInterval() {
         let i = 20;
         switch (this.level) {
-            case Level.Easy:
+            case Level.EASY:
                 i = 20;
                 break;
-            case Level.Normal:
+            case Level.NORMAL:
                 i = 10;
                 break;
-            case Level.Hard:
-            case Level.Master:
+            case Level.HARD:
+            case Level.MASTER:
                 i = 5;
                 break;
             default:
@@ -2287,7 +2310,7 @@ class MontiVipera {
         }
         let inter = this.GetEnduranceInterval();
         let interval = inter * 1000;
-        if (this.level !== Level.Master) {
+        if (this.level !== Level.MASTER) {
             this.food = null;
         }
 
@@ -2304,7 +2327,7 @@ class MontiVipera {
             }
             for (const p of this.players) {
                 p.AddMass();
-                if (this.level !== Level.Master) {
+                if (this.level !== Level.MASTER) {
                     p.score++;
                 }
             }
@@ -2323,16 +2346,16 @@ class MontiVipera {
     GetChallengeInterval() {
         let i = 20;
         switch (this.level) {
-            case Level.Easy:
+            case Level.EASY:
                 i = 30;
                 break;
-            case Level.Normal:
+            case Level.NORMAL:
                 i = 20;
                 break;
-            case Level.Hard:
+            case Level.HARD:
                 i = 10;
                 break;
-            case Level.Master:
+            case Level.MASTER:
                 i = 5;
                 break;
             default:
@@ -2514,6 +2537,9 @@ class MontiVipera {
     UpdateSettings(s) {
         this.settings.update(s);
     }
+    playMusic() {
+        UIController.playSound();
+    }
 }
 
 Object.freeze(MontiVipera);const translateData ={
@@ -2559,4 +2585,4 @@ Object.freeze(MontiVipera);const translateData ={
 const Translator = Object.create(null);
 Translator.translate =()=>{
 
-}//Build Date : 2022-11-17T09:55+04:00
+}//Build Date : 2022-11-17T22:47+04:00

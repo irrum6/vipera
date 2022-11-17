@@ -68,6 +68,9 @@ class KeyBoardController extends ActionController {
                 //p pause Resume
                 game.ToggleResume();
                 break;
+            case "g":
+            case "G":
+                game.playMusic();
             default:
                 game.KeyEvent(key);
         }
