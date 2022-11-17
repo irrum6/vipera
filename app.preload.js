@@ -1,6 +1,14 @@
 class Enumer {
     #methods;
-    constructor(list) {
+    #values;
+    constructor() {
+        this.#values = {}
+        this.#methods = Object.create(null);
+    }
+    /**
+     * @param {[Iterable<String>]} list 
+     */
+    addOptions(list) {
         //list must be iterable
         if (!Array.isArray(list) || typeof list[Symbol.iterator] !== 'function') {
             throw "Enumer():Array must be passed";
@@ -9,21 +17,53 @@ class Enumer {
             if (typeof l !== "string") {
                 throw "Enumer():String was expected"
             }
-            this[l] = l;
+            this.#values[l] = l;
         }
-        this.#methods = Object.create(null);
+    }
+    close() {
         Object.freeze(this);
     }
+    /** 
+     * @param {String} prop 
+     * @returns 
+     */
+    v(prop) {
+        if (typeof prop !== "string" || prop === "") {
+            throw "not a property";
+        }
+        return this.#values[prop];
+    }
+    /**
+     * Creates getters for values found in this.#values
+     * Thus we can access them as enumObj.GELA instead if enumObj.#values.gela(error) or enumObj.getValue("gela"); 
+     */
+    makeGetters() {
+        for (const v in this.#values) {
+            Object.defineProperty(this, v.toUpperCase(), {
+                value: v,
+                writable: false
+            });
+        }
+    }
+
+    values(){
+        return this.#values;
+    }
+    //commented for now
+    // [Symbol.iterator]() {
+    //     return this.values[Symbol.iterator]();
+    // }
     /**
      * Check if value is valid enum property
      * @param {Value} v 
      */
     valid(v) {
+        debugger;
         if (typeof v !== "string") {
             return false;
         }
-        for (const l in this) {
-            if (v === this[l]) { return true; }
+        for (const l in this.#values) {
+            if (v === this.#values[l]) { return true; }
         }
         return false;
     }
@@ -2008,9 +2048,18 @@ Object.freeze(GameSettings);class PerformanceMonitor {
         this.resetCount();
     }
 }
-Object.freeze(PerformanceMonitor);const Modes = new Enumer(["Long", "Endurance", "Challenge"]);
-const Level = new Enumer(["Easy", "Normal", "Hard", "Master"]);
-const Languages = new Enumer(["English", "Georgian", "German"]);
+Object.freeze(PerformanceMonitor);const Modes = new Enumer();
+Modes.addOptions(["Long", "Endurance", "Challenge"]);
+Modes.makeGetters();
+Modes.close();
+const Level = new Enumer();
+Level.addOptions(["Easy", "Normal", "Hard", "Master"]);
+Modes.makeGetters();
+Level.close();
+const Languages = new Enumer();
+Languages.addOptions(["English", "Georgian", "German"]);
+Modes.makeGetters();
+Languages.close();
 
 class MontiVipera {
     // this timers
@@ -2030,7 +2079,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.10.2f";
+        this.#version = "0.10.3a";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2437,7 +2486,7 @@ class MontiVipera {
             this.GoFullScreen();
         }
     }
-    
+
     DisplayMultiControls() {
         UIController.DisplayMultiPlayerControls();
     }
@@ -2510,4 +2559,4 @@ Object.freeze(MontiVipera);const translateData ={
 const Translator = Object.create(null);
 Translator.translate =()=>{
 
-}//Build Date : 2022-11-15T23:35+04:00
+}//Build Date : 2022-11-17T09:53+04:00

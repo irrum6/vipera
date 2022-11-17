@@ -1,6 +1,15 @@
-const Modes = new Enumer(["Long", "Endurance", "Challenge"]);
-const Level = new Enumer(["Easy", "Normal", "Hard", "Master"]);
-const Languages = new Enumer(["English", "Georgian", "German"]);
+const Modes = new Enumer();
+Modes.addOptions(["Long", "Endurance", "Challenge"]);
+Modes.makeGetters();
+Modes.close();
+const Level = new Enumer();
+Level.addOptions(["Easy", "Normal", "Hard", "Master"]);
+Modes.makeGetters();
+Level.close();
+const Languages = new Enumer();
+Languages.addOptions(["English", "Georgian", "German"]);
+Modes.makeGetters();
+Languages.close();
 
 class MontiVipera {
     // this timers
@@ -20,7 +29,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.10.2f";
+        this.#version = "0.10.3a";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -427,7 +436,7 @@ class MontiVipera {
             this.GoFullScreen();
         }
     }
-    
+
     DisplayMultiControls() {
         UIController.DisplayMultiPlayerControls();
     }

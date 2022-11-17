@@ -10,7 +10,7 @@ canvas.height = style.height.replace("px", ""); //*0.95;
 
 context.imageSmoothingEnabled = true;
 
-const viperaGame = new MontiVipera(Modes["Long"], canvas, context);
+const viperaGame = new MontiVipera(Modes["LONG"], canvas, context);
 viperaGame.NewGame(1, null);
 
 viperaGame.alerted = false;
