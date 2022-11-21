@@ -1,4 +1,100 @@
-class Enumer {
+let en = {
+    // pcount
+    single: "",
+    two: "",
+    three: "",
+    four: "",
+    // dificulty
+    easy:"",
+    normal:"",
+    hard:"",
+    master:"",
+    score: "",
+    //dialog texts
+    welcome_text: `Welcome to Montivipera Redemption.
+    use arrow keys to navigate.
+    Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
+    'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
+    'g' to play music.`,
+    multi_text:""
+}
+
+//
+let ka = {
+    // pcount
+    single: "ერთი",
+    two: "ორი",
+    three: "სამი",
+    four: "ოთხი",
+    // dificulty
+    easy: "იოლი",
+    normal: "ჩვეულებრივი",
+    hard: "რთული",
+    master: "ოსტატი",
+    score: "ქულა",
+    //dialog texts
+    welcome_text: `
+        Montivipera Redemption.
+    მოძრაობისათვის გამოიყენეთთ ისრები
+    თამაშის დასაპაუზებლად დააჭირეთ P
+    თამაშის გასაგრძელებლად დააჭირეთ P თავიდან
+    სრულ ეკრანზე გასაშლელეად დააჭირეთ F.
+    დააჭირეთ M პარამეტრების ფანჯარის გამოსატანათ
+    დააჭირეთ N ახალი თამაშის მენიუს გასახსნელად
+    დააჭირეთ G მუსიკის მოსასმენად`,
+    multi_text: ""
+}
+
+// 
+let de = {
+    // pcount
+    single: "eins",
+    two: "zwei",
+    three: "drei",
+    four: "vier",
+    // dificulty
+    easy:"einfach",
+    normal:"normal",
+    hard:"Schwer",
+    master:"Master",
+    score: "",
+    //dialog texts
+    welcome_text: `Willkommen zum Montivipera Redemption.
+    P fur pause/fortsetzen
+    'f' fur ganzer Bildschirm.
+    'm' fur paramter fenster zeigen
+    'n' fur neue spiele fenster zeigen.
+    'g' fur music spielen.`,
+    multi_text:""
+}
+
+//
+let translatables = { ka, en, de }
+
+class Translator {
+    static getWord(lang, text) {
+        let short = Translator.getLangShort(lang);
+        return translatables[short][text];
+    }
+
+    static getLangShort(lang) {
+        if (!Languages.valid(lang)) {
+            return "en";
+        }
+        switch (lang) {
+            case Languages.ENGLISH:
+                return "en";
+            case Languages.DEUTSCH:
+                console.log(2);
+                return "de"
+            case Languages.GEORGIAN:
+                console.log(3);
+                return "ka"
+            default:
+                return "en";
+        }
+    }
+}class Enumer {
     #methods;
     #values;
     constructor() {
@@ -8,7 +104,7 @@ class Enumer {
     /**
      * @param {[Iterable<String>]} list 
      */
-    addOptions(list) {
+    #addOptions(list) {
         //list must be iterable
         if (!Array.isArray(list) || typeof list[Symbol.iterator] !== 'function') {
             throw "Enumer():Array must be passed";
@@ -37,7 +133,7 @@ class Enumer {
      * Creates getters for values found in this.#values
      * Thus we can access them as enumObj.GELA instead if enumObj.#values.gela(error) or enumObj.getValue("gela"); 
      */
-    makeGetters() {
+    #makeGetters() {
         for (const v in this.#values) {
             Object.defineProperty(this, v.toUpperCase(), {
                 value: v,
@@ -45,7 +141,28 @@ class Enumer {
             });
         }
     }
+    chain(list) {
+        this.#addOptions(list);
+        this.#makeGetters();
+        this.close();
+    }
 
+    chainWithName(objlist) {
+        if (!Array.isArray(list) || typeof list[Symbol.iterator] !== 'function') {
+            throw "Enumer():Array must be passed";
+        }
+        for (const objItem of objlist) {
+            let { name, value } = objItem;
+            if (!Utils.isFullString(name) || !Utils.isFullString(value)) {
+                throw "Enumer():String was expected"
+            }
+            Object.defineProperty(this, name, {
+                value,
+                writable: false
+            });
+        }
+        Object.freeze(this);
+    }
     /**
      * Check if value is valid enum property
      * @param {Value} v 
@@ -653,8 +770,15 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
     query(s) {
         return this.shadowRoot.querySelector(s);
     }
+    q(s) {
+        return this.query(s);
+    }
     #query_all(s) {
         return this.shadowRoot.querySelectorAll(s);
+    }
+    #getInput(name) {
+        let selector = `input[name=${name}]`;
+        return this.query(selector);
     }
     open(game) {
         if (game === null || game === undefined) {
@@ -718,12 +842,13 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
         let delta = this.query('input[name=delta_high]').checked;
         let deltaLow = this.query('input[name=delta_low]').checked;
         let timers = this.query('input[name=show_timers]').checked;
+        let lang = this.query('input[name=language]:checked').value;
         let boxes = this.#query_all('color-box.snake');
 
         for (let i = 0, len = game.players.length; i < len; i++) {
             game.players[i].color = boxes[i].GetValue();
         }
-        game.UpdateSettings({ fps, delta, deltaLow, timers });
+        game.UpdateSettings({ fps, delta, deltaLow, timers, lang });
         this.close(game);
     }
     close(game) {
@@ -1468,12 +1593,13 @@ class UIController {
     static Alert(msg) {
         PopX.OPEN(msg, msg);
     }
-    static DisplayWelcomeScreen() {
-        let text = `Welcome to Montivipera Redemption.
-            use arrow keys to navigate.
-            Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
-            'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
-            'g' to play music.`;
+    /**
+     * 
+     * @param {Vipera} game 
+     */
+    static DisplayWelcomeScreen(game) {
+        let {language} = game;
+        let text = Translator.getWord(language,"welcome_text");
 
         let title = "Welcome";
         PopX.OPEN(text, title);
@@ -2073,17 +2199,13 @@ Object.freeze(GameSettings);class PerformanceMonitor {
     }
 }
 Object.freeze(PerformanceMonitor);const Modes = new Enumer();
-Modes.addOptions(["Long", "Endurance", "Challenge"]);
-Modes.makeGetters();
-Modes.close();
+Modes.chain(["Long", "Endurance", "Challenge"]);
+
 const Level = new Enumer();
-Level.addOptions(["Easy", "Normal", "Hard", "Master"]);
-Level.makeGetters();
-Level.close();
+Level.chain(["Easy", "Normal", "Hard", "Master"]);
+
 const Languages = new Enumer();
-Languages.addOptions(["English", "Georgian", "German"]);
-Languages.makeGetters();
-Languages.close();
+Languages.chain(["English", "Georgian", "Deutsch"]);
 
 class MontiVipera {
     // this timers
@@ -2103,7 +2225,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.10.3a";
+        this.#version = "0.11.1";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2117,7 +2239,7 @@ class MontiVipera {
         this.SetMode(_mode);
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
-        this.#language = Languages.English;
+        this.#language = Languages.ENGLISH;
     }
     get version() {
         return this.#version;
@@ -2135,6 +2257,21 @@ class MontiVipera {
 
     get pNumber() {
         return this.#numberOfPlayers;
+    }
+
+    get language() {
+        return this.#language;
+    }
+
+    /**
+     * 
+     * @param {Languages} lang 
+     */
+    set language(lang) {
+        console.log(lang);
+        if (Languages.valid(lang)) {
+            this.#language = lang;
+        }
     }
 
     addPlayer(pl) {
@@ -2266,6 +2403,7 @@ class MontiVipera {
         }
         this.level = l;
     }
+
     Start() {
         //"r" key to start or resume game
     }
@@ -2514,7 +2652,7 @@ class MontiVipera {
         UIController.DisplayMultiPlayerControls();
     }
     DisplayControls() {
-        UIController.DisplayWelcomeScreen();
+        UIController.DisplayWelcomeScreen(this);
     }
     DisplayNewGameMenu() {
         NewGameDialog.OpenClose(this, false);
@@ -2536,6 +2674,7 @@ class MontiVipera {
     }
     UpdateSettings(s) {
         this.settings.update(s);
+        this.language = Languages[s.lang];
     }
     playMusic() {
         UIController.playSound();
@@ -2582,7 +2721,7 @@ Object.freeze(MontiVipera);const translateData ={
 
 }
 
-const Translator = Object.create(null);
-Translator.translate =()=>{
+// const Translator = Object.create(null);
+// Translator.translate =()=>{
 
-}//Build Date : 2022-11-17T22:47+04:00
+// }//Build Date : 2022-11-22T02:53+04:00

@@ -1,3 +1,6 @@
+dir="locales"
+cat $dir/en.js $dir/ka.js $dir/de.js $dir/translate.js > app.locale.js
+
 dir="lib"
 cat $dir/enumer.js $dir/utils.js  > app.lib.js
 
@@ -14,7 +17,7 @@ dir="game"
 cat $dir/player.js $dir/game_options.js $dir/gamesettings.js $dir/perfmon.js $dir/mvgame.js  $dir/translate.js > app.game.js
 
 rm app.preload.js
-cat app.lib.js app.templates.js app.entities.js app.controls.js  app.game.js > app.preload.js
+cat app.locale.js  app.lib.js app.templates.js app.entities.js app.controls.js  app.game.js  > app.preload.js
 printf "//Build Date : $(date -I'minutes')" >> app.preload.js
 
 rm app.lib.js app.templates.js app.entities.js app.controls.js  app.game.js

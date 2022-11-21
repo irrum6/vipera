@@ -38,7 +38,7 @@ const translateData ={
 
 }
 
-const Translator = Object.create(null);
-Translator.translate =()=>{
+// const Translator = Object.create(null);
+// Translator.translate =()=>{
 
-}
+// }

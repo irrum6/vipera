@@ -1,15 +1,11 @@
 const Modes = new Enumer();
-Modes.addOptions(["Long", "Endurance", "Challenge"]);
-Modes.makeGetters();
-Modes.close();
+Modes.chain(["Long", "Endurance", "Challenge"]);
+
 const Level = new Enumer();
-Level.addOptions(["Easy", "Normal", "Hard", "Master"]);
-Level.makeGetters();
-Level.close();
+Level.chain(["Easy", "Normal", "Hard", "Master"]);
+
 const Languages = new Enumer();
-Languages.addOptions(["English", "Georgian", "German"]);
-Languages.makeGetters();
-Languages.close();
+Languages.chain(["English", "Georgian", "Deutsch"]);
 
 class MontiVipera {
     // this timers
@@ -29,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.10.3a";
+        this.#version = "0.11.1";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -43,7 +39,7 @@ class MontiVipera {
         this.SetMode(_mode);
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
-        this.#language = Languages.English;
+        this.#language = Languages.ENGLISH;
     }
     get version() {
         return this.#version;
@@ -61,6 +57,21 @@ class MontiVipera {
 
     get pNumber() {
         return this.#numberOfPlayers;
+    }
+
+    get language() {
+        return this.#language;
+    }
+
+    /**
+     * 
+     * @param {Languages} lang 
+     */
+    set language(lang) {
+        console.log(lang);
+        if (Languages.valid(lang)) {
+            this.#language = lang;
+        }
     }
 
     addPlayer(pl) {
@@ -192,6 +203,7 @@ class MontiVipera {
         }
         this.level = l;
     }
+
     Start() {
         //"r" key to start or resume game
     }
@@ -440,7 +452,7 @@ class MontiVipera {
         UIController.DisplayMultiPlayerControls();
     }
     DisplayControls() {
-        UIController.DisplayWelcomeScreen();
+        UIController.DisplayWelcomeScreen(this);
     }
     DisplayNewGameMenu() {
         NewGameDialog.OpenClose(this, false);
@@ -462,6 +474,7 @@ class MontiVipera {
     }
     UpdateSettings(s) {
         this.settings.update(s);
+        this.language = Languages[s.lang];
     }
     playMusic() {
         UIController.playSound();
