@@ -73,6 +73,7 @@ let translatables = { ka, en, de }
 
 class Translator {
     static getWord(lang, text) {
+        debugger;
         let short = Translator.getLangShort(lang);
         return translatables[short][text];
     }
@@ -85,10 +86,10 @@ class Translator {
             case Languages.ENGLISH:
                 return "en";
             case Languages.DEUTSCH:
-                console.log(2);
+                // console.log(2);
                 return "de"
             case Languages.GEORGIAN:
-                console.log(3);
+                // console.log(3);
                 return "ka"
             default:
                 return "en";
@@ -675,7 +676,9 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
         });
         this.query('button.starter')[on]('click', this.startNewGame.bind(this, game), { once: false });
         this.query('input[name=disable_collision]')[on]('click', this.toggleRollOverState.bind(this), { once: false });
+        this.#translate(game);
         this.gamesetup = true;
+
     }
     toggleRollOverState() {
         const disableCollision = this.query('input[name=disable_collision]').checked;
@@ -692,6 +695,12 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
     }
     #getChecked(name) {
         return this.#getInputByName(name).checked;
+    }
+
+    #translate(game){
+        let {language} = game;
+        // do the translation
+        this.query(".player").translate(game);
     }
     startNewGame(game, e) {
         const unbounded = this.#getChecked("free_bound");
@@ -898,10 +907,35 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
         shadowRoot.appendChild(clone);
         this.SetupBoxes();
     }
+    /**
+     * 
+     * @param {String} s 
+     * @returns 
+     */
     Query(s) {
         return this.shadowRoot.querySelector(s);
     }
+    /**
+     * shorthand for Query
+     * @param {String} s 
+     * @returns 
+     */
+    q(s) {
+        return this.Query(s);
+    }
+    /**
+     * @param {String} s 
+     * @returns 
+     */
     QueryAll(s) {
+        return this.shadowRoot.querySelectorAll(s);
+    }
+    /**
+    * shorthand for QueryAll
+    * @param {String} s 
+    * @returns 
+    */
+    qa(s) {
         return this.shadowRoot.querySelectorAll(s);
     }
     ReadData() {
@@ -921,8 +955,7 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
 
         let span = this.Query("span");
         span.textContent = inputLabel;
-        span.setAttribute("data-app-translate", 1);
-        span.setAttribute("data-app-text", labelName);
+        span.setAttribute("app-text", labelName);
 
         names = names.split(";");
         values = values.split(";");
@@ -932,27 +965,54 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
             throw "some data is missing for component:RadioBox";
         }
         for (let i = 0, len = names.length; i < len; i++) {
-            this.MakeRadio(container, texts[i], names[i], values[i], inputName, i)
+            let params = {
+                text: texts[i],
+                name: names[i],
+                value: values[i],
+                inputName,
+                index: i
+            }
+            this.MakeRadio(container, params);
         }
         // if more than 4
         //then display 4 radio boxes and all boxes shown in menu 
         //add button for menu
         this.setAttribute("setup", "1");
     }
-    MakeRadio(c, _text, _name, _value, _input_name, index) {
+    translate(game) {
+        let { language } = game;
+        // do the translation
+        let spans = this.qa('label>span');
+        for (let i = 0, len = spans.length; i < len; i++) {
+            let span = spans[i];
+            let text = span.getAttribute("app-text");
+            let translatedText = Translator.getWord(language, text.toLowerCase());
+            span.textContent = translatedText;
+        }
+        // console.log(labels);
+    }
+    /**
+     * creates and appends radio element to container
+     * @param {HTMLElement} cont 
+     * @param {Object} params
+     */
+    MakeRadio(cont, params) {
+        let { text, name, value, inputName, index } = params;
+
         let label = document.createElement("label");
-        label.textContent = _text;
-        label.setAttribute("data-app-translate", 1);
-        label.setAttribute("data-app-text", _name);
         let radio = document.createElement("input");
+        let span = document.createElement("span");
+        span.setAttribute("app-text", name);
+        span.textContent = text;
         radio.type = "radio";
-        radio.name = _input_name;
-        radio.value = _value;
-        if (index==0){
+        radio.name = inputName;
+        radio.value = value;
+        if (index == 0) {
             radio.checked = true;
         }
+        label.appendChild(span);
         label.appendChild(radio);
-        c.appendChild(label);
+        cont.appendChild(label);
     }
     GetValue() {
         const c = this.Query("input[type=radio]:checked");
@@ -2225,7 +2285,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.11.1";
+        this.#version = "0.11.2";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2724,4 +2784,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2022-11-22T02:53+04:00
+// }//Build Date : 2022-11-22T23:54+04:00
