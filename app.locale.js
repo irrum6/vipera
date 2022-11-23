@@ -5,18 +5,23 @@ let en = {
     three: "",
     four: "",
     // dificulty
-    easy:"",
-    normal:"",
-    hard:"",
-    master:"",
-    score: "",
+    easy: "Easy",
+    normal: "Normal",
+    hard: "Hard",
+    master: "Master",
+    // mode
+    long: "Long",
+    endurance: "Endurance",
+    challenge: "Challenge",
+    //interface texts
+    score: "Score",
     //dialog texts
     welcome_text: `Welcome to Montivipera Redemption.
     use arrow keys to navigate.
     Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
     'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
     'g' to play music.`,
-    multi_text:""
+    multi_text: ""
 }
 
 //
@@ -31,7 +36,12 @@ let ka = {
     normal: "ჩვეულებრივი",
     hard: "რთული",
     master: "ოსტატი",
-    score: "ქულა",
+    // mode
+    long: "სრული",
+    endurance: "გამძლეობა",
+    challenge: "გამოწვევა",
+    //interface texts
+    score: "Scქულაore",
     //dialog texts
     welcome_text: `
         Montivipera Redemption.
@@ -57,7 +67,12 @@ let de = {
     normal:"normal",
     hard:"Schwer",
     master:"Master",
-    score: "",
+    // mode
+    long: "Lange",
+    endurance: "Ertragen",
+    challenge: "Herausforderung",
+    //interface texts
+    score: "Score",
     //dialog texts
     welcome_text: `Willkommen zum Montivipera Redemption.
     P fur pause/fortsetzen

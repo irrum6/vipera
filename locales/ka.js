@@ -9,7 +9,12 @@ let ka = {
     normal: "ჩვეულებრივი",
     hard: "რთული",
     master: "ოსტატი",
-    score: "ქულა",
+    // mode
+    long: "სრული",
+    endurance: "გამძლეობა",
+    challenge: "გამოწვევა",
+    //interface texts
+    score: "Scქულაore",
     //dialog texts
     welcome_text: `
         Montivipera Redemption.

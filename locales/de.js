@@ -9,7 +9,12 @@ let de = {
     normal:"normal",
     hard:"Schwer",
     master:"Master",
-    score: "",
+    // mode
+    long: "Lange",
+    endurance: "Ertragen",
+    challenge: "Herausforderung",
+    //interface texts
+    score: "Score",
     //dialog texts
     welcome_text: `Willkommen zum Montivipera Redemption.
     P fur pause/fortsetzen

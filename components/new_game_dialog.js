@@ -47,10 +47,12 @@ class NewGameDialog extends HTMLElement {
         return this.#getInputByName(name).checked;
     }
 
-    #translate(game){
-        let {language} = game;
+    #translate(game) {
+        let { language } = game;
         // do the translation
         this.query(".player").translate(game);
+        this.query(".moder").translate(game);
+        this.query(".leveler").translate(game);
     }
     startNewGame(game, e) {
         const unbounded = this.#getChecked("free_bound");

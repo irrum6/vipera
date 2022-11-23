@@ -5,18 +5,23 @@ let en = {
     three: "",
     four: "",
     // dificulty
-    easy:"",
-    normal:"",
-    hard:"",
-    master:"",
-    score: "",
+    easy: "Easy",
+    normal: "Normal",
+    hard: "Hard",
+    master: "Master",
+    // mode
+    long: "Long",
+    endurance: "Endurance",
+    challenge: "Challenge",
+    //interface texts
+    score: "Score",
     //dialog texts
     welcome_text: `Welcome to Montivipera Redemption.
     use arrow keys to navigate.
     Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
     'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
     'g' to play music.`,
-    multi_text:""
+    multi_text: ""
 }
 
 //
@@ -31,7 +36,12 @@ let ka = {
     normal: "ჩვეულებრივი",
     hard: "რთული",
     master: "ოსტატი",
-    score: "ქულა",
+    // mode
+    long: "სრული",
+    endurance: "გამძლეობა",
+    challenge: "გამოწვევა",
+    //interface texts
+    score: "Scქულაore",
     //dialog texts
     welcome_text: `
         Montivipera Redemption.
@@ -57,7 +67,12 @@ let de = {
     normal:"normal",
     hard:"Schwer",
     master:"Master",
-    score: "",
+    // mode
+    long: "Lange",
+    endurance: "Ertragen",
+    challenge: "Herausforderung",
+    //interface texts
+    score: "Score",
     //dialog texts
     welcome_text: `Willkommen zum Montivipera Redemption.
     P fur pause/fortsetzen
@@ -697,10 +712,12 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
         return this.#getInputByName(name).checked;
     }
 
-    #translate(game){
-        let {language} = game;
+    #translate(game) {
+        let { language } = game;
         // do the translation
         this.query(".player").translate(game);
+        this.query(".moder").translate(game);
+        this.query(".leveler").translate(game);
     }
     startNewGame(game, e) {
         const unbounded = this.#getChecked("free_bound");
@@ -2285,7 +2302,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.11.2";
+        this.#version = "0.11.3";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2784,4 +2801,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2022-11-22T23:54+04:00
+// }//Build Date : 2022-11-23T20:14+04:00
