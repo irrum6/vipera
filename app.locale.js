@@ -1,9 +1,9 @@
 let en = {
     // pcount
-    single: "",
-    two: "",
-    three: "",
-    four: "",
+    single: "Single",
+    two: "Two",
+    three: "Three",
+    four: "Four",
     // dificulty
     easy: "Easy",
     normal: "Normal",

@@ -1,9 +1,9 @@
 let en = {
     // pcount
-    single: "",
-    two: "",
-    three: "",
-    four: "",
+    single: "Single",
+    two: "Two",
+    three: "Three",
+    four: "Four",
     // dificulty
     easy: "Easy",
     normal: "Normal",
@@ -683,6 +683,7 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
         return this.shadowRoot.querySelector(s);
     }
     setup(game) {
+        this.#translate(game);
         if (this.gamesetup === true) {
             return;
         }
@@ -691,7 +692,6 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
         });
         this.query('button.starter')[on]('click', this.startNewGame.bind(this, game), { once: false });
         this.query('input[name=disable_collision]')[on]('click', this.toggleRollOverState.bind(this), { once: false });
-        this.#translate(game);
         this.gamesetup = true;
 
     }
@@ -713,7 +713,6 @@ customElements.define('pop-x', PopX);class NewGameDialog extends HTMLElement {
     }
 
     #translate(game) {
-        let { language } = game;
         // do the translation
         this.query(".player").translate(game);
         this.query(".moder").translate(game);
@@ -2302,7 +2301,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.11.3";
+        this.#version = "0.11.4";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2801,4 +2800,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2022-11-23T20:14+04:00
+// }//Build Date : 2022-11-23T20:33+04:00

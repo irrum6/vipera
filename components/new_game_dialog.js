@@ -18,6 +18,7 @@ class NewGameDialog extends HTMLElement {
         return this.shadowRoot.querySelector(s);
     }
     setup(game) {
+        this.#translate(game);
         if (this.gamesetup === true) {
             return;
         }
@@ -26,7 +27,6 @@ class NewGameDialog extends HTMLElement {
         });
         this.query('button.starter')[on]('click', this.startNewGame.bind(this, game), { once: false });
         this.query('input[name=disable_collision]')[on]('click', this.toggleRollOverState.bind(this), { once: false });
-        this.#translate(game);
         this.gamesetup = true;
 
     }
@@ -48,7 +48,6 @@ class NewGameDialog extends HTMLElement {
     }
 
     #translate(game) {
-        let { language } = game;
         // do the translation
         this.query(".player").translate(game);
         this.query(".moder").translate(game);
