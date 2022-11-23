@@ -2301,7 +2301,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.11.4";
+        this.#version = "0.11.5";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2344,7 +2344,7 @@ class MontiVipera {
      * @param {Languages} lang 
      */
     set language(lang) {
-        console.log(lang);
+        // console.log(lang);
         if (Languages.valid(lang)) {
             this.#language = lang;
         }
@@ -2800,4 +2800,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2022-11-23T20:33+04:00
+// }//Build Date : 2022-11-23T20:48+04:00
