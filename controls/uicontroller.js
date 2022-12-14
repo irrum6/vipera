@@ -85,8 +85,8 @@ class UIController {
      * @param {Vipera} game 
      */
     static DisplayWelcomeScreen(game) {
-        let {language} = game;
-        let text = Translator.getWord(language,"welcome_text");
+        let { language } = game;
+        let text = Translator.getWord(language, "welcome_text");
 
         let title = "Welcome";
         PopX.OPEN(text, title);
@@ -109,17 +109,18 @@ class UIController {
         PopX.OPEN(text, title, "OK");
     }
 
-    static onPlay = false;
     static playSound() {
-        if (UIController.onPlay) {
-            console.log(1);
+        let audios = all("audio");
+        let x = Math.random();
+
+        if (x > 0.5) {
+            audios[0].pause();
+            audios[1].play();
             return;
         }
-        let audio = query("audio");
-        audio.play();
-        UIController.onPlay = true;
-        audio[on]('ended', () => {
-            UIController.onPlay = false;
-        });
+
+        audios[1].pause();
+        audios[0].play();
+        return;
     }
 }

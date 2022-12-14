@@ -16,7 +16,7 @@
             border: none;
             padding:inherit;
         }
-        @media screen and (width<900){
+        @media screen and (max-width:900px){
             .display {
                 font-size: 1.25rem;
             }

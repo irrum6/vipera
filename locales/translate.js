@@ -2,7 +2,7 @@ let translatables = { ka, en, de }
 
 class Translator {
     static getWord(lang, text) {
-        debugger;
+        // debugger;
         let short = Translator.getLangShort(lang);
         return translatables[short][text];
     }

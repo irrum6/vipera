@@ -88,7 +88,7 @@ let translatables = { ka, en, de }
 
 class Translator {
     static getWord(lang, text) {
-        debugger;
+        // debugger;
         let short = Translator.getLangShort(lang);
         return translatables[short][text];
     }
@@ -409,7 +409,7 @@ Object.freeze(GWindow);{
             border: none;
             padding:inherit;
         }
-        @media screen and (width<900){
+        @media screen and (max-width:900px){
             .display {
                 font-size: 1.25rem;
             }
@@ -1674,8 +1674,8 @@ class UIController {
      * @param {Vipera} game 
      */
     static DisplayWelcomeScreen(game) {
-        let {language} = game;
-        let text = Translator.getWord(language,"welcome_text");
+        let { language } = game;
+        let text = Translator.getWord(language, "welcome_text");
 
         let title = "Welcome";
         PopX.OPEN(text, title);
@@ -1698,18 +1698,19 @@ class UIController {
         PopX.OPEN(text, title, "OK");
     }
 
-    static onPlay = false;
     static playSound() {
-        if (UIController.onPlay) {
-            console.log(1);
+        let audios = all("audio");
+        let x = Math.random();
+
+        if (x > 0.5) {
+            audios[0].pause();
+            audios[1].play();
             return;
         }
-        let audio = query("audio");
-        audio.play();
-        UIController.onPlay = true;
-        audio[on]('ended', () => {
-            UIController.onPlay = false;
-        });
+
+        audios[1].pause();
+        audios[0].play();
+        return;
     }
 }const Directions = {
     Left: 1,
@@ -2301,7 +2302,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.11.5";
+        this.#version = "0.11.6";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2800,4 +2801,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2022-11-23T20:48+04:00
+// }//Build Date : 2022-12-14T22:03+04:00
