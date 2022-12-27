@@ -15,10 +15,8 @@ class Translator {
             case Languages.ENGLISH:
                 return "en";
             case Languages.DEUTSCH:
-                // console.log(2);
                 return "de"
             case Languages.GEORGIAN:
-                // console.log(3);
                 return "ka"
             default:
                 return "en";

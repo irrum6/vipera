@@ -25,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.1";
+        this.#version = "0.12.2";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -68,7 +68,6 @@ class MontiVipera {
      * @param {Languages} lang 
      */
     set language(lang) {
-        // console.log(lang);
         if (Languages.valid(lang)) {
             this.#language = lang;
         }
@@ -96,7 +95,7 @@ class MontiVipera {
 
         this.ClearTimers();
         this.resetPlayers();
-        console.log(typeof n);
+
         this.#numberOfPlayers = Number(n);
 
         let x = this.canvas.width / 2;

@@ -36,7 +36,6 @@ class Vipera {
         let y = last.y;
         this.positions.push({ x, y });
         this.mass++;
-        // console.log("mass gained");
     }
     Shrink(m) {
         // debugger;

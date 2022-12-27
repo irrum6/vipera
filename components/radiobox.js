@@ -96,8 +96,7 @@ class RadioBox extends HTMLElement {
             let text = span.getAttribute("app-text");
             let translatedText = Translator.getWord(language, text.toLowerCase());
             span.textContent = translatedText;
-        }
-        // console.log(labels);
+        }       
     }
     /**
      * creates and appends radio element to container

@@ -36,8 +36,7 @@ class PopX extends GWindow {
      */
     #insertContent(text) {
         let split = text.split("\n");
-
-        console.log(split.length);
+        
         let stringsArray = [];
 
         let max = split[0].length;

@@ -100,7 +100,7 @@ class SmallDisplay extends HTMLElement {
         elem.style.boxShadow = boxShadow;
 
         let hide = this.getAttribute("hide");
-        console.log("1" === hide, this.id);
+
         if ("1" === hide) {
             this.hide();
         }

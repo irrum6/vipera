@@ -104,10 +104,8 @@ class Translator {
             case Languages.ENGLISH:
                 return "en";
             case Languages.DEUTSCH:
-                // console.log(2);
                 return "de"
             case Languages.GEORGIAN:
-                // console.log(3);
                 return "ka"
             default:
                 return "en";
@@ -496,7 +494,7 @@ class SmallDisplay extends HTMLElement {
         elem.style.boxShadow = boxShadow;
 
         let hide = this.getAttribute("hide");
-        console.log("1" === hide, this.id);
+
         if ("1" === hide) {
             this.hide();
         }
@@ -563,8 +561,7 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
      */
     #insertContent(text) {
         let split = text.split("\n");
-
-        console.log(split.length);
+        
         let stringsArray = [];
 
         let max = split[0].length;
@@ -1007,8 +1004,7 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
             let text = span.getAttribute("app-text");
             let translatedText = Translator.getWord(language, text.toLowerCase());
             span.textContent = translatedText;
-        }
-        // console.log(labels);
+        }       
     }
     /**
      * creates and appends radio element to container
@@ -1181,7 +1177,6 @@ Object.freeze(ColorBox);class Vipera {
         let y = last.y;
         this.positions.push({ x, y });
         this.mass++;
-        // console.log("mass gained");
     }
     Shrink(m) {
         // debugger;
@@ -1335,8 +1330,7 @@ class KeyBoardController extends ActionController {
     }
     OnKeyDown(game, e) {
         //debugger;
-        let { key, code } = e;
-        // console.log(e);
+        let { key, code } = e;        
 
         code = code.replace("Key", "");
 
@@ -1417,7 +1411,6 @@ class OnScreenControls extends ActionController {
     OnScreenEvent(game, e) {
         // debugger;
         let key = e.target.getAttribute("data-app-action");
-        console.log(key);
         switch (key) {
             case "fullscreen":
             case "Fullscreen":
@@ -2325,7 +2318,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.1";
+        this.#version = "0.12.2";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2368,7 +2361,6 @@ class MontiVipera {
      * @param {Languages} lang 
      */
     set language(lang) {
-        // console.log(lang);
         if (Languages.valid(lang)) {
             this.#language = lang;
         }
@@ -2396,7 +2388,7 @@ class MontiVipera {
 
         this.ClearTimers();
         this.resetPlayers();
-        console.log(typeof n);
+
         this.#numberOfPlayers = Number(n);
 
         let x = this.canvas.width / 2;
@@ -2827,4 +2819,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2022-12-27T22:05+04:00
+// }//Build Date : 2022-12-27T22:09+04:00

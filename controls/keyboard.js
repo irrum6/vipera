@@ -24,8 +24,7 @@ class KeyBoardController extends ActionController {
     }
     OnKeyDown(game, e) {
         //debugger;
-        let { key, code } = e;
-        // console.log(e);
+        let { key, code } = e;        
 
         code = code.replace("Key", "");
 
@@ -106,7 +105,6 @@ class OnScreenControls extends ActionController {
     OnScreenEvent(game, e) {
         // debugger;
         let key = e.target.getAttribute("data-app-action");
-        console.log(key);
         switch (key) {
             case "fullscreen":
             case "Fullscreen":

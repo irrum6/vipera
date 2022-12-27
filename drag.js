@@ -8,7 +8,6 @@
     }, false);
 
     document.addEventListener("dragstart", function (event) {
-        console.log(1);
         if (event.target instanceof GWindow) {
             dragged = event.target;
         }
