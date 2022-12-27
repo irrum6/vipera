@@ -21,7 +21,8 @@ let de = {
     'f' fur ganzer Bildschirm.
     'm' fur paramter fenster zeigen
     'n' fur neue spiele fenster zeigen.
-    'g' fur music spielen.`,
+    'g' fur music spielen/pausen.
+    't' fur shuffle`,
     multi_text:""
 }
 

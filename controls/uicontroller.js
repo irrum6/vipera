@@ -109,7 +109,22 @@ class UIController {
         PopX.OPEN(text, title, "OK");
     }
 
+    static onAir = false;
     static playSound() {
+        let audios = all("audio");
+
+        if (this.onAir) {
+            audios[0].pause();
+            audios[1].pause();
+            this.onAir = false;
+            return;
+        }
+
+        this.shuffleSound();
+        this.onAir = true;
+    }
+
+    static shuffleSound() {
         let audios = all("audio");
         let x = Math.random();
 

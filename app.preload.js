@@ -20,7 +20,8 @@ let en = {
     use arrow keys to navigate.
     Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
     'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
-    'g' to play music.`,
+    'g' to play/pause music.
+    't' to shuffle`,    
     multi_text: ""
 }
 
@@ -51,7 +52,8 @@ let ka = {
     სრულ ეკრანზე გასაშლელეად დააჭირეთ F.
     დააჭირეთ M პარამეტრების ფანჯარის გამოსატანათ
     დააჭირეთ N ახალი თამაშის მენიუს გასახსნელად
-    დააჭირეთ G მუსიკის მოსასმენად`,
+    დააჭირეთ G მუსიკის მოსასმენად ან დასაპაუზებლად.
+    დააჭირეთ T მუსიკის გადასართავად`,
     multi_text: ""
 }
 
@@ -79,7 +81,8 @@ let de = {
     'f' fur ganzer Bildschirm.
     'm' fur paramter fenster zeigen
     'n' fur neue spiele fenster zeigen.
-    'g' fur music spielen.`,
+    'g' fur music spielen/pausen.
+    't' fur shuffle`,
     multi_text:""
 }
 
@@ -1379,6 +1382,11 @@ class KeyBoardController extends ActionController {
             case "g":
             case "G":
                 game.playMusic();
+                break
+            case "t":
+            case "T":
+                game.shuffle();
+                break
             default:
                 game.KeyEvent(key);
         }
@@ -1698,7 +1706,22 @@ class UIController {
         PopX.OPEN(text, title, "OK");
     }
 
+    static onAir = false;
     static playSound() {
+        let audios = all("audio");
+
+        if (this.onAir) {
+            audios[0].pause();
+            audios[1].pause();
+            this.onAir = false;
+            return;
+        }
+
+        this.shuffleSound();
+        this.onAir = true;
+    }
+
+    static shuffleSound() {
         let audios = all("audio");
         let x = Math.random();
 
@@ -2302,7 +2325,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.11.6";
+        this.#version = "0.12.1";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2756,6 +2779,9 @@ class MontiVipera {
     playMusic() {
         UIController.playSound();
     }
+    shuffle() {
+        UIController.shuffleSound();
+    }
 }
 
 Object.freeze(MontiVipera);const translateData ={
@@ -2801,4 +2827,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2022-12-14T22:03+04:00
+// }//Build Date : 2022-12-27T22:05+04:00

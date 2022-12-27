@@ -71,6 +71,11 @@ class KeyBoardController extends ActionController {
             case "g":
             case "G":
                 game.playMusic();
+                break
+            case "t":
+            case "T":
+                game.shuffle();
+                break
             default:
                 game.KeyEvent(key);
         }

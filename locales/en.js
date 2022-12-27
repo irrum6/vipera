@@ -20,7 +20,8 @@ let en = {
     use arrow keys to navigate.
     Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
     'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
-    'g' to play music.`,
+    'g' to play/pause music.
+    't' to shuffle`,    
     multi_text: ""
 }
 

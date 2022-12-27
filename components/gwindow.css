@@ -19,6 +19,7 @@ div.close {
 }
 
 div.close>button {
+  height: calc(100% - 4px);
   padding: 0;
   padding-right: 0.5rem;
   padding-left: 0.5rem;

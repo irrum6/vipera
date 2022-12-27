@@ -20,7 +20,8 @@ let en = {
     use arrow keys to navigate.
     Press 'p' to pause game, again 'p' to resume, 'f' to fullscreen.
     'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
-    'g' to play music.`,
+    'g' to play/pause music.
+    't' to shuffle`,    
     multi_text: ""
 }
 
@@ -51,7 +52,8 @@ let ka = {
     სრულ ეკრანზე გასაშლელეად დააჭირეთ F.
     დააჭირეთ M პარამეტრების ფანჯარის გამოსატანათ
     დააჭირეთ N ახალი თამაშის მენიუს გასახსნელად
-    დააჭირეთ G მუსიკის მოსასმენად`,
+    დააჭირეთ G მუსიკის მოსასმენად ან დასაპაუზებლად.
+    დააჭირეთ T მუსიკის გადასართავად`,
     multi_text: ""
 }
 
@@ -79,7 +81,8 @@ let de = {
     'f' fur ganzer Bildschirm.
     'm' fur paramter fenster zeigen
     'n' fur neue spiele fenster zeigen.
-    'g' fur music spielen.`,
+    'g' fur music spielen/pausen.
+    't' fur shuffle`,
     multi_text:""
 }
 
