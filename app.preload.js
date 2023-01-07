@@ -158,12 +158,17 @@ class Translator {
             });
         }
     }
+    /**
+     * @param {[Iterable<String>]} list 
+     */
     chain(list) {
         this.#addOptions(list);
         this.#makeGetters();
         this.close();
     }
-
+    /**
+     * @param {[Iterable<Object>]} objlist 
+     */
     chainWithName(objlist) {
         if (!Array.isArray(list) || typeof list[Symbol.iterator] !== 'function') {
             throw "Enumer():Array must be passed";
@@ -182,7 +187,7 @@ class Translator {
     }
     /**
      * Check if value is valid enum property
-     * @param {Value} v 
+     * @param {any} v 
      */
     valid(v) {
         // debugger;
@@ -2318,7 +2323,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.2";
+        this.#version = "0.12.3";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2819,4 +2824,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2022-12-27T22:09+04:00
+// }//Build Date : 2023-01-07T14:38+04:00
