@@ -25,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.3";
+        this.#version = "0.12.4";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -446,7 +446,13 @@ class MontiVipera {
             this.GoFullScreen();
         }
     }
-
+    Help(){
+        if(this.#numberOfPlayers>1){
+            this.DisplayMultiControls();
+            return;
+        }
+        this.DisplayControls();
+    }
     DisplayMultiControls() {
         UIController.DisplayMultiPlayerControls();
     }

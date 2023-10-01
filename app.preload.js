@@ -1335,7 +1335,7 @@ class KeyBoardController extends ActionController {
     }
     OnKeyDown(game, e) {
         //debugger;
-        let { key, code } = e;        
+        let { key, code } = e;
 
         code = code.replace("Key", "");
 
@@ -1429,6 +1429,9 @@ class OnScreenControls extends ActionController {
                 break;
             case "settings":
                 game.DisplayMenu();
+                break;
+            case "help":
+                game.Help();
                 break;
             default:
                 game.KeyEvent(key);
@@ -2323,7 +2326,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.3";
+        this.#version = "0.12.4";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2744,7 +2747,13 @@ class MontiVipera {
             this.GoFullScreen();
         }
     }
-
+    Help(){
+        if(this.#numberOfPlayers>1){
+            this.DisplayMultiControls();
+            return;
+        }
+        this.DisplayControls();
+    }
     DisplayMultiControls() {
         UIController.DisplayMultiPlayerControls();
     }
@@ -2824,4 +2833,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-01-07T14:38+04:00
+// }//Build Date : 2023-10-01T11:22+04:00

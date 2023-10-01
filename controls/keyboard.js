@@ -24,7 +24,7 @@ class KeyBoardController extends ActionController {
     }
     OnKeyDown(game, e) {
         //debugger;
-        let { key, code } = e;        
+        let { key, code } = e;
 
         code = code.replace("Key", "");
 
@@ -118,6 +118,9 @@ class OnScreenControls extends ActionController {
                 break;
             case "settings":
                 game.DisplayMenu();
+                break;
+            case "help":
+                game.Help();
                 break;
             default:
                 game.KeyEvent(key);
