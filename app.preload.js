@@ -673,8 +673,8 @@ customElements.define('pop-x', PopX);class FramelessPop extends GWindow {
     #initialHeight;
     constructor() {
         super();
-        this.#initialWidth = 360;
-        this.#initialHeight = 180;
+        this.#initialWidth = 450;
+        this.#initialHeight = 150;
         this.#sizeUp();
         this.#purge();
 
@@ -1857,13 +1857,13 @@ class UIController {
             audios[0].pause();
             audios[1].play();
             // debugger
-            FramelessPop.OPEN(audios[1].src, 3000);
+            FramelessPop.OPEN(audios[1].src, 4000);
             return;
         }
 
         audios[1].pause();
         audios[0].play();
-        FramelessPop.OPEN(audios[0].src, 3000);
+        FramelessPop.OPEN(audios[0].src, 4000);
         return;
     }
 }const Directions = {
@@ -2456,7 +2456,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.5";
+        this.#version = "0.12.6";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2963,4 +2963,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-04T22:20+04:00
+// }//Build Date : 2023-10-04T22:31+04:00

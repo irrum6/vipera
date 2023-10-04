@@ -3,8 +3,8 @@ class FramelessPop extends GWindow {
     #initialHeight;
     constructor() {
         super();
-        this.#initialWidth = 360;
-        this.#initialHeight = 180;
+        this.#initialWidth = 450;
+        this.#initialHeight = 150;
         this.#sizeUp();
         this.#purge();
 

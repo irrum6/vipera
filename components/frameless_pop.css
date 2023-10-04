@@ -23,7 +23,7 @@ div.buttons {
 
 /* pop-alert */
 div.content {
-    font-size: 1.5rem;
+    font-size: 1.375rem;
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto;
@@ -35,4 +35,22 @@ div.content {
     white-space: normal;
     background-color: transparent;
     border: 0;
+    animation-name: boostsize;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes boostsize {
+    0%{
+        font-size: 1.375rem;
+    }
+    25%{
+        font-size: 1.5rem;
+    }
+    75%{
+        font-size: 1.375rem;
+    }
+    100%{
+        font-size: 1.375rem;
+    }
 }
