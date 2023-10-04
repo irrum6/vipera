@@ -57,6 +57,45 @@ div.box.h95 {
     border: 0;
 }
 
+#settings:hover {    
+    animation-name: spinme;
+    animation-fill-mode: forwards;
+    animation-duration: 4s;
+    animation-delay: 5s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-timing-function: alter;
+    
+}
+
+@keyframes spinme {
+    /* 0% {
+        rotate: z 0deg;
+    }
+
+    25% {
+        rotate: z 180deg;
+    }
+
+    50% {
+        rotate: z 180deg;
+    }
+
+    75% {
+        rotate: z 360deg;
+    }
+
+    100% {
+        rotate: z 360deg;
+    } */
+    0%{
+        rotate: z 0deg;
+    }
+    100% {
+        rotate: z 360deg;
+    }
+}
+
 #help {
     width: 125px;
     height: 100px;
