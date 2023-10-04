@@ -5,7 +5,7 @@ dir="lib"
 cat $dir/enumer.js $dir/utils.js  > app.lib.js
 
 dir="components"
-cat $dir/gwindow.js $dir/small_display.js $dir/pop.js $dir/new_game_dialog.js $dir/dialog.js $dir/radiobox.js $dir/colorbox.js > app.templates.js
+cat $dir/gwindow.js $dir/small_display.js $dir/pop.js $dir/frameless_pop.js $dir/new_game_dialog.js $dir/dialog.js $dir/radiobox.js $dir/colorbox.js > app.templates.js
 
 dir="entities"
 cat $dir/vipera.js $dir/food.js > app.entities.js

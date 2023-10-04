@@ -131,11 +131,14 @@ class UIController {
         if (x > 0.5) {
             audios[0].pause();
             audios[1].play();
+            // debugger
+            FramelessPop.OPEN(audios[1].src, 3000);
             return;
         }
 
         audios[1].pause();
         audios[0].play();
+        FramelessPop.OPEN(audios[0].src, 3000);
         return;
     }
 }
