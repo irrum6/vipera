@@ -2,16 +2,16 @@
     position: absolute;
     top: 50px;
     left: 100px;
-    width: 332px;
-    height: 288px;    
-    background: url("../bonus/img/ladybeetle32_96.png") left center;
+    width: 330px;
+    height: 287px;    
+    background: url("../bonus/img/ladybeetle32_961.png") left center;
     /*  */
     animation: dance 1s steps(2) infinite;
 }
 
 @keyframes dance {
     0% {
-        background-position: -665px;
+        background-position: -660px;
     }
 
     100% {

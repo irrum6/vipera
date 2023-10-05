@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="174.51564mm"
-   height="76.123642mm"
-   viewBox="0 0 87.147998 76.123642"
+   width="174.51562mm"
+   height="76.071671mm"
+   viewBox="0 0 87.14799 76.071671"
    version="1.1"
    id="SVGRoot"
    sodipodi:docname="ladybeetle32.svg"
@@ -28,15 +28,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.8284272"
-     inkscape:cx="159.80613"
-     inkscape:cy="123.39013"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="278.60006"
+     inkscape:cy="83.438598"
      inkscape:window-width="1844"
      inkscape:window-height="1011"
      inkscape:window-x="1996"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
-     inkscape:current-layer="body" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs176">
     <linearGradient
@@ -202,12 +202,12 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-58.38613,-51.208731)">
+     transform="translate(-58.01458,-51.208731)">
     <path
        style="fill:#44aaff;fill-opacity:1;stroke:none;stroke-width:2.80001;stroke-dasharray:none;stroke-opacity:1"
        id="path6503"
        sodipodi:type="arc"
-       sodipodi:cx="66.220001"
+       sodipodi:cx="65.6"
        sodipodi:cy="115.2804"
        sodipodi:rx="36"
        sodipodi:ry="12"
@@ -218,7 +218,7 @@
        sodipodi:open="true" />
     <g
        id="g3199"
-       transform="translate(-43.745877,-0.01312825)">
+       transform="translate(-43.745877,-0.0)">
       <g
          id="head">
         <path
@@ -320,13 +320,13 @@
        id="path6503-2"
        sodipodi:type="arc"
        sodipodi:cx="152.84639"
-       sodipodi:cy="115.33237"
+       sodipodi:cy="115.2804"
        sodipodi:rx="36"
        sodipodi:ry="12"
        sodipodi:start="4.7144406"
        sodipodi:end="4.7060315"
        sodipodi:arc-type="arc"
-       d="m 152.92025,103.33239 a 36,12 0 0 1 35.92614,11.99937 36,12 0 0 1 -35.92249,12.00058 36,12 0 0 1 -36.07718,-11.94891 36,12 0 0 1 35.7708,-12.05082"
+       d="m 152.92025,103.28043 a 36,12 0 0 1 35.92614,11.99937 36,12 0 0 1 -35.92249,12.00058 36,12 0 0 1 -36.07718,-11.94891 36,12 0 0 1 35.7708,-12.05082"
        sodipodi:open="true" />
     <g
        id="g3199-9"
