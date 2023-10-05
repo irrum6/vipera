@@ -1,0 +1,20 @@
+#lady {
+    position: absolute;
+    top: 50px;
+    left: 100px;
+    width: 332px;
+    height: 288px;    
+    background: url("../bonus/img/ladybeetle32_96.png") left center;
+    /*  */
+    animation: dance 1s steps(2) infinite;
+}
+
+@keyframes dance {
+    0% {
+        background-position: -665px;
+    }
+
+    100% {
+        background-position: 0px;
+    }
+}
