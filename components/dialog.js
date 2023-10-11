@@ -85,6 +85,9 @@ class SettingsDialog extends HTMLElement {
             boxes[i].SetValue(color);
         }
     }
+    /**     * 
+     * @param {MontiVipera} game 
+     */
     save(game) {
         let fps = this.query('input[name=fps]').checked;
         let delta = this.query('input[name=delta_high]').checked;
@@ -105,7 +108,10 @@ class SettingsDialog extends HTMLElement {
     }
     setDark() {
         document.body.classList.toggle('dark');
-
+        let displays = document.body.querySelectorAll('small-display');
+        for (let display of displays) {
+            display.toggleDark();
+        }
     }
     get isOpen() {
         return this.query(".dialog").style.visibility === 'visible';

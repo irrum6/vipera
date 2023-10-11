@@ -1,0 +1,23 @@
+.display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 5px;
+    padding: 0;
+    visibility: visible;
+}
+
+.display>span {
+    border: none;
+    padding: inherit;
+}
+
+@media screen and (max-width:900px) {
+    .display {
+        font-size: 1.25rem;
+    }
+}
+
+.display.dark {
+    color: white;
+}
+

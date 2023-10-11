@@ -1,28 +1,6 @@
 {
     let template = document.createElement('template');
     template.id = "small_display";
-    //define style
-    // t
-    let style = `
-    <style>
-        .display {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-right: 5px;
-            padding: 0;
-            visibility:visible;
-        }
-        .display>span {
-            border: none;
-            padding:inherit;
-        }
-        @media screen and (max-width:900px){
-            .display {
-                font-size: 1.25rem;
-            }
-        }
-    </style>
-    `;
     // define content
     let content = `
         <span class="display">
@@ -31,7 +9,7 @@
             <span class="value">999</span>
         </span>
     `;
-    template.innerHTML = `${style}${content}`;
+    template.innerHTML = `${content}`;
     document.body.appendChild(template);
 }
 class SmallDisplay extends HTMLElement {
@@ -40,7 +18,13 @@ class SmallDisplay extends HTMLElement {
         let template = document.getElementById("small_display");
         let templateContent = template.content;
         let clone = templateContent.cloneNode(true);
+
+        const stylee = document.createElement('link');
+        stylee.setAttribute('rel', 'stylesheet');
+        stylee.setAttribute('href', 'components/small_display.css');
+
         const shadowRoot = this.attachShadow({ mode: 'open' });
+        shadowRoot.appendChild(stylee);
         shadowRoot.appendChild(clone);
         this.processParameters();
         this.setDecorations();
@@ -49,11 +33,6 @@ class SmallDisplay extends HTMLElement {
 
     processParameters() {
         let elem = this.shadowRoot.querySelector(".value");
-        if (null === elem) {
-            SmallDisplay.PutContent();
-            // return;
-            elem = this.shadowRoot.querySelector(".value");
-        }
         //dtext="Score"
         //dvalue="999"
         let text = this.getAttribute("dtext");
@@ -125,6 +104,15 @@ class SmallDisplay extends HTMLElement {
             return;
         }
         this.show();
+    }
+    darkify() {
+        this.shadowRoot.querySelector(".display").classList.add("dark");
+    }
+    lighten() {
+        this.shadowRoot.querySelector(".display").classList.remove("dark");
+    }
+    toggleDark() {
+        this.shadowRoot.querySelector(".display").classList.toggle("dark");
     }
 }
 

@@ -400,28 +400,6 @@ customElements.define("gw-window", GWindow);
 Object.freeze(GWindow);{
     let template = document.createElement('template');
     template.id = "small_display";
-    //define style
-    // t
-    let style = `
-    <style>
-        .display {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-right: 5px;
-            padding: 0;
-            visibility:visible;
-        }
-        .display>span {
-            border: none;
-            padding:inherit;
-        }
-        @media screen and (max-width:900px){
-            .display {
-                font-size: 1.25rem;
-            }
-        }
-    </style>
-    `;
     // define content
     let content = `
         <span class="display">
@@ -430,7 +408,7 @@ Object.freeze(GWindow);{
             <span class="value">999</span>
         </span>
     `;
-    template.innerHTML = `${style}${content}`;
+    template.innerHTML = `${content}`;
     document.body.appendChild(template);
 }
 class SmallDisplay extends HTMLElement {
@@ -439,7 +417,13 @@ class SmallDisplay extends HTMLElement {
         let template = document.getElementById("small_display");
         let templateContent = template.content;
         let clone = templateContent.cloneNode(true);
+
+        const stylee = document.createElement('link');
+        stylee.setAttribute('rel', 'stylesheet');
+        stylee.setAttribute('href', 'components/small_display.css');
+
         const shadowRoot = this.attachShadow({ mode: 'open' });
+        shadowRoot.appendChild(stylee);
         shadowRoot.appendChild(clone);
         this.processParameters();
         this.setDecorations();
@@ -448,11 +432,6 @@ class SmallDisplay extends HTMLElement {
 
     processParameters() {
         let elem = this.shadowRoot.querySelector(".value");
-        if (null === elem) {
-            SmallDisplay.PutContent();
-            // return;
-            elem = this.shadowRoot.querySelector(".value");
-        }
         //dtext="Score"
         //dvalue="999"
         let text = this.getAttribute("dtext");
@@ -524,6 +503,15 @@ class SmallDisplay extends HTMLElement {
             return;
         }
         this.show();
+    }
+    darkify() {
+        this.shadowRoot.querySelector(".display").classList.add("dark");
+    }
+    lighten() {
+        this.shadowRoot.querySelector(".display").classList.remove("dark");
+    }
+    toggleDark() {
+        this.shadowRoot.querySelector(".display").classList.toggle("dark");
     }
 }
 
@@ -994,6 +982,9 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
             boxes[i].SetValue(color);
         }
     }
+    /**     * 
+     * @param {MontiVipera} game 
+     */
     save(game) {
         let fps = this.query('input[name=fps]').checked;
         let delta = this.query('input[name=delta_high]').checked;
@@ -1014,7 +1005,10 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
     }
     setDark() {
         document.body.classList.toggle('dark');
-
+        let displays = document.body.querySelectorAll('small-display');
+        for (let display of displays) {
+            display.toggleDark();
+        }
     }
     get isOpen() {
         return this.query(".dialog").style.visibility === 'visible';
@@ -2456,7 +2450,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.7";
+        this.#version = "0.12.8";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2963,4 +2957,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-05T20:04+04:00
+// }//Build Date : 2023-10-11T20:37+04:00
