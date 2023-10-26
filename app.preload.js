@@ -2957,4 +2957,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-11T20:37+04:00
+// }//Build Date : 2023-10-26T09:07+04:00

@@ -12,3 +12,11 @@ body {
     overflow-y: clip;
     background-color: grey;
 }
+
+div {
+    padding: 0 !important;
+}
+
+button {
+    outline: 0;
+}
