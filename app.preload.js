@@ -935,7 +935,7 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
 
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
-        stylee.setAttribute('href', 'styles/dialog.css');
+        stylee.setAttribute('href', 'components/settings_dialog.css');
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
@@ -2991,4 +2991,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-29T21:51+04:00
+// }//Build Date : 2023-10-29T22:11+04:00
