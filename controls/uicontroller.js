@@ -78,7 +78,7 @@ class UIController {
         time.updateValue(String(game.time));
     }
     static Alert(msg) {
-        PopX.OPEN(msg, msg);
+        PopX.OPEN(msg, msg, "OK", 30, { w: 240, h: 180 });
     }
     /**
      * 

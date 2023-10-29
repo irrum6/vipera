@@ -563,7 +563,7 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
      */
     #insertContent(text) {
         let split = text.split("\n");
-        
+
         let stringsArray = [];
 
         let max = split[0].length;
@@ -646,15 +646,21 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
      * @param {String} text 
      * @param {String} title 
      * @param {String} okText 
-     * @param {Number} fade 
+     * @param {Number} fade
+     * @param {Object} opts
+     * fade must be an integer and to be specified in seconds 
      */
-    static OPEN(text, title, okText, fade) {
-        // debugger;
+    static OPEN(text, title, okText, fade, opts) {
         const pop = document.body.querySelector('pop-x');
         pop.text = text;
         pop.okText = okText;
         if (Utils.isFullString(title)) {
             pop.title = title;
+        }
+
+        if (typeof opts === "object" && opts.w && opts.h) {
+            pop.setWidth(opts.w);
+            pop.setHeight(opts.h);
         }
         pop.show();
 
@@ -1806,7 +1812,7 @@ class UIController {
         time.updateValue(String(game.time));
     }
     static Alert(msg) {
-        PopX.OPEN(msg, msg);
+        PopX.OPEN(msg, msg, "OK", 30, { w: 240, h: 180 });
     }
     /**
      * 
@@ -2970,4 +2976,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-29T16:02+04:00
+// }//Build Date : 2023-10-29T17:01+04:00

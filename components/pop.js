@@ -36,7 +36,7 @@ class PopX extends GWindow {
      */
     #insertContent(text) {
         let split = text.split("\n");
-        
+
         let stringsArray = [];
 
         let max = split[0].length;
@@ -119,15 +119,21 @@ class PopX extends GWindow {
      * @param {String} text 
      * @param {String} title 
      * @param {String} okText 
-     * @param {Number} fade 
+     * @param {Number} fade
+     * @param {Object} opts
+     * fade must be an integer and to be specified in seconds 
      */
-    static OPEN(text, title, okText, fade) {
-        // debugger;
+    static OPEN(text, title, okText, fade, opts) {
         const pop = document.body.querySelector('pop-x');
         pop.text = text;
         pop.okText = okText;
         if (Utils.isFullString(title)) {
             pop.title = title;
+        }
+
+        if (typeof opts === "object" && opts.w && opts.h) {
+            pop.setWidth(opts.w);
+            pop.setHeight(opts.h);
         }
         pop.show();
 
