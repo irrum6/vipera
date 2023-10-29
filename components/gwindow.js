@@ -14,6 +14,12 @@ class GWindow extends HTMLElement {
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
+
+        const style2 = document.createElement('link');
+        style2.setAttribute('rel', 'stylesheet');
+        style2.setAttribute('href', 'styles/colors.css');
+        shadowRoot.appendChild(style2);
+
         shadowRoot.appendChild(clone);
         this.#name = "gwindow";
         this.#setup();

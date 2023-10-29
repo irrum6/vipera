@@ -1,0 +1,20 @@
+/* color classes */
+.bg-red {
+    background-color: #b04080;
+}
+
+.bg-green {
+    background-color: #80b040;
+}
+
+.bg-blue {
+    background-color: #4080b0;
+}
+
+.bg-cyber-teal {
+    background-color: #207780;
+}
+
+.bg-blend {
+    background-color: transparent;
+}
