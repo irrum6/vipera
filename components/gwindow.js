@@ -23,12 +23,11 @@ class GWindow extends HTMLElement {
         shadowRoot.appendChild(clone);
         this.#name = "gwindow";
         this.#setup();
-
     }
     static insert_HTML() {
         let template_string = `
         <div class="gwindow" draggable="true" ondragstart="">
-            <div class="close">
+            <div class="gwindow-top">
                 <span class="title"></span>
                 <button class="btn-close-no bg-cyber-teal">&#x25cf;</button>
                 <button class="btn-close-yes bg-red">&#x2715;</button>

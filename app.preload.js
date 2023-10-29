@@ -283,12 +283,11 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
         shadowRoot.appendChild(clone);
         this.#name = "gwindow";
         this.#setup();
-
     }
     static insert_HTML() {
         let template_string = `
         <div class="gwindow" draggable="true" ondragstart="">
-            <div class="close">
+            <div class="gwindow-top">
                 <span class="title"></span>
                 <button class="btn-close-no bg-cyber-teal">&#x25cf;</button>
                 <button class="btn-close-yes bg-red">&#x2715;</button>
@@ -712,8 +711,8 @@ customElements.define('pop-x', PopX);class FramelessPop extends GWindow {
         super.setWidth(this.#initialWidth);
         super.setHeight(this.#initialHeight);
     }
-    #purge(){
-        this.#query("div.close").innerHTML="";
+    #purge() {
+        this.#query(".gwindow-top").innerHTML = "";
     }
 
     /**
@@ -2992,4 +2991,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-29T21:39+04:00
+// }//Build Date : 2023-10-29T21:51+04:00

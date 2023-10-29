@@ -1,4 +1,4 @@
-div.gwindow {
+.gwindow {
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: 5px auto 30px;
@@ -9,20 +9,20 @@ div.gwindow {
     border: 0;
 }
 
-div.close {
-    display: block;
-    background-color: transparent;
-    border: 0;
-}
-div.buttons {
+.gwindow-top {
     display: block;
     background-color: transparent;
     border: 0;
 }
 
+.buttons {
+    display: block;
+    background-color: transparent;
+    border: 0;
+}
 
 /* pop-alert */
-div.content {
+.content {
     font-size: 1.375rem;
     display: grid;
     grid-template-columns: auto;
@@ -41,16 +41,19 @@ div.content {
 }
 
 @keyframes boostsize {
-    0%{
+    0% {
         font-size: 1.375rem;
     }
-    25%{
+
+    25% {
         font-size: 1.5rem;
     }
-    75%{
+
+    75% {
         font-size: 1.375rem;
     }
-    100%{
+
+    100% {
         font-size: 1.375rem;
     }
 }

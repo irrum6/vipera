@@ -1,4 +1,4 @@
-div.gwindow {
+.gwindow {
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: 40px auto 60px;
@@ -11,14 +11,14 @@ div.gwindow {
 }
 
 /* first row upper window controls */
-div.close {
+.gwindow-top {
   display: grid;
   grid-template-columns: auto 40px;
   grid-template-rows: auto;
   border-radius: 12px;
 }
 
-div.close>button {
+.gwindow-top>button {
   height: calc(100% - 4px);
   padding: 0;
   padding-right: 0.5rem;
@@ -31,18 +31,18 @@ div.close>button {
   cursor: pointer;
 }
 
-div.close>span.title {
+.gwindow-top>span.title {
   padding: 0.5rem;
   font-size: 1.5rem;
 }
 
 /* middle row - content */
-div.content {
+.content {
   background-color: #466;
 }
 
 /* thrid row - bottom buttons */
-div.buttons {
+.buttons {
   background-color: #466;
   display: flex;
   justify-content: center;
@@ -51,7 +51,7 @@ div.buttons {
   border-radius: 12px;
 }
 
-div.buttons>button {
+.buttons>button {
   padding: 0.5rem;
   padding-right: 0.75rem;
   padding-left: 0.75rem;

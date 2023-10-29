@@ -1,5 +1,5 @@
 /* pop-alert */
-div.content {
+.content {
     font-size: 1rem;
     display: grid;
     grid-template-columns: auto;
@@ -12,13 +12,13 @@ div.content {
     white-space: normal;
 }
 
-div.content>p {
+.content>p {
     padding-left: 0.75rem;
     white-space: normal;
     margin: 4px;
 }
 
-div.buttons>button {
+.buttons>button {
     padding: 0.5rem;
     padding-left: 1.25rem;
     padding-right: 1.25rem;

@@ -23,8 +23,8 @@ class FramelessPop extends GWindow {
         super.setWidth(this.#initialWidth);
         super.setHeight(this.#initialHeight);
     }
-    #purge(){
-        this.#query("div.close").innerHTML="";
+    #purge() {
+        this.#query(".gwindow-top").innerHTML = "";
     }
 
     /**
