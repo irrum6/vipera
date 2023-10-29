@@ -57,7 +57,6 @@ class GWindow extends HTMLElement {
         let content = this.innerHTML;
         this.#query("div.content").innerHTML = content;
         this.#size();
-        let z = this.getAttribute("z");
 
         let noclose = this.getAttribute("noclose");
 
@@ -88,6 +87,10 @@ class GWindow extends HTMLElement {
         }
         if (Number.isInteger(h) && h > 0) {
             main.style.height = `${h}px`;
+        }
+        let z = Number(this.getAttribute("z"));
+        if (Number.isInteger(z) && z > 0) {
+            main.style.zIndex = z;
         }
     }
     /**

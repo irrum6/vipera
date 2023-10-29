@@ -25,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.8";
+        this.#version = "0.12.9";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -242,6 +242,7 @@ class MontiVipera {
      * master 5 second and point isn't given for gained mass you need to eat food (only level to feature food);
      */
     EnduranceMode() {
+        // debugger;
         if (this.timerid !== null) {
             return;
         }
@@ -417,10 +418,13 @@ class MontiVipera {
     }
     Resume() {
         // debugger;
-        if (this.mode === Modes.Endurance) {
+        // CHALLENGE
+        // ENDURANCE
+        // LONG
+        if (this.mode === Modes.ENDURANCE) {
             this.EnduranceMode();
         }
-        if (this.mode === Modes["Challenge"]) {
+        if (this.mode === Modes.CHALLENGE) {
             this.ChallengeMode();
         }
         this.pause = false;
@@ -446,8 +450,8 @@ class MontiVipera {
             this.GoFullScreen();
         }
     }
-    Help(){
-        if(this.#numberOfPlayers>1){
+    Help() {
+        if (this.#numberOfPlayers > 1) {
             this.DisplayMultiControls();
             return;
         }
