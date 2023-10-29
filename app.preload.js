@@ -285,6 +285,22 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
         this.#setup();
 
     }
+    static insert_HTML() {
+        let template_string = `
+        <div class="gwindow" draggable="true" ondragstart="">
+            <div class="close">
+                <span class="title"></span>
+                <button class="btn-close-no bg-cyber-teal">&#x25cf;</button>
+                <button class="btn-close-yes bg-red">&#x2715;</button>
+            </div>
+            <div class="content"></div>
+            <div class="buttons"></div>
+        </div>`;
+        let template = document.createElement('template');
+        template.id = "gwindow_template";
+        template.innerHTML = template_string;
+        document.body.appendChild(template);
+    }
     get name() {
         return this.#name;
     }
@@ -302,7 +318,6 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
     show() {
         let self = document.getElementById(this.#domid);
         self.style.visibility = 'visible';
-
     }
     hide() {
         let self = document.getElementById(this.#domid);
@@ -320,10 +335,10 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
 
         let noclose = this.getAttribute("noclose");
 
-        let buttyes = this.#query("button.close.yes");
+        let buttyes = this.#query(".btn-close-yes");
         buttyes.addEventListener('click', this.hide.bind(this));
 
-        let buttno = this.#query("button.close.no");
+        let buttno = this.#query(".btn-close-no");
 
         if ("1" === noclose) {
             buttyes.style.display = "none";
@@ -391,7 +406,7 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
         }
     }
     /**
-     * 
+     * pass text and function to create button and add it
      * @param {String} text 
      * @param {Function} f 
      */
@@ -405,6 +420,7 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
 
 }
 
+GWindow.insert_HTML();
 customElements.define("gw-window", GWindow);
 Object.freeze(GWindow);{
     let template = document.createElement('template');
@@ -2976,4 +2992,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-29T17:01+04:00
+// }//Build Date : 2023-10-29T21:39+04:00
