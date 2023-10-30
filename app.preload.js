@@ -556,15 +556,17 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
         stylee.setAttribute('href', 'components/popx.css');
         this.shadowRoot.appendChild(stylee);
 
+
+
         let color = this.getAttribute("data-pref-color");
-        if (color !== null) {
-            let filename = `components/popx-${color}.css`;
-            let style = document.createElement('link');
-            style.setAttribute('rel', 'stylesheet');
-            style.setAttribute('href', filename);
-            this.shadowRoot.appendChild(style);
+        if (color !== null && color != "") {
+            let filename = `components/popx-theme-${color}.css`;
+            this.#loadCSS(filename);
+        } else {
+            let filename = `components/popx-theme-default.css`;
+            this.#loadCSS(filename);
         }
-        
+
         super.hide();
     }
 
@@ -575,6 +577,35 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
     #sizeUp() {
         super.setWidth(this.#initialWidth);
         super.setHeight(this.#initialHeight);
+    }
+    #unload_all_popx_themes() {
+        let styles = this.shadowRoot.querySelectorAll("link[href*=popx-theme]");
+        for (const style of styles) {
+            this.shadowRoot.removeChild(style);
+        }
+    }
+    #loadCSS(filename) {
+        let style = document.createElement('link');
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', filename);
+        this.shadowRoot.appendChild(style);
+    }
+    // todo:validation
+    setColorTheme(color) {
+        if (typeof color !== "string") {
+            return;
+        }
+
+        if (color !== "red" && color !== "default") {
+            return;
+        }
+        let filename = `components/popx-theme-${color}.css`;
+
+        if (color === "default") {
+            filename = `components/popx-theme-default.css`;
+        }
+        this.#unload_all_popx_themes();
+        this.#loadCSS(filename);
     }
 
     show() {
@@ -3002,4 +3033,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-30T23:10+04:00
+// }//Build Date : 2023-10-31T00:06+04:00

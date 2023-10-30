@@ -1,5 +1,15 @@
 /* pop-alert */
 /* top */
+.btn-dot {
+    border-radius: 0px;
+    border-bottom-left-radius: 12px;
+}
+
+.btn-close {
+    border-radius: 8px;
+}
+
+/* middle */
 .content {
     font-size: 1rem;
     display: grid;
@@ -13,17 +23,6 @@
     white-space: normal;
 }
 
-.btn-dot {
-    background-color: #288;
-    border-radius: 0px;
-    border-bottom-left-radius: 12px;
-}
-
-.btn-close {
-    background-color: #f35;    
-}
-
-/* middle */
 .content>p {
     padding-left: 0.75rem;
     white-space: normal;
