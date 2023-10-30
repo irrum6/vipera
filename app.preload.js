@@ -550,10 +550,21 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
         this.#sizeUp();
         super.addButton("OK", this.#close.bind(this));
 
+
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
         stylee.setAttribute('href', 'components/popx.css');
         this.shadowRoot.appendChild(stylee);
+
+        let color = this.getAttribute("data-pref-color");
+        if (color !== null) {
+            let filename = `components/popx-${color}.css`;
+            let style = document.createElement('link');
+            style.setAttribute('rel', 'stylesheet');
+            style.setAttribute('href', filename);
+            this.shadowRoot.appendChild(style);
+        }
+        
         super.hide();
     }
 
@@ -2991,4 +3002,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2023-10-30T21:45+04:00
+// }//Build Date : 2023-10-30T23:10+04:00

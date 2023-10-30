@@ -14,11 +14,13 @@
 }
 
 .btn-dot {
-    background-color: #278;
+    background-color: #288;
+    border-radius: 0px;
+    border-bottom-left-radius: 12px;
 }
 
 .btn-close {
-    background-color: #f8cc;
+    background-color: #f35;    
 }
 
 /* middle */

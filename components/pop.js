@@ -8,10 +8,21 @@ class PopX extends GWindow {
         this.#sizeUp();
         super.addButton("OK", this.#close.bind(this));
 
+
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
         stylee.setAttribute('href', 'components/popx.css');
         this.shadowRoot.appendChild(stylee);
+
+        let color = this.getAttribute("data-pref-color");
+        if (color !== null) {
+            let filename = `components/popx-${color}.css`;
+            let style = document.createElement('link');
+            style.setAttribute('rel', 'stylesheet');
+            style.setAttribute('href', filename);
+            this.shadowRoot.appendChild(style);
+        }
+        
         super.hide();
     }
 
