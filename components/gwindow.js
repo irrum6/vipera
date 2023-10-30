@@ -29,8 +29,8 @@ class GWindow extends HTMLElement {
         <div class="gwindow" draggable="true" ondragstart="">
             <div class="gwindow-top">
                 <span class="title"></span>
-                <button class="btn-close-no bg-cyber-teal">&#x25cf;</button>
-                <button class="btn-close-yes bg-red">&#x2715;</button>
+                <button class="btn-dot">&#x25cf;</button>
+                <button class="btn-close">&#x2715;</button>
             </div>
             <div class="content"></div>
             <div class="buttons"></div>
@@ -74,10 +74,10 @@ class GWindow extends HTMLElement {
 
         let noclose = this.getAttribute("noclose");
 
-        let buttyes = this.#query(".btn-close-yes");
+        let buttyes = this.#query(".btn-close");
         buttyes.addEventListener('click', this.hide.bind(this));
 
-        let buttno = this.#query(".btn-close-no");
+        let buttno = this.#query(".btn-dot");
 
         if ("1" === noclose) {
             buttyes.style.display = "none";

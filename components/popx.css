@@ -1,4 +1,5 @@
 /* pop-alert */
+/* top */
 .content {
     font-size: 1rem;
     display: grid;
@@ -12,12 +13,22 @@
     white-space: normal;
 }
 
+.btn-dot {
+    background-color: #278;
+}
+
+.btn-close {
+    background-color: #f8cc;
+}
+
+/* middle */
 .content>p {
     padding-left: 0.75rem;
     white-space: normal;
     margin: 4px;
 }
 
+/* third */
 .buttons>button {
     padding: 0.5rem;
     padding-left: 1.25rem;

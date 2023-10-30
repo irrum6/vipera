@@ -36,6 +36,14 @@
   font-size: 1.5rem;
 }
 
+.btn-dot {
+  background-color: #207780;
+}
+
+.btn-close {
+  background-color: #b04080;
+}
+
 /* middle row - content */
 .content {
   background-color: #466;
