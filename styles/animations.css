@@ -1,9 +1,11 @@
 @keyframes spinme {
     0% {
+        scale: 90% 90%;
         rotate: z 0deg;
     }
 
     100% {
+        scale: 90% 90%;
         rotate: z 360deg;
     }
 }
