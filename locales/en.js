@@ -22,7 +22,16 @@ let en = {
     'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
     'g' to play/pause music.
     't' to shuffle`,    
-    multi_text: ""
+    multi_text: "",
+    onplay_text:"",
+    endurance_mode_text:`
+    You are playing endurance mode
+    Endurance : you gain point and mass periodically, your intent is to last longer
+    easy every 20 seconds
+    medium every 10 seconds
+    hard every 5 seconds
+    master 5 second and point isn't given for gained mass you need to eat food (only level to feature food)
+    `
 }
 
 //

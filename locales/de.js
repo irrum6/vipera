@@ -23,7 +23,9 @@ let de = {
     'n' fur neue spiele fenster zeigen.
     'g' fur music spielen/pausen.
     't' fur shuffle`,
-    multi_text:""
+    multi_text:"",
+    onplay_text:"",
+    endurance_mode_text:""
 }
 
 //

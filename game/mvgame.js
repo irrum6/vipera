@@ -25,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.9";
+        this.#version = "0.12.10";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -453,6 +453,12 @@ class MontiVipera {
     Help() {
         if (this.#numberOfPlayers > 1) {
             this.DisplayMultiControls();
+            return;
+        }
+        if (this.mode === Modes.ENDURANCE) {
+            let text = Translator.getWord(this.language, "endurance_mode_text");
+            let title = "Welcome";
+            PopX.OPEN(text, title);
             return;
         }
         this.DisplayControls();

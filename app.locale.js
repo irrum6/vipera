@@ -22,7 +22,16 @@ let en = {
     'm' to display/dissmis settings dialog , 'n' to open/close new game dialog.
     'g' to play/pause music.
     't' to shuffle`,    
-    multi_text: ""
+    multi_text: "",
+    onplay_text:"",
+    endurance_mode_text:`
+    You are playing endurance mode
+    Endurance : you gain point and mass periodically, your intent is to last longer
+    easy every 20 seconds
+    medium every 10 seconds
+    hard every 5 seconds
+    master 5 second and point isn't given for gained mass you need to eat food (only level to feature food)
+    `
 }
 
 //
@@ -42,7 +51,7 @@ let ka = {
     endurance: "გამძლეობა",
     challenge: "გამოწვევა",
     //interface texts
-    score: "Scქულაore",
+    score: "ქულა",
     //dialog texts
     welcome_text: `
         Montivipera Redemption.
@@ -54,7 +63,18 @@ let ka = {
     დააჭირეთ N ახალი თამაშის მენიუს გასახსნელად
     დააჭირეთ G მუსიკის მოსასმენად ან დასაპაუზებლად.
     დააჭირეთ T მუსიკის გადასართავად`,
-    multi_text: ""
+    multi_text: "",
+    onplay_text:"",
+    endurance_mode_text:`
+    თქვენ თამაშობთ გამძლეობის რეჟიმში
+    გამძლეობის რეჟიმში თქვენ პერიოდულად იმატებთ ქულებს და წონას
+    თქვენი მიზანი გაძლოთ დიდხანს
+    იოლი: ყოველ 20 წამში
+    საშუალო ყოველ 10 წამში
+    რთული ყოველ 5 წამში
+    ოსტატის სირთულე: ყოველ 5 წამში და თქვენ ამისთვის ქულა არ გემატებათ და საჭმელი უნდა მოძებნოთ
+    (ერთადერთი დონე რომელიც საჭმელს შეიცავს)
+    `
 }
 
 // 
@@ -83,7 +103,9 @@ let de = {
     'n' fur neue spiele fenster zeigen.
     'g' fur music spielen/pausen.
     't' fur shuffle`,
-    multi_text:""
+    multi_text:"",
+    onplay_text:"",
+    endurance_mode_text:""
 }
 
 //
