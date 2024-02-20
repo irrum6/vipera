@@ -5,10 +5,10 @@ let de = {
     three: "drei",
     four: "vier",
     // dificulty
-    easy:"einfach",
-    normal:"normal",
-    hard:"Schwer",
-    master:"Master",
+    easy: "einfach",
+    normal: "normal",
+    hard: "Schwer",
+    master: "Master",
     // mode
     long: "Lange",
     endurance: "Ertragen",
@@ -23,9 +23,11 @@ let de = {
     'n' fur neue spiele fenster zeigen.
     'g' fur music spielen/pausen.
     't' fur shuffle`,
-    multi_text:"",
-    onplay_text:"",
-    endurance_mode_text:""
+    multi_text: "",
+    onplay_text: "",
+    endurance_mode_text: "",
+    challenge_mode_text: `
+    challenge mode`
 }
 
 //

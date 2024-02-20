@@ -37,7 +37,14 @@ let ka = {
     რთული ყოველ 5 წამში
     ოსტატის სირთულე: ყოველ 5 წამში და თქვენ ამისთვის ქულა არ გემატებათ და საჭმელი უნდა მოძებნოთ
     (ერთადერთი დონე რომელიც საჭმელს შეიცავს)
-    `
+    `,
+    challenge_mode_text:`
+    challenge mode
+    fruits are dropped and have limited time to be eaten
+    easy if miss no penalty
+    medium if miss penalty on score 1 point (positive constraint)
+    hard if miss warning , loss of tail (3 positions)
+    in multi player who eats pardon, who don shrink`
 }
 
 // 
