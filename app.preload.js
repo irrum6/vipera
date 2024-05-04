@@ -588,13 +588,10 @@ customElements.define("small-display", SmallDisplay);class PopX extends GWindow 
         this.#sizeUp();
         super.addButton("OK", this.#close.bind(this));
 
-
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
         stylee.setAttribute('href', 'components/popx.css');
         this.shadowRoot.appendChild(stylee);
-
-
 
         let color = this.getAttribute("data-pref-color");
         if (color !== null && color != "") {
@@ -2560,7 +2557,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.11";
+        this.#version = "0.12.12";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -3083,4 +3080,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-02-20T21:25+04:00
+// }//Build Date : 2024-05-04T23:13+04:00
