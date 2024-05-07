@@ -38,7 +38,8 @@ let en = {
     easy if miss no penalty
     medium if miss penalty on score 1 point (positive constraint)
     hard if miss warning , loss of tail (3 positions)
-    in multi player who eats pardon, who don shrink`
+    in multi player who eats pardon, who don shrink`,
+    EnablePoisons:"Enable Poisons"
 }
 
 //
@@ -88,7 +89,8 @@ let ka = {
     easy if miss no penalty
     medium if miss penalty on score 1 point (positive constraint)
     hard if miss warning , loss of tail (3 positions)
-    in multi player who eats pardon, who don shrink`
+    in multi player who eats pardon, who don shrink`,
+    EnablePoisons:"თამაშში შხამების ჩართვა"
 }
 
 // 
@@ -121,7 +123,8 @@ let de = {
     onplay_text: "",
     endurance_mode_text: "",
     challenge_mode_text: `
-    challenge mode`
+    challenge mode`,
+    EnablePoisons:"Enable Poisons"
 }
 
 //
@@ -948,6 +951,7 @@ customElements.define('frameless-pop', FramelessPop);class NewGameDialog extends
     startNewGame(game, e) {
         const unbounded = this.#getChecked("free_bound");
         const disableCollision = this.#getChecked("disable_collision");
+        const poisoned = this.#getChecked("poisoned");
         const glide = this.#getChecked("glide");
         const fastSwitch = this.#getChecked("quickswitch");
 
@@ -957,7 +961,7 @@ customElements.define('frameless-pop', FramelessPop);class NewGameDialog extends
         const n = this.query('radio-box.player').GetValue();
         this.close();
         const collision = !disableCollision
-        const s = { unbounded, collision, glide, fastSwitch, mode, level }
+        const s = { unbounded, collision, glide, fastSwitch, mode, level, poisoned }
         game.NewGame(n, s);
         game.GetFrame();
         if (n > 1) {
@@ -1537,7 +1541,174 @@ Object.freeze(ColorBox);class Vipera {
         this.x = x;
         this.y = y;
     }
-}class ActionController {
+}class PoisonAsset {
+    #assetSrc;
+    #width;
+    #height;
+    #loaded;
+    #img;
+    /**
+     * 
+     * @param {Number} w 
+     * @param {Number} h 
+     * @param {String} src 
+     */
+    constructor(w, h, src) {
+        this.#assetSrc = src;
+        this.#width = w;
+        this.#height = h;
+        this.#loaded = true;
+        this.#setimage();
+    }
+    get w() {
+        return this.#width;
+    }
+    get h() {
+
+        return this.#height;
+    }
+    get src() {
+        return this.#assetSrc;
+    }
+
+    #setimage() {
+        // const image = new Image(this.w, this.h);
+        // image.src = `images/${this.src}`;
+        // image.addEventListener("load", () => {
+        //     this.#loaded = true;
+        //     console.log("loaded");
+        //every new game triggers it
+        // });
+        // this.#img = image;
+    }
+    /**
+     * @param {RenderingContext} rc 
+     * @param {Number} dx 
+     * @param {Number} dy 
+     */
+    draw(rc, dx, dy) {
+        let image = document.getElementById("rtorng");
+        // if (!this.#loaded) {
+        //     return;
+        // }
+        rc.beginPath();
+        // rc.drawImage(this.#img, dx, dy, this.w, this.h);
+        rc.drawImage(image, dx, dy, this.w, this.h);
+        // rc.drawImage(image, 40, 40, this.w, this.h);
+        // console.log(image);
+        rc.closePath();
+    }
+}
+class Poison {
+    #xcoord;
+    #ycoord;
+    #asset;
+    #centerX;
+    #centerY;
+    /**
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {PoisonAsset} asset 
+     */
+    constructor(x, y, asset) {
+        if (!asset instanceof PoisonAsset) {
+            throw "wrong object: asset expected";
+        }
+        this.#xcoord = x;
+        this.#ycoord = y;
+        this.#asset = asset;
+        //
+        this.#centerX = this.#xcoord + (this.#asset.w / 2);
+        this.#centerY = this.#ycoord + (this.#asset.h / 2);
+    }
+
+    get x() {
+        return this.#xcoord;
+    }
+
+    get y() {
+        return this.#ycoord;
+    }
+
+    set x(xval) {
+        if (typeof xval !== "number") {
+            throw "number!!!"
+        }
+        this.#xcoord = xval;
+    }
+
+    set y(yval) {
+        if (typeof yval !== "number") {
+            throw "number!!!"
+        }
+        this.#ycoord = yval;
+    }
+    /**
+     * 
+     * @param {CanvasRenderingContext2D} rc 
+     * @param {MontiVipera} game 
+     */
+    draw(rc, game) {
+
+        if (rc.constructor.name != "CanvasRenderingContext2D") {
+            throw "not a canvas";
+        }
+
+        this.#asset.draw(rc, this.x, this.y);
+
+    }
+
+    /**
+     * updates position
+     * @param {HTMLCanvasElement} canvas 
+     */
+    renew(canvas) {
+        let x = Math.floor(Math.random() * (canvas.width));
+        let y = Math.floor(Math.random() * (canvas.height));
+        this.#xcoord = x;
+        this.#ycoord = y;
+        //update center x y 
+        this.#centerX = this.#xcoord + (this.#asset.w / 2);
+        this.#centerY = this.#ycoord + (this.#asset.h / 2);
+    }
+
+    get cx() {
+        return this.#centerX;
+    }
+
+    get cy() {
+        return this.#centerY;
+    }
+}
+
+class PoisonedApple extends Poison {
+    /**
+   * @param {Number} x 
+   * @param {Number} y 
+   * @param {PoisonAsset} asset 
+   */
+    constructor(x, y, asset) {
+        super(x, y, asset);
+    }
+}
+
+class RottenOrange extends Poison {
+    /**
+    * @param {Number} x 
+    * @param {Number} y
+    */
+    constructor(x, y) {
+        let asset = new PoisonAsset(32, 32, "orange_rotten32.png");
+        super(x, y, asset);
+    }
+
+
+    // draw(rc, game) {
+    //     super.draw(rc, game);
+    // }
+}
+
+class ActionController {
     constructor(g) {
         // if (!g instanceof game) {
         //     throw "improper object";
@@ -2133,6 +2304,10 @@ class Player extends Vipera {
         this.FreeBound(canvas, game);
         this.Colision(game);
         this.Eat(food, canvas);
+        if (game.settings.poisoned) {
+            //console.log("log");
+            this.EatPoison(game.poison, canvas);
+        }
     }
     /**
      * this fixes crashin when quickly switching direction to opposite
@@ -2157,6 +2332,27 @@ class Player extends Vipera {
             // this.ScoreOne();
             this.score++;
             this.AddMass();
+        }
+    }
+    /**
+     * @param {Poison} poison 
+     * @param {HTMLCanvasElement} canvas 
+     * @returns 
+     */
+    EatPoison(poison, canvas) {
+        if (!poison instanceof Poison) {
+            throw "healthy";
+        }
+        if (poison === null) {
+            throw "null";
+        }
+        let { x, y } = this.GetHeadPosition();
+
+        if (distance(x, y, poison.cx, poison.cy) < this.radius * 2) {
+            poison.renew(canvas);
+            //minus three points
+            this.score = (this.score - 3);
+
         }
     }
     /**
@@ -2301,6 +2497,7 @@ class Player extends Vipera {
     #boundsFreeEnabled;
     #glidingOverBodyEnabled;
     #displayTimers;
+    #poisonsEnabled;
     constructor() {
         this.#showFPS = true;
         this.#showDelta = true;
@@ -2310,6 +2507,20 @@ class Player extends Vipera {
         this.#playerCollisionEnabled = false;
         this.#glidingOverBodyEnabled = false;
         this.#displayTimers = true;
+        this.#poisonsEnabled = false;
+    }
+
+    get poisoned() {
+        return this.#poisonsEnabled;
+    }
+    /**
+     * @param {Boolean} po
+     */
+    set poisoned(po) {
+        if (typeof po !== "boolean") {
+            throw "not a boolean";
+        }
+        this.#poisonsEnabled = po;
     }
     /**
      * check if show fps in settings is enabled
@@ -2433,7 +2644,7 @@ class Player extends Vipera {
         if (typeof s !== "object") {
             throw "GameSettings->update:not an object";
         }
-        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch } = s;
+        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch, poisoned } = s;
         this.fps = fps;
         this.delta = delta;
         this.deltaLow = deltaLow;
@@ -2442,6 +2653,7 @@ class Player extends Vipera {
         this.glide = glide;
         this.fastSwitch = fastSwitch;
         this.timers = timers;
+        this.poisoned = poisoned;
     }
 
 
@@ -2557,7 +2769,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.12";
+        this.#version = "0.13.1";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2583,6 +2795,10 @@ class MontiVipera {
     get quickSwitch() {
         return this.settings.quickSwitch;
     }
+    /**
+     * @readonly
+     * @returns {[Player]} players
+     */
     get players() {
         return this.#playerList;
     }
@@ -2605,6 +2821,10 @@ class MontiVipera {
         }
     }
 
+    /**
+     * 
+     * @param {Player} pl 
+     */
     addPlayer(pl) {
         if (!pl instanceof Vipera) {
             throw "not a viper"
@@ -2616,6 +2836,10 @@ class MontiVipera {
         this.#numberOfPlayers = 0;
     }
 
+    /**
+     * @param {Number} n 
+     * @param {Object} s 
+     */
     NewGame(n, s) {
         this.timerid = null;
         // debugger;
@@ -2667,8 +2891,18 @@ class MontiVipera {
         let y1 = this.canvas.height;
         let food = new Food(x1, y1, 12);
 
+        // let x2 = this.canvas.width / 2;
+        // let y2 = this.canvas.height;
+
+        let x2 = 50;
+        let y2 = 50;
+
+        let poison = new RottenOrange(x2, y2);
+
         this.food = food;
+        this.poison = poison;
         this.food.Renew(this.canvas);
+        this.poison.renew(this.canvas);
         this.Pause();
         this.gameover = false;
     }
@@ -2932,6 +3166,11 @@ class MontiVipera {
         if (this.food !== null) {
             this.food.Draw(renderctx, this);
         }
+        //debugger;
+        if (this.settings.poisoned) {
+            this.poison.draw(renderctx, this);
+        }
+        // this.poison.draw(renderctx, this);
         const _time = Date.now();
         let delta = _time - this.timer1;
         //save this for later update
@@ -3080,4 +3319,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-05-04T23:13+04:00
+// }//Build Date : 2024-05-07T23:12+04:00

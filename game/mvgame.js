@@ -25,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.12.12";
+        this.#version = "0.13.1";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -51,6 +51,10 @@ class MontiVipera {
     get quickSwitch() {
         return this.settings.quickSwitch;
     }
+    /**
+     * @readonly
+     * @returns {[Player]} players
+     */
     get players() {
         return this.#playerList;
     }
@@ -73,6 +77,10 @@ class MontiVipera {
         }
     }
 
+    /**
+     * 
+     * @param {Player} pl 
+     */
     addPlayer(pl) {
         if (!pl instanceof Vipera) {
             throw "not a viper"
@@ -84,6 +92,10 @@ class MontiVipera {
         this.#numberOfPlayers = 0;
     }
 
+    /**
+     * @param {Number} n 
+     * @param {Object} s 
+     */
     NewGame(n, s) {
         this.timerid = null;
         // debugger;
@@ -135,8 +147,18 @@ class MontiVipera {
         let y1 = this.canvas.height;
         let food = new Food(x1, y1, 12);
 
+        // let x2 = this.canvas.width / 2;
+        // let y2 = this.canvas.height;
+
+        let x2 = 50;
+        let y2 = 50;
+
+        let poison = new RottenOrange(x2, y2);
+
         this.food = food;
+        this.poison = poison;
         this.food.Renew(this.canvas);
+        this.poison.renew(this.canvas);
         this.Pause();
         this.gameover = false;
     }
@@ -400,6 +422,11 @@ class MontiVipera {
         if (this.food !== null) {
             this.food.Draw(renderctx, this);
         }
+        //debugger;
+        if (this.settings.poisoned) {
+            this.poison.draw(renderctx, this);
+        }
+        // this.poison.draw(renderctx, this);
         const _time = Date.now();
         let delta = _time - this.timer1;
         //save this for later update

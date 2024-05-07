@@ -44,7 +44,8 @@ let ka = {
     easy if miss no penalty
     medium if miss penalty on score 1 point (positive constraint)
     hard if miss warning , loss of tail (3 positions)
-    in multi player who eats pardon, who don shrink`
+    in multi player who eats pardon, who don shrink`,
+    EnablePoisons:"თამაშში შხამების ჩართვა"
 }
 
 // 

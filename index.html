@@ -42,6 +42,10 @@
     <settings-dialog></settings-dialog>
     <new-dialog></new-dialog>
     <div style="display: none;"></div>
+
+    <div style="display:none;">
+        <img id="rtorng" src="images/orange_rotten32.png" width="32" height="32" />
+    </div>
     <!-- templates here -->
     <template id="dialog_for_settings">
         <div class="dialog">
@@ -137,6 +141,11 @@
                 <div>
                     <label data-app-translate="1" data-app-text="Quickswitch">enable Quickswitch
                         <input type="checkbox" name="quickswitch">
+                    </label>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="EnablePoisons">enable Poison
+                        <input type="checkbox" name="poisoned">
                     </label>
                 </div>
             </div>

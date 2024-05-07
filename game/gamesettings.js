@@ -7,6 +7,7 @@ class GameSettings {
     #boundsFreeEnabled;
     #glidingOverBodyEnabled;
     #displayTimers;
+    #poisonsEnabled;
     constructor() {
         this.#showFPS = true;
         this.#showDelta = true;
@@ -16,6 +17,20 @@ class GameSettings {
         this.#playerCollisionEnabled = false;
         this.#glidingOverBodyEnabled = false;
         this.#displayTimers = true;
+        this.#poisonsEnabled = false;
+    }
+
+    get poisoned() {
+        return this.#poisonsEnabled;
+    }
+    /**
+     * @param {Boolean} po
+     */
+    set poisoned(po) {
+        if (typeof po !== "boolean") {
+            throw "not a boolean";
+        }
+        this.#poisonsEnabled = po;
     }
     /**
      * check if show fps in settings is enabled
@@ -139,7 +154,7 @@ class GameSettings {
         if (typeof s !== "object") {
             throw "GameSettings->update:not an object";
         }
-        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch } = s;
+        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch, poisoned } = s;
         this.fps = fps;
         this.delta = delta;
         this.deltaLow = deltaLow;
@@ -148,6 +163,7 @@ class GameSettings {
         this.glide = glide;
         this.fastSwitch = fastSwitch;
         this.timers = timers;
+        this.poisoned = poisoned;
     }
 
 

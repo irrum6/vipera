@@ -56,6 +56,7 @@ class NewGameDialog extends HTMLElement {
     startNewGame(game, e) {
         const unbounded = this.#getChecked("free_bound");
         const disableCollision = this.#getChecked("disable_collision");
+        const poisoned = this.#getChecked("poisoned");
         const glide = this.#getChecked("glide");
         const fastSwitch = this.#getChecked("quickswitch");
 
@@ -65,7 +66,7 @@ class NewGameDialog extends HTMLElement {
         const n = this.query('radio-box.player').GetValue();
         this.close();
         const collision = !disableCollision
-        const s = { unbounded, collision, glide, fastSwitch, mode, level }
+        const s = { unbounded, collision, glide, fastSwitch, mode, level, poisoned }
         game.NewGame(n, s);
         game.GetFrame();
         if (n > 1) {

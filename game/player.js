@@ -164,6 +164,10 @@ class Player extends Vipera {
         this.FreeBound(canvas, game);
         this.Colision(game);
         this.Eat(food, canvas);
+        if (game.settings.poisoned) {
+            //console.log("log");
+            this.EatPoison(game.poison, canvas);
+        }
     }
     /**
      * this fixes crashin when quickly switching direction to opposite
@@ -188,6 +192,27 @@ class Player extends Vipera {
             // this.ScoreOne();
             this.score++;
             this.AddMass();
+        }
+    }
+    /**
+     * @param {Poison} poison 
+     * @param {HTMLCanvasElement} canvas 
+     * @returns 
+     */
+    EatPoison(poison, canvas) {
+        if (!poison instanceof Poison) {
+            throw "healthy";
+        }
+        if (poison === null) {
+            throw "null";
+        }
+        let { x, y } = this.GetHeadPosition();
+
+        if (distance(x, y, poison.cx, poison.cy) < this.radius * 2) {
+            poison.renew(canvas);
+            //minus three points
+            this.score = (this.score - 3);
+
         }
     }
     /**

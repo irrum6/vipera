@@ -27,7 +27,8 @@ let de = {
     onplay_text: "",
     endurance_mode_text: "",
     challenge_mode_text: `
-    challenge mode`
+    challenge mode`,
+    EnablePoisons:"Enable Poisons"
 }
 
 //
