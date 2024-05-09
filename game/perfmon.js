@@ -8,6 +8,7 @@ class PerformanceMonitor {
     #deltaLow;
     #deltaCount;
     #deltaLowCount;
+    #framesTotal;
     constructor() {
         this.#frames = 0;
         this.#frameCount = 0;
@@ -15,6 +16,7 @@ class PerformanceMonitor {
         this.#deltaLow = 1000;
         this.#deltaCount = 0;
         this.#deltaLowCount = 1000;
+        this.#framesTotal = 0;
     }
 
     get fps() {
@@ -28,9 +30,17 @@ class PerformanceMonitor {
     get deltaLow() {
         return this.#deltaLow;
     }
+    /**
+     * @readonly
+     * @returns {Number}
+     */
+    get ftotal() {
+        return this.#framesTotal;
+    }
 
     increaseFrameCount() {
         this.#frameCount += 1;
+        this.#framesTotal += 1;
     }
 
     resetFrameCount() {
@@ -40,11 +50,11 @@ class PerformanceMonitor {
     resetDeltaCount() {
         this.#deltaCount = 0;
     }
-    
+
     resetDeltaLowCount() {
         this.#deltaLowCount = 1000;
     }
-    
+
     resetCount() {
         this.resetFrameCount();
         this.resetDeltaCount();

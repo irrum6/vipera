@@ -25,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.1";
+        this.#version = "0.13.2";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -380,11 +380,12 @@ class MontiVipera {
         }, 20);
     }
     setScoreUpdater() {
-        let timeBetween = 20;
+        const timeBetween = 20;
         //ui 50hz update
         this.timer5 = window.setInterval(() => {
             UIController.DisplayScore(this);
             UIController.DisplayFPS(this);
+            UIController.DisplayFTotal(this);
             UIController.DisplayFrameDelta(this);
             UIController.DisplayTime(this);
         }, timeBetween);

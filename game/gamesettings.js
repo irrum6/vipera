@@ -8,6 +8,7 @@ class GameSettings {
     #glidingOverBodyEnabled;
     #displayTimers;
     #poisonsEnabled;
+    #displayTotalFramesRendered;
     constructor() {
         this.#showFPS = true;
         this.#showDelta = true;
@@ -18,8 +19,23 @@ class GameSettings {
         this.#glidingOverBodyEnabled = false;
         this.#displayTimers = true;
         this.#poisonsEnabled = false;
+        this.#displayTotalFramesRendered = false;
+    }
+    get show_ftotal() {
+        return this.#displayTotalFramesRendered;
     }
 
+    /**
+     * @param {Boolean} val
+     */
+    set show_ftotal(val) {
+        if (typeof val !== "boolean") {
+            console.log("not a boolean");
+            return false;
+        }
+        this.#displayTotalFramesRendered = val;
+
+    }
     get poisoned() {
         return this.#poisonsEnabled;
     }
@@ -27,8 +43,9 @@ class GameSettings {
      * @param {Boolean} po
      */
     set poisoned(po) {
-        if (typeof po !== "boolean") {
-            throw "not a boolean";
+        if (typeof val !== "boolean") {
+            console.log("not a boolean");
+            return false;
         }
         this.#poisonsEnabled = po;
     }
@@ -154,7 +171,7 @@ class GameSettings {
         if (typeof s !== "object") {
             throw "GameSettings->update:not an object";
         }
-        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch, poisoned } = s;
+        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch, poisoned, show_ftotal } = s;
         this.fps = fps;
         this.delta = delta;
         this.deltaLow = deltaLow;
@@ -164,6 +181,7 @@ class GameSettings {
         this.fastSwitch = fastSwitch;
         this.timers = timers;
         this.poisoned = poisoned;
+        this.show_ftotal = show_ftotal;
     }
 
 

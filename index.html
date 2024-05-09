@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Montivipera Redemption</title>
     <link rel="stylesheet" href="styles/layout.css">
-    <link rel="stylesheet" href="bonus/bonus.css">
+    <!-- <link rel="stylesheet" href="bonus/bonus.css"> -->
     <link rel="icon" href="images/snake2.svg" sizes="any" type="image/svg+xml">
     <style>
     </style>
@@ -22,6 +22,7 @@
             <small-display id="fps" dtext="FPS" dvalue="00" dcolor="green"></small-display>
             <small-display id="delta_high" dtext="ΔHigh" dvalue="00" dcolor="red"></small-display>
             <small-display id="delta_low" dtext="ΔLow" dvalue="00" dcolor="#357" hide="1"></small-display>
+            <small-display id="ftotal" dtext="Ftotal" dvalue="00" dcolor="#458" hide="1"></small-display>
             <small-display id="time" dtext="Time" dvalue="00" dcolor="#357" hide="1"></small-display>
         </div>
         <div class="box h90" id="canvas_box">
@@ -91,6 +92,11 @@
                 <div>
                     <label data-app-translate="1" data-app-text="show_timers">Show timers on endurance/challenge mode
                         <input type="checkbox" name="show_timers">
+                    </label>
+                </div>
+                <div>
+                    <label data-app-translate="1" data-app-text="show_timers">Show total frame count
+                        <input type="checkbox" name="show_ftotal">
                     </label>
                 </div>
             </div>
@@ -186,7 +192,7 @@
     <script src="drag2.js"></script>
     <script src="fullscreen.js"></script>
     <!--  -->
-    <script src="bonus/bonus.js"></script>
+    <!-- <script src="bonus/bonus.js"></script> -->
 </body>
 
 </html>

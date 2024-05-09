@@ -1101,13 +1101,14 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
         let delta = this.query('input[name=delta_high]').checked;
         let deltaLow = this.query('input[name=delta_low]').checked;
         let timers = this.query('input[name=show_timers]').checked;
+        let show_ftotal = this.query('input[name=show_ftotal]').checked;
         let lang = this.query('input[name=language]:checked').value;
         let boxes = this.#query_all('color-box.snake');
 
         for (let i = 0, len = game.players.length; i < len; i++) {
             game.players[i].color = boxes[i].GetValue();
         }
-        game.UpdateSettings({ fps, delta, deltaLow, timers, lang });
+        game.UpdateSettings({ fps, delta, deltaLow, timers, lang, show_ftotal });
         this.close(game);
     }
     close(game) {
@@ -2024,6 +2025,17 @@ class UIController {
         fpsdisplay.updateValue(String(game.performance.fps));
     }
     /**
+    * @param {MontiVipera} game 
+    */
+    static DisplayFTotal(game) {
+        if (game.settings.show_ftotal !== true) {
+            return;
+        }
+        let ftotaldis = document.body.querySelector("#ftotal");
+        ftotaldis.updateValue(String(game.performance.ftotal));
+        ftotaldis.show();
+    }
+    /**
      * @param {MontiVipera} game 
      */
     static DisplayFrameDelta(game) {
@@ -2498,6 +2510,7 @@ class Player extends Vipera {
     #glidingOverBodyEnabled;
     #displayTimers;
     #poisonsEnabled;
+    #displayTotalFramesRendered;
     constructor() {
         this.#showFPS = true;
         this.#showDelta = true;
@@ -2508,8 +2521,23 @@ class Player extends Vipera {
         this.#glidingOverBodyEnabled = false;
         this.#displayTimers = true;
         this.#poisonsEnabled = false;
+        this.#displayTotalFramesRendered = false;
+    }
+    get show_ftotal() {
+        return this.#displayTotalFramesRendered;
     }
 
+    /**
+     * @param {Boolean} val
+     */
+    set show_ftotal(val) {
+        if (typeof val !== "boolean") {
+            console.log("not a boolean");
+            return false;
+        }
+        this.#displayTotalFramesRendered = val;
+
+    }
     get poisoned() {
         return this.#poisonsEnabled;
     }
@@ -2517,8 +2545,9 @@ class Player extends Vipera {
      * @param {Boolean} po
      */
     set poisoned(po) {
-        if (typeof po !== "boolean") {
-            throw "not a boolean";
+        if (typeof val !== "boolean") {
+            console.log("not a boolean");
+            return false;
         }
         this.#poisonsEnabled = po;
     }
@@ -2644,7 +2673,7 @@ class Player extends Vipera {
         if (typeof s !== "object") {
             throw "GameSettings->update:not an object";
         }
-        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch, poisoned } = s;
+        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch, poisoned, show_ftotal } = s;
         this.fps = fps;
         this.delta = delta;
         this.deltaLow = deltaLow;
@@ -2654,6 +2683,7 @@ class Player extends Vipera {
         this.fastSwitch = fastSwitch;
         this.timers = timers;
         this.poisoned = poisoned;
+        this.show_ftotal = show_ftotal;
     }
 
 
@@ -2668,6 +2698,7 @@ Object.freeze(GameSettings);class PerformanceMonitor {
     #deltaLow;
     #deltaCount;
     #deltaLowCount;
+    #framesTotal;
     constructor() {
         this.#frames = 0;
         this.#frameCount = 0;
@@ -2675,6 +2706,7 @@ Object.freeze(GameSettings);class PerformanceMonitor {
         this.#deltaLow = 1000;
         this.#deltaCount = 0;
         this.#deltaLowCount = 1000;
+        this.#framesTotal = 0;
     }
 
     get fps() {
@@ -2688,9 +2720,17 @@ Object.freeze(GameSettings);class PerformanceMonitor {
     get deltaLow() {
         return this.#deltaLow;
     }
+    /**
+     * @readonly
+     * @returns {Number}
+     */
+    get ftotal() {
+        return this.#framesTotal;
+    }
 
     increaseFrameCount() {
         this.#frameCount += 1;
+        this.#framesTotal += 1;
     }
 
     resetFrameCount() {
@@ -2700,11 +2740,11 @@ Object.freeze(GameSettings);class PerformanceMonitor {
     resetDeltaCount() {
         this.#deltaCount = 0;
     }
-    
+
     resetDeltaLowCount() {
         this.#deltaLowCount = 1000;
     }
-    
+
     resetCount() {
         this.resetFrameCount();
         this.resetDeltaCount();
@@ -2769,7 +2809,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.1";
+        this.#version = "0.13.2";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -3124,11 +3164,12 @@ class MontiVipera {
         }, 20);
     }
     setScoreUpdater() {
-        let timeBetween = 20;
+        const timeBetween = 20;
         //ui 50hz update
         this.timer5 = window.setInterval(() => {
             UIController.DisplayScore(this);
             UIController.DisplayFPS(this);
+            UIController.DisplayFTotal(this);
             UIController.DisplayFrameDelta(this);
             UIController.DisplayTime(this);
         }, timeBetween);
@@ -3319,4 +3360,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-05-07T23:12+04:00
+// }//Build Date : 2024-05-10T00:20+04:00

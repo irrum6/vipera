@@ -93,13 +93,14 @@ class SettingsDialog extends HTMLElement {
         let delta = this.query('input[name=delta_high]').checked;
         let deltaLow = this.query('input[name=delta_low]').checked;
         let timers = this.query('input[name=show_timers]').checked;
+        let show_ftotal = this.query('input[name=show_ftotal]').checked;
         let lang = this.query('input[name=language]:checked').value;
         let boxes = this.#query_all('color-box.snake');
 
         for (let i = 0, len = game.players.length; i < len; i++) {
             game.players[i].color = boxes[i].GetValue();
         }
-        game.UpdateSettings({ fps, delta, deltaLow, timers, lang });
+        game.UpdateSettings({ fps, delta, deltaLow, timers, lang, show_ftotal });
         this.close(game);
     }
     close(game) {

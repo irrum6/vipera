@@ -27,6 +27,17 @@ class UIController {
         fpsdisplay.updateValue(String(game.performance.fps));
     }
     /**
+    * @param {MontiVipera} game 
+    */
+    static DisplayFTotal(game) {
+        if (game.settings.show_ftotal !== true) {
+            return;
+        }
+        let ftotaldis = document.body.querySelector("#ftotal");
+        ftotaldis.updateValue(String(game.performance.ftotal));
+        ftotaldis.show();
+    }
+    /**
      * @param {MontiVipera} game 
      */
     static DisplayFrameDelta(game) {
