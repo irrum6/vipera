@@ -284,11 +284,25 @@ class Utils {
 
     /**
      * 
-     * @param {any} varX 
+     * @param {any} ob 
      * @returns {boolean}
      */
-    static isCompleteObject(varX) {
-        return (typeof varX === "object" && varX !== null) && (varX !== {});
+    static isCompleteObject(ob) {
+        if (typeof ob !== "object") {
+            return false;
+        }
+        if (ob === null) {
+            return false;
+        }
+
+        for (const p in ob) {
+            if (Object.hasOwn(ob, p)) {
+                return true;
+            }
+        }
+
+        return false;
+
     }
     /**
      * @param {String} msg 
@@ -903,7 +917,7 @@ customElements.define('frameless-pop', FramelessPop);class NewGameDialog extends
 
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
-        stylee.setAttribute('href', 'styles/newdialog.css');
+        stylee.setAttribute('href', 'components/new_game_dialog.css');
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
@@ -1154,7 +1168,7 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
 
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
-        stylee.setAttribute('href', 'styles/radiobox.css');
+        stylee.setAttribute('href', 'components/radiobox.css');
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
@@ -1293,7 +1307,7 @@ Object.freeze(RadioBox);class ColorBox extends HTMLElement {
 
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
-        stylee.setAttribute('href', 'styles/colorbox.css');
+        stylee.setAttribute('href', 'components/colorbox.css');
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
@@ -2809,7 +2823,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.2";
+        this.#version = "0.13.2 Rev 1";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -3360,4 +3374,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-05-10T00:20+04:00
+// }//Build Date : 2024-06-18T23:42+04:00

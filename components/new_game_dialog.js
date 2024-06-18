@@ -8,7 +8,7 @@ class NewGameDialog extends HTMLElement {
 
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
-        stylee.setAttribute('href', 'styles/newdialog.css');
+        stylee.setAttribute('href', 'components/new_game_dialog.css');
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);

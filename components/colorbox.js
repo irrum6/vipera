@@ -8,7 +8,7 @@ class ColorBox extends HTMLElement {
 
         const stylee = document.createElement('link');
         stylee.setAttribute('rel', 'stylesheet');
-        stylee.setAttribute('href', 'styles/colorbox.css');
+        stylee.setAttribute('href', 'components/colorbox.css');
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
