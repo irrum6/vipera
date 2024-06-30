@@ -251,6 +251,11 @@ class Utils {
     static IsWholeNumber(z) {
         return Number.isInteger(z) && z > -1;
     }
+    /**
+     * 16n sized hash
+     * @param {Number} n 
+     * @returns 
+     */
     static Hash16(n) {
         if (!Utils.IsWholeNumber(n)) {
             throw "Not a whole number";
@@ -339,22 +344,7 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
         this.#name = "gwindow";
         this.#setup();
     }
-    static insert_HTML() {
-        let template_string = `
-        <div class="gwindow" draggable="true" ondragstart="">
-            <div class="gwindow-top">
-                <span class="title"></span>
-                <button class="btn-dot">&#x25cf;</button>
-                <button class="btn-close">&#x2715;</button>
-            </div>
-            <div class="content"></div>
-            <div class="buttons"></div>
-        </div>`;
-        let template = document.createElement('template');
-        template.id = "gwindow_template";
-        template.innerHTML = template_string;
-        document.body.appendChild(template);
-    }
+    
     get name() {
         return this.#name;
     }
@@ -474,7 +464,6 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
 
 }
 
-GWindow.insert_HTML();
 customElements.define("gw-window", GWindow);
 Object.freeze(GWindow);{
     let template = document.createElement('template');
@@ -2823,7 +2812,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.2 Rev 1";
+        this.#version = "0.13.2a";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -3374,4 +3363,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-06-18T23:42+04:00
+// }//Build Date : 2024-07-01T00:55+04:00

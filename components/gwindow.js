@@ -24,22 +24,7 @@ class GWindow extends HTMLElement {
         this.#name = "gwindow";
         this.#setup();
     }
-    static insert_HTML() {
-        let template_string = `
-        <div class="gwindow" draggable="true" ondragstart="">
-            <div class="gwindow-top">
-                <span class="title"></span>
-                <button class="btn-dot">&#x25cf;</button>
-                <button class="btn-close">&#x2715;</button>
-            </div>
-            <div class="content"></div>
-            <div class="buttons"></div>
-        </div>`;
-        let template = document.createElement('template');
-        template.id = "gwindow_template";
-        template.innerHTML = template_string;
-        document.body.appendChild(template);
-    }
+    
     get name() {
         return this.#name;
     }
@@ -159,6 +144,5 @@ class GWindow extends HTMLElement {
 
 }
 
-GWindow.insert_HTML();
 customElements.define("gw-window", GWindow);
 Object.freeze(GWindow);
