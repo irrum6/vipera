@@ -25,13 +25,13 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.3 a";
+        this.#version = "0.13.3 b";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
         this.metrics = {};//fps
         this.canvas = _canvas;
-        this.settings = new GameSettings();
+        this.#settings = new GameSettings();
         this.timerid = null;
         this.renderingContext = rc;
         this.#playerList = [];
@@ -46,6 +46,10 @@ class MontiVipera {
     }
     get name() {
         return this.#name;
+    }
+
+    get settings() {
+        return this.#settings;
     }
 
     get quickSwitch() {
