@@ -958,10 +958,10 @@ customElements.define('frameless-pop', FramelessPop);class NewGameDialog extends
         const glide = this.#getChecked("glide");
         const fastSwitch = this.#getChecked("quickswitch");
 
-        const mode = this.query('radio-box.moder').GetValue();
-        const level = this.query('radio-box.leveler').GetValue();
+        const mode = this.query('radio-box.moder').value;
+        const level = this.query('radio-box.leveler').value;
 
-        const n = this.query('radio-box.player').GetValue();
+        const n = this.query('radio-box.player').value;
         this.close();
         const collision = !disableCollision
         const s = { unbounded, collision, glide, fastSwitch, mode, level, poisoned }
@@ -1084,7 +1084,7 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
         this.query('input[name=delta_high]').checked = delta;
         this.query('input[name=delta_low]').checked = deltaLow;
         this.query('input[name=show_timers]').checked = timers;
-        // this.query('color-box.snake').SetValue(snakeColor);
+        
         let boxes = this.#query_all('color-box.snake');
         for (const box of boxes) {
             box.hide();
@@ -1093,7 +1093,7 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
             let pl = game.players[i];
             let color = pl.color;
             boxes[i].show();
-            boxes[i].SetValue(color);
+            boxes[i].value = color;
         }
     }
     /**     * 
@@ -1109,7 +1109,7 @@ Object.freeze(NewGameDialog);class SettingsDialog extends HTMLElement {
         let boxes = this.#query_all('color-box.snake');
 
         for (let i = 0, len = game.players.length; i < len; i++) {
-            game.players[i].color = boxes[i].GetValue();
+            game.players[i].color = boxes[i].value;
         }
         game.UpdateSettings({ fps, delta, deltaLow, timers, lang, show_ftotal });
         this.close(game);
@@ -1162,40 +1162,10 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
         shadowRoot.appendChild(clone);
-        this.SetupBoxes();
+        this.#setupBoxes();
     }
-    /**
-     * 
-     * @param {String} s 
-     * @returns 
-     */
-    Query(s) {
-        return this.shadowRoot.querySelector(s);
-    }
-    /**
-     * shorthand for Query
-     * @param {String} s 
-     * @returns 
-     */
-    q(s) {
-        return this.Query(s);
-    }
-    /**
-     * @param {String} s 
-     * @returns 
-     */
-    QueryAll(s) {
-        return this.shadowRoot.querySelectorAll(s);
-    }
-    /**
-    * shorthand for QueryAll
-    * @param {String} s 
-    * @returns 
-    */
-    qa(s) {
-        return this.shadowRoot.querySelectorAll(s);
-    }
-    ReadData() {
+
+    #readData() {
         let names = this.getAttribute("data-names");
         let values = this.getAttribute("data-values");
         let texts = this.getAttribute("data-texts");
@@ -1204,20 +1174,20 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
         let labelName = this.getAttribute("data-label-name");
         return { names, values, texts, inputName, inputLabel, labelName };
     }
-    SetupBoxes() {
+    #setupBoxes() {
         if (this.getAttribute("setup") === "1") {
             return;
         }
-        let { names, values, texts, inputName, inputLabel, labelName } = this.ReadData();
+        let { names, values, texts, inputName, inputLabel, labelName } = this.#readData();
 
-        let span = this.Query("span");
+        let span = this.shadowRoot.querySelector("span");
         span.textContent = inputLabel;
         span.setAttribute("app-text", labelName);
 
         names = names.split(";");
         values = values.split(";");
         texts = texts.split(";");
-        let container = this.Query("div.radios");
+        let container = this.shadowRoot.querySelector("div.radios");
         if (names.length !== values.length || values.length !== texts.length) {
             throw "some data is missing for component:RadioBox";
         }
@@ -1229,7 +1199,7 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
                 inputName,
                 index: i
             }
-            this.MakeRadio(container, params);
+            this.#mkRadio(container, params);
         }
         // if more than 4
         //then display 4 radio boxes and all boxes shown in menu 
@@ -1239,20 +1209,20 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
     translate(game) {
         let { language } = game;
         // do the translation
-        let spans = this.qa('label>span');
+        let spans = this.shadowRoot.querySelectorAll('label>span');
         for (let i = 0, len = spans.length; i < len; i++) {
             let span = spans[i];
             let text = span.getAttribute("app-text");
             let translatedText = Translator.getWord(language, text.toLowerCase());
             span.textContent = translatedText;
-        }       
+        }
     }
     /**
      * creates and appends radio element to container
      * @param {HTMLElement} cont 
      * @param {Object} params
      */
-    MakeRadio(cont, params) {
+    #mkRadio(cont, params) {
         let { text, name, value, inputName, index } = params;
 
         let label = document.createElement("label");
@@ -1270,12 +1240,12 @@ Object.freeze(SettingsDialog);class RadioBox extends HTMLElement {
         label.appendChild(radio);
         cont.appendChild(label);
     }
-    GetValue() {
-        const c = this.Query("input[type=radio]:checked");
+    get value() {
+        const c = this.shadowRoot.querySelector("input[type=radio]:checked");
         return c === null ? "" : c.value;
     }
-    SetValue(v) {
-        const radios = this.QueryAll("input");
+    set value(v) {
+        const radios = this.shadowRoot.querySelectorAll("input");
         for (const r of radios) {
             if (r.value === v) {
                 r.checked = true;
@@ -1330,7 +1300,7 @@ Object.freeze(RadioBox);class ColorBox extends HTMLElement {
         }
         e.target.classList.add('active');
     }
-    GetValue() {
+    get value() {
         // find active 
         let active = this.FindActive();
         //debugger;
@@ -1342,7 +1312,7 @@ Object.freeze(RadioBox);class ColorBox extends HTMLElement {
     /**
      * @param {String} c
      */
-    SetValue(c) {
+    set value(c) {
         if (typeof c !== "string") {
             throw "ColorBox:incorrect type"
         }
@@ -2812,7 +2782,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.2a";
+        this.#version = "0.13.3";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -3363,4 +3333,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-07-01T00:55+04:00
+// }//Build Date : 2024-07-03T22:46+04:00

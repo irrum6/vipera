@@ -42,7 +42,7 @@ class ColorBox extends HTMLElement {
         }
         e.target.classList.add('active');
     }
-    GetValue() {
+    get value() {
         // find active 
         let active = this.FindActive();
         //debugger;
@@ -54,7 +54,7 @@ class ColorBox extends HTMLElement {
     /**
      * @param {String} c
      */
-    SetValue(c) {
+    set value(c) {
         if (typeof c !== "string") {
             throw "ColorBox:incorrect type"
         }

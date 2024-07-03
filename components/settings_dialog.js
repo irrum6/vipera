@@ -73,7 +73,7 @@ class SettingsDialog extends HTMLElement {
         this.query('input[name=delta_high]').checked = delta;
         this.query('input[name=delta_low]').checked = deltaLow;
         this.query('input[name=show_timers]').checked = timers;
-        // this.query('color-box.snake').SetValue(snakeColor);
+        
         let boxes = this.#query_all('color-box.snake');
         for (const box of boxes) {
             box.hide();
@@ -82,7 +82,7 @@ class SettingsDialog extends HTMLElement {
             let pl = game.players[i];
             let color = pl.color;
             boxes[i].show();
-            boxes[i].SetValue(color);
+            boxes[i].value = color;
         }
     }
     /**     * 
@@ -98,7 +98,7 @@ class SettingsDialog extends HTMLElement {
         let boxes = this.#query_all('color-box.snake');
 
         for (let i = 0, len = game.players.length; i < len; i++) {
-            game.players[i].color = boxes[i].GetValue();
+            game.players[i].color = boxes[i].value;
         }
         game.UpdateSettings({ fps, delta, deltaLow, timers, lang, show_ftotal });
         this.close(game);

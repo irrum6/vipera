@@ -60,10 +60,10 @@ class NewGameDialog extends HTMLElement {
         const glide = this.#getChecked("glide");
         const fastSwitch = this.#getChecked("quickswitch");
 
-        const mode = this.query('radio-box.moder').GetValue();
-        const level = this.query('radio-box.leveler').GetValue();
+        const mode = this.query('radio-box.moder').value;
+        const level = this.query('radio-box.leveler').value;
 
-        const n = this.query('radio-box.player').GetValue();
+        const n = this.query('radio-box.player').value;
         this.close();
         const collision = !disableCollision
         const s = { unbounded, collision, glide, fastSwitch, mode, level, poisoned }

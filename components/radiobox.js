@@ -13,40 +13,10 @@ class RadioBox extends HTMLElement {
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(stylee);
         shadowRoot.appendChild(clone);
-        this.SetupBoxes();
+        this.#setupBoxes();
     }
-    /**
-     * 
-     * @param {String} s 
-     * @returns 
-     */
-    Query(s) {
-        return this.shadowRoot.querySelector(s);
-    }
-    /**
-     * shorthand for Query
-     * @param {String} s 
-     * @returns 
-     */
-    q(s) {
-        return this.Query(s);
-    }
-    /**
-     * @param {String} s 
-     * @returns 
-     */
-    QueryAll(s) {
-        return this.shadowRoot.querySelectorAll(s);
-    }
-    /**
-    * shorthand for QueryAll
-    * @param {String} s 
-    * @returns 
-    */
-    qa(s) {
-        return this.shadowRoot.querySelectorAll(s);
-    }
-    ReadData() {
+
+    #readData() {
         let names = this.getAttribute("data-names");
         let values = this.getAttribute("data-values");
         let texts = this.getAttribute("data-texts");
@@ -55,20 +25,20 @@ class RadioBox extends HTMLElement {
         let labelName = this.getAttribute("data-label-name");
         return { names, values, texts, inputName, inputLabel, labelName };
     }
-    SetupBoxes() {
+    #setupBoxes() {
         if (this.getAttribute("setup") === "1") {
             return;
         }
-        let { names, values, texts, inputName, inputLabel, labelName } = this.ReadData();
+        let { names, values, texts, inputName, inputLabel, labelName } = this.#readData();
 
-        let span = this.Query("span");
+        let span = this.shadowRoot.querySelector("span");
         span.textContent = inputLabel;
         span.setAttribute("app-text", labelName);
 
         names = names.split(";");
         values = values.split(";");
         texts = texts.split(";");
-        let container = this.Query("div.radios");
+        let container = this.shadowRoot.querySelector("div.radios");
         if (names.length !== values.length || values.length !== texts.length) {
             throw "some data is missing for component:RadioBox";
         }
@@ -80,7 +50,7 @@ class RadioBox extends HTMLElement {
                 inputName,
                 index: i
             }
-            this.MakeRadio(container, params);
+            this.#mkRadio(container, params);
         }
         // if more than 4
         //then display 4 radio boxes and all boxes shown in menu 
@@ -90,20 +60,20 @@ class RadioBox extends HTMLElement {
     translate(game) {
         let { language } = game;
         // do the translation
-        let spans = this.qa('label>span');
+        let spans = this.shadowRoot.querySelectorAll('label>span');
         for (let i = 0, len = spans.length; i < len; i++) {
             let span = spans[i];
             let text = span.getAttribute("app-text");
             let translatedText = Translator.getWord(language, text.toLowerCase());
             span.textContent = translatedText;
-        }       
+        }
     }
     /**
      * creates and appends radio element to container
      * @param {HTMLElement} cont 
      * @param {Object} params
      */
-    MakeRadio(cont, params) {
+    #mkRadio(cont, params) {
         let { text, name, value, inputName, index } = params;
 
         let label = document.createElement("label");
@@ -121,12 +91,12 @@ class RadioBox extends HTMLElement {
         label.appendChild(radio);
         cont.appendChild(label);
     }
-    GetValue() {
-        const c = this.Query("input[type=radio]:checked");
+    get value() {
+        const c = this.shadowRoot.querySelector("input[type=radio]:checked");
         return c === null ? "" : c.value;
     }
-    SetValue(v) {
-        const radios = this.QueryAll("input");
+    set value(v) {
+        const radios = this.shadowRoot.querySelectorAll("input");
         for (const r of radios) {
             if (r.value === v) {
                 r.checked = true;

@@ -25,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.2a";
+        this.#version = "0.13.3";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
