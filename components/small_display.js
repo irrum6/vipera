@@ -1,17 +1,3 @@
-{
-    let template = document.createElement('template');
-    template.id = "small_display";
-    // define content
-    let content = `
-        <span class="display">
-            <span class="text">Score</span>
-            <span>:</span> 
-            <span class="value">999</span>
-        </span>
-    `;
-    template.innerHTML = `${content}`;
-    document.body.appendChild(template);
-}
 class SmallDisplay extends HTMLElement {
     constructor() {
         super();

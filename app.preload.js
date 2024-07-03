@@ -465,21 +465,7 @@ Object.freeze(Utils);class GWindow extends HTMLElement {
 }
 
 customElements.define("gw-window", GWindow);
-Object.freeze(GWindow);{
-    let template = document.createElement('template');
-    template.id = "small_display";
-    // define content
-    let content = `
-        <span class="display">
-            <span class="text">Score</span>
-            <span>:</span> 
-            <span class="value">999</span>
-        </span>
-    `;
-    template.innerHTML = `${content}`;
-    document.body.appendChild(template);
-}
-class SmallDisplay extends HTMLElement {
+Object.freeze(GWindow);class SmallDisplay extends HTMLElement {
     constructor() {
         super();
         let template = document.getElementById("small_display");
@@ -2782,7 +2768,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.3";
+        this.#version = "0.13.3 a";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -3333,4 +3319,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-07-03T22:46+04:00
+// }//Build Date : 2024-07-03T23:24+04:00

@@ -3,7 +3,7 @@ const fs = require("fs");
 const fsAsync = require("fs").promises;
 
 let dir1 = "./components";
-let tplnames = [`${dir1}/colorbox`, `${dir1}/radiobox`, `${dir1}/gwindow`];
+let tplnames = [`${dir1}/colorbox`, `${dir1}/radiobox`, `${dir1}/gwindow`, `${dir1}/small_display`];
 
 async function main() {
 
