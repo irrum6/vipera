@@ -25,7 +25,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.3 b";
+        this.#version = "0.13.4";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -36,7 +36,7 @@ class MontiVipera {
         this.renderingContext = rc;
         this.#playerList = [];
         // this players
-        this.SetMode(_mode);
+        this.#mode = _mode;
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
         this.#language = Languages.ENGLISH;
@@ -105,7 +105,7 @@ class MontiVipera {
         // debugger;
         if (Utils.isCompleteObject(s)) {
             this.UpdateSettings(s);
-            this.SetMode(Modes[s.mode]);
+            this.mode = Modes[s.mode];
             this.SetLevel(s.level);
         }
 
@@ -216,12 +216,20 @@ class MontiVipera {
         }
         return v;
     }
-    SetMode(m) {
+    /**
+     * @param {} m
+     */
+    set mode(m) {
         if (!Modes.valid(m)) {
             throw "Not a valid mode";
         }
-        this.mode = m;
+        this.#mode = m;
     }
+
+    get mode() {
+        return this.#mode;
+    }
+
     SetLevel(l) {
         if (!Level.valid(l)) {
             throw "Not a valid level";

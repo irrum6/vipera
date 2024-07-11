@@ -2396,18 +2396,23 @@ class Player extends Vipera {
         }
     }
 }class GameOptions {
-    #quickSwitchEnabled;
-    #playerCollisionEnabled;
-    #boundsFreeEnabled;
-    #glidingOverBodyEnabled;
+    //quickSwitchEnabled
+    #quickSwitch;
+    //playerCollisionEnabled
+    #collision;
+    //boundsFreeEnabled
+    #boundsFree;
+    //glidingOverBodyEnabled
+    #glideOverBody;
+    
     constructor() {
-        this.#boundsFreeEnabled = true;
-        this.#quickSwitchEnabled = false;
-        this.#playerCollisionEnabled = false;
-        this.#glidingOverBodyEnabled = false;
+        this.#boundsFree = true;
+        this.#quickSwitch = false;
+        this.#collision = false;
+        this.#glideOverBody = false;
     }
     get collision() {
-        return this.#playerCollisionEnabled;
+        return this.#collision;
     }
     /**
     * @param {boolean} v
@@ -2416,11 +2421,11 @@ class Player extends Vipera {
         if (!Utils.isBoolean(v)) {
             return false;
         }
-        this.#playerCollisionEnabled = v;
+        this.#collision = v;
     }
 
     get glide() {
-        return this.#glidingOverBodyEnabled;
+        return this.#glideOverBody;
     }
 
     /**
@@ -2430,11 +2435,11 @@ class Player extends Vipera {
         if (!Utils.isBoolean(v)) {
             return false;
         }
-        this.#glidingOverBodyEnabled = v;
+        this.#glideOverBody = v;
     }
 
     get fastSwitch() {
-        return this.#quickSwitchEnabled;
+        return this.#quickSwitch;
     }
 
     /**
@@ -2444,11 +2449,11 @@ class Player extends Vipera {
         if (!Utils.isBoolean(v)) {
             return false;
         }
-        this.#quickSwitchEnabled = v;
+        this.#quickSwitch = v;
     }
 
     get unbounded() {
-        return this.#boundsFreeEnabled;
+        return this.#boundsFree;
     }
     /**
    * @param {boolean} v
@@ -2457,7 +2462,7 @@ class Player extends Vipera {
         if (!Utils.isBoolean(v)) {
             return false;
         }
-        this.#boundsFreeEnabled = v;
+        this.#boundsFree = v;
     }
 }class GameSettings {
     #showFPS;
@@ -2768,7 +2773,7 @@ class MontiVipera {
      * @param {RenderingContext} rc
      */
     constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.3 b";
+        this.#version = "0.13.4";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2779,7 +2784,7 @@ class MontiVipera {
         this.renderingContext = rc;
         this.#playerList = [];
         // this players
-        this.SetMode(_mode);
+        this.#mode = _mode;
         this.performance = new PerformanceMonitor();
         this.options = new GameOptions();
         this.#language = Languages.ENGLISH;
@@ -2848,7 +2853,7 @@ class MontiVipera {
         // debugger;
         if (Utils.isCompleteObject(s)) {
             this.UpdateSettings(s);
-            this.SetMode(Modes[s.mode]);
+            this.mode = Modes[s.mode];
             this.SetLevel(s.level);
         }
 
@@ -2959,12 +2964,20 @@ class MontiVipera {
         }
         return v;
     }
-    SetMode(m) {
+    /**
+     * @param {} m
+     */
+    set mode(m) {
         if (!Modes.valid(m)) {
             throw "Not a valid mode";
         }
-        this.mode = m;
+        this.#mode = m;
     }
+
+    get mode() {
+        return this.#mode;
+    }
+
     SetLevel(l) {
         if (!Level.valid(l)) {
             throw "Not a valid level";
@@ -3323,4 +3336,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-07-04T01:07+04:00
+// }//Build Date : 2024-07-11T23:27+04:00

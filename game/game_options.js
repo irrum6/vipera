@@ -1,16 +1,21 @@
 class GameOptions {
-    #quickSwitchEnabled;
-    #playerCollisionEnabled;
-    #boundsFreeEnabled;
-    #glidingOverBodyEnabled;
+    //quickSwitchEnabled
+    #quickSwitch;
+    //playerCollisionEnabled
+    #collision;
+    //boundsFreeEnabled
+    #boundsFree;
+    //glidingOverBodyEnabled
+    #glideOverBody;
+    
     constructor() {
-        this.#boundsFreeEnabled = true;
-        this.#quickSwitchEnabled = false;
-        this.#playerCollisionEnabled = false;
-        this.#glidingOverBodyEnabled = false;
+        this.#boundsFree = true;
+        this.#quickSwitch = false;
+        this.#collision = false;
+        this.#glideOverBody = false;
     }
     get collision() {
-        return this.#playerCollisionEnabled;
+        return this.#collision;
     }
     /**
     * @param {boolean} v
@@ -19,11 +24,11 @@ class GameOptions {
         if (!Utils.isBoolean(v)) {
             return false;
         }
-        this.#playerCollisionEnabled = v;
+        this.#collision = v;
     }
 
     get glide() {
-        return this.#glidingOverBodyEnabled;
+        return this.#glideOverBody;
     }
 
     /**
@@ -33,11 +38,11 @@ class GameOptions {
         if (!Utils.isBoolean(v)) {
             return false;
         }
-        this.#glidingOverBodyEnabled = v;
+        this.#glideOverBody = v;
     }
 
     get fastSwitch() {
-        return this.#quickSwitchEnabled;
+        return this.#quickSwitch;
     }
 
     /**
@@ -47,11 +52,11 @@ class GameOptions {
         if (!Utils.isBoolean(v)) {
             return false;
         }
-        this.#quickSwitchEnabled = v;
+        this.#quickSwitch = v;
     }
 
     get unbounded() {
-        return this.#boundsFreeEnabled;
+        return this.#boundsFree;
     }
     /**
    * @param {boolean} v
@@ -60,6 +65,6 @@ class GameOptions {
         if (!Utils.isBoolean(v)) {
             return false;
         }
-        this.#boundsFreeEnabled = v;
+        this.#boundsFree = v;
     }
 }
