@@ -2,25 +2,16 @@ class GameSettings {
     #showFPS;
     #showDelta;
     #showDeltaLow;
-    #quickSwitchEnabled;
-    #playerCollisionEnabled;
-    #boundsFreeEnabled;
-    #glidingOverBodyEnabled;
     #displayTimers;
-    #poisonsEnabled;
     #displayTotalFramesRendered;
     constructor() {
         this.#showFPS = true;
         this.#showDelta = true;
         this.#showDeltaLow = false;
-        this.#boundsFreeEnabled = true;
-        this.#quickSwitchEnabled = false;
-        this.#playerCollisionEnabled = false;
-        this.#glidingOverBodyEnabled = false;
-        this.#displayTimers = true;
-        this.#poisonsEnabled = false;
         this.#displayTotalFramesRendered = false;
+        this.#displayTimers = false;
     }
+
     get show_ftotal() {
         return this.#displayTotalFramesRendered;
     }
@@ -36,19 +27,7 @@ class GameSettings {
         this.#displayTotalFramesRendered = val;
 
     }
-    get poisoned() {
-        return this.#poisonsEnabled;
-    }
-    /**
-     * @param {Boolean} po
-     */
-    set poisoned(po) {
-        if (typeof val !== "boolean") {
-            console.log("not a boolean");
-            return false;
-        }
-        this.#poisonsEnabled = po;
-    }
+
     /**
      * check if show fps in settings is enabled
      * @returns {boolean}
@@ -97,61 +76,9 @@ class GameSettings {
         }
         this.#showDeltaLow = v;
     }
-
-    get collision() {
-        return this.#playerCollisionEnabled;
-    }
     /**
-    * @param {boolean} v
-    */
-    set collision(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
-        }
-        this.#playerCollisionEnabled = v;
-    }
-
-    get glide() {
-        return this.#glidingOverBodyEnabled;
-    }
-
-    /**
-    * @param {boolean} v
-    */
-    set glide(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
-        }
-        this.#glidingOverBodyEnabled = v;
-    }
-
-    get fastSwitch() {
-        return this.#quickSwitchEnabled;
-    }
-
-    /**
-    * @param {boolean} v
-    */
-    set fastSwitch(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
-        }
-        this.#quickSwitchEnabled = v;
-    }
-
-    get unbounded() {
-        return this.#boundsFreeEnabled;
-    }
-    /**
-   * @param {boolean} v
-   */
-    set unbounded(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
-        }
-        this.#boundsFreeEnabled = v;
-    }
-
+     * @returns {Boolean}
+     */
     get timers() {
         return this.#displayTimers;
     }
@@ -159,7 +86,7 @@ class GameSettings {
     * @param {boolean} v
     */
     set timers(v) {
-        if (!Utils.isBoolean(v)) {
+        if (typeof v !== "boolean") {
             return false;
         }
         this.#displayTimers = v;
@@ -171,16 +98,11 @@ class GameSettings {
         if (typeof s !== "object") {
             throw "GameSettings->update:not an object";
         }
-        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch, poisoned, show_ftotal } = s;
+        const { fps, delta, deltaLow, timers, show_ftotal } = s;
         this.fps = fps;
         this.delta = delta;
         this.deltaLow = deltaLow;
-        this.unbounded = unbounded;
-        this.collision = collision;
-        this.glide = glide;
-        this.fastSwitch = fastSwitch;
         this.timers = timers;
-        this.poisoned = poisoned;
         this.show_ftotal = show_ftotal;
     }
 

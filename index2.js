@@ -1,6 +1,6 @@
 function __main() {
-
-    const viperaGame = new MontiVipera(Modes["LONG"], canvas, context);
+    
+    const viperaGame = new MontiVipera(canvas, context);
     viperaGame.NewGame(1, null);
 
     viperaGame.alerted = false;

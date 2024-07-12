@@ -65,9 +65,17 @@ class NewGameDialog extends HTMLElement {
 
         const n = this.query('radio-box.player').value;
         this.close();
-        const collision = !disableCollision
-        const s = { unbounded, collision, glide, fastSwitch, mode, level, poisoned }
-        game.NewGame(n, s);
+        const collision = !disableCollision;
+
+        const gmode = new GameMode(mode);
+        const glevel = new GameLevel(level);
+
+        const opts = { unbounded, collision, glide, fastSwitch, mode:gmode, level:glevel, poisoned };
+
+        let gOpts = new GameOptions();
+        gOpts.update(opts);
+
+        game.NewGame(n, gOpts);
         game.GetFrame();
         if (n > 1) {
             game.DisplayMultiControls();

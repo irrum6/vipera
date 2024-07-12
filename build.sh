@@ -14,7 +14,7 @@ dir="controls"
 cat  $dir/keyboard.js  $dir/inputController.js  $dir/uicontroller.js > app.controls.js
 
 dir="game"
-cat $dir/player.js $dir/game_options.js $dir/gamesettings.js $dir/perfmon.js $dir/mvgame.js  $dir/translate.js > app.game.js
+cat $dir/player.js $dir/modes.js $dir/levels.js $dir/options.js $dir/settings.js $dir/perfmon.js $dir/mvgame.js  $dir/translate.js > app.game.js
 
 rm app.preload.js
 cat app.locale.js  app.lib.js app.templates.js app.entities.js app.controls.js  app.game.js  > app.preload.js

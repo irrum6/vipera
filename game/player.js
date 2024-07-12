@@ -107,13 +107,13 @@ class Player extends Vipera {
     /**
      * changes a direction
      * @param {Direction} d 
-     * @param {Game} game
+     * @param {MontiVipera} game
      */
     UpdateDirection(d, game) {
         if (!Directions.valid(d)) {
             throw "Error: not a valid direction";
         }
-        if (Directions.opposite(d, this.direction) && !game.settings.fastSwitch) {
+        if (Directions.opposite(d, this.direction) && !game.options.fastSwitch) {
             //do nothing and return;
             return;
         }
@@ -137,7 +137,7 @@ class Player extends Vipera {
      * update player
      * @param {Food} food 
      * @param {Canvas} canvas 
-     * @param {game} game 
+     * @param {MontiVipera} game 
      */
     Update(food, canvas, game) {
         if (this.dead) {
@@ -164,7 +164,7 @@ class Player extends Vipera {
         this.FreeBound(canvas, game);
         this.Colision(game);
         this.Eat(food, canvas);
-        if (game.settings.poisoned) {
+        if (game.options.poisons) {
             //console.log("log");
             this.EatPoison(game.poison, canvas);
         }
@@ -218,11 +218,11 @@ class Player extends Vipera {
     /**
      * free bound:  vipera moves over bounds
      * @param {HTMLElement} canvas 
-     * @param {game} game 
+     * @param {MontiVipera} game 
      * @param {Boolean} force 
      */
     FreeBound(canvas, game, force) {
-        if (game.settings.unbounded || force) {
+        if (game.options.unbounded || force) {
             let { x, y } = this.GetHeadPosition();
             if (x < 0) this.SetHeadPosition(canvas.width, null);
             if (x > canvas.width) this.SetHeadPosition(0, null);
@@ -240,13 +240,18 @@ class Player extends Vipera {
             return;
         }
     }
+    /**
+     * 
+     * @param {MontiVipera} game 
+     * @returns 
+     */
     Colision(game) {
         // debugger;
-        if (false === game.settings.collision) {
+        if (false === game.options.collision) {
             return;
         }
         //first check the player itself
-        if (false === game.settings.glide) {
+        if (false === game.options.glide) {
             let { x, y } = this.GetHeadPosition();
             for (let i = 1, len = this.positions.length; i < len; i++) {
                 let p = this.positions[i];
@@ -272,7 +277,7 @@ class Player extends Vipera {
                 pl.Die();
                 return;
             }
-            if (true === game.settings.moveOverBody) {
+            if (true === game.options.glide) {
                 continue
             }
             //the one who hits head, it dies

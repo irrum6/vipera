@@ -72,6 +72,11 @@ class UIController {
         }
         deltaLowElement.updateValue(dtext);
     }
+    /**
+     * 
+     * @param {MontiVipera} game 
+     * @returns 
+     */
     static DisplayTime(game) {
         let time = document.body.querySelector("#time");
         if (!game.timerid) {

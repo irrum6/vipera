@@ -949,9 +949,17 @@ customElements.define('frameless-pop', FramelessPop);class NewGameDialog extends
 
         const n = this.query('radio-box.player').value;
         this.close();
-        const collision = !disableCollision
-        const s = { unbounded, collision, glide, fastSwitch, mode, level, poisoned }
-        game.NewGame(n, s);
+        const collision = !disableCollision;
+
+        const gmode = new GameMode(mode);
+        const glevel = new GameLevel(level);
+
+        const opts = { unbounded, collision, glide, fastSwitch, mode:gmode, level:glevel, poisoned };
+
+        let gOpts = new GameOptions();
+        gOpts.update(opts);
+
+        game.NewGame(n, gOpts);
         game.GetFrame();
         if (n > 1) {
             game.DisplayMultiControls();
@@ -2029,6 +2037,11 @@ class UIController {
         }
         deltaLowElement.updateValue(dtext);
     }
+    /**
+     * 
+     * @param {MontiVipera} game 
+     * @returns 
+     */
     static DisplayTime(game) {
         let time = document.body.querySelector("#time");
         if (!game.timerid) {
@@ -2218,13 +2231,13 @@ class Player extends Vipera {
     /**
      * changes a direction
      * @param {Direction} d 
-     * @param {Game} game
+     * @param {MontiVipera} game
      */
     UpdateDirection(d, game) {
         if (!Directions.valid(d)) {
             throw "Error: not a valid direction";
         }
-        if (Directions.opposite(d, this.direction) && !game.settings.fastSwitch) {
+        if (Directions.opposite(d, this.direction) && !game.options.fastSwitch) {
             //do nothing and return;
             return;
         }
@@ -2248,7 +2261,7 @@ class Player extends Vipera {
      * update player
      * @param {Food} food 
      * @param {Canvas} canvas 
-     * @param {game} game 
+     * @param {MontiVipera} game 
      */
     Update(food, canvas, game) {
         if (this.dead) {
@@ -2275,7 +2288,7 @@ class Player extends Vipera {
         this.FreeBound(canvas, game);
         this.Colision(game);
         this.Eat(food, canvas);
-        if (game.settings.poisoned) {
+        if (game.options.poisons) {
             //console.log("log");
             this.EatPoison(game.poison, canvas);
         }
@@ -2329,11 +2342,11 @@ class Player extends Vipera {
     /**
      * free bound:  vipera moves over bounds
      * @param {HTMLElement} canvas 
-     * @param {game} game 
+     * @param {MontiVipera} game 
      * @param {Boolean} force 
      */
     FreeBound(canvas, game, force) {
-        if (game.settings.unbounded || force) {
+        if (game.options.unbounded || force) {
             let { x, y } = this.GetHeadPosition();
             if (x < 0) this.SetHeadPosition(canvas.width, null);
             if (x > canvas.width) this.SetHeadPosition(0, null);
@@ -2351,13 +2364,18 @@ class Player extends Vipera {
             return;
         }
     }
+    /**
+     * 
+     * @param {MontiVipera} game 
+     * @returns 
+     */
     Colision(game) {
         // debugger;
-        if (false === game.settings.collision) {
+        if (false === game.options.collision) {
             return;
         }
         //first check the player itself
-        if (false === game.settings.glide) {
+        if (false === game.options.glide) {
             let { x, y } = this.GetHeadPosition();
             for (let i = 1, len = this.positions.length; i < len; i++) {
                 let p = this.positions[i];
@@ -2383,7 +2401,7 @@ class Player extends Vipera {
                 pl.Die();
                 return;
             }
-            if (true === game.settings.moveOverBody) {
+            if (true === game.options.glide) {
                 continue
             }
             //the one who hits head, it dies
@@ -2395,7 +2413,151 @@ class Player extends Vipera {
             }
         }
     }
-}class GameOptions {
+}//enum could have been better
+class GameMode {
+    static #LONG = "LONG";
+    static #ENDURANCE = "ENDURANCE";
+    static #CHALLENGE = "CHALLENGE";
+
+    static get LONG() {
+        return this.#LONG;
+    }
+    static get ENDURANCE() {
+        return this.#ENDURANCE;
+    }
+    static get CHALLENGE() {
+        return this.#CHALLENGE;
+    }
+
+    #self;
+    /**
+     * @returns {String}
+     */
+    get self() {
+        return this.#self;
+    }
+
+    /**
+     * @param {String} modename
+     */
+    constructor(modename) {
+        if (!GameMode.validate) {
+            throw "invalid game mode";
+        }
+        this.#self = modename;
+    }
+    /**
+     * mode description
+     * @param {String} mode 
+     * @returns 
+     */
+    static validate(mode) {
+        return mode === this.#LONG || mode === this.#ENDURANCE || mode === this.#CHALLENGE;
+    }
+    /**
+     * @param {GameLevel} level 
+     * @returns {Number}
+     */
+    get_interval(level) {
+        switch (this.#self) {
+            case GameMode.LONG:
+                return -1;
+            case GameMode.ENDURANCE: {
+                return GameMode.GetEnduranceInterval(level)
+            }
+            case GameMode.CHALLENGE: {
+                return GameMode.GetChallengeInterval(level)
+            }
+        }
+    }
+    /**
+     * @param {GameLevel} level 
+     * @returns {Number}
+     */
+    static GetEnduranceInterval(level) {
+        switch (level) {
+            case GameLevel.EASY:
+                return 20;
+            case GameLevel.NORMAL:
+                return 10;
+            case GameLevel.HARD:
+            case GameLevel.MASTER:
+                return 5;
+            default:
+                //if not set
+                return 10;
+        }
+    }
+
+    /**
+     * @param {GameLevel} level 
+     * @returns {Number}
+     */
+    static GetChallengeInterval(level) {
+        switch (level) {
+            case GameLevel.EASY:
+                return 30;
+            case GameLevel.NORMAL:
+                return 20;
+            case GameLevel.HARD:
+                return 10;
+            case GameLevel.MASTER:
+                return 5;
+            default:
+                //if not set
+                return 20;
+        }
+    }
+
+}
+//Easy", "Normal", "Hard", "Master
+class GameLevel {
+    static #EASY = "EASY";
+    static #NORMAL = "NORMAL";
+    static #HARD = "HARD";
+    static #MASTER = "MASTER"
+
+    static get EASY() {
+        return this.#EASY;
+    }
+    static get NORMAL() {
+        return this.#NORMAL;
+    }
+    static get HARD() {
+        return this.#HARD;
+    }
+    static get MASTER() {
+        return this.#MASTER;
+    }
+
+    #self;
+
+    get self() {
+        return this.#self;
+    }
+
+    /**
+     * @param {String} levelname
+     */
+    constructor(levelname) {
+        if (!GameLevel.validate) {
+            throw "invalid game mode";
+        }
+        this.#self = levelname;
+    }
+    /**
+     * mode description
+     * @param {String} level 
+     * @returns 
+     */
+    static validate(level) {
+        return level === this.#EASY || level === this.#NORMAL || level === this.#HARD || level === this.#MASTER;
+    }
+
+
+
+}
+class GameOptions {
     //quickSwitchEnabled
     #quickSwitch;
     //playerCollisionEnabled
@@ -2404,16 +2566,62 @@ class Player extends Vipera {
     #boundsFree;
     //glidingOverBodyEnabled
     #glideOverBody;
-    
+    //poisonsEnabled;
+    #poisons;
+    #mode;
+    #level;
+
     constructor() {
         this.#boundsFree = true;
         this.#quickSwitch = false;
         this.#collision = false;
         this.#glideOverBody = false;
+        this.#poisons = false;
+        this.#mode = new GameMode(GameMode.LONG);
+        this.#level = new GameLevel(GameLevel.EASY);
     }
+
+    /**
+     * @return {Boolean}
+     */
+    get unbounded() {
+        return this.#boundsFree;
+    }
+
+    /**
+   * @param {boolean} v
+   */
+    set unbounded(v) {
+        if (!Utils.isBoolean(v)) {
+            return false;
+        }
+        this.#boundsFree = v;
+    }
+
+    /**
+     * @return {Boolean}
+     */
+    get fastSwitch() {
+        return this.#quickSwitch;
+    }
+
+    /**
+    * @param {boolean} v
+    */
+    set fastSwitch(v) {
+        if (!Utils.isBoolean(v)) {
+            return false;
+        }
+        this.#quickSwitch = v;
+    }
+
+    /**
+     * @return {Boolean}
+     */
     get collision() {
         return this.#collision;
     }
+
     /**
     * @param {boolean} v
     */
@@ -2438,55 +2646,88 @@ class Player extends Vipera {
         this.#glideOverBody = v;
     }
 
-    get fastSwitch() {
-        return this.#quickSwitch;
+    /**
+     * @returns {Boolean}
+     */
+    get poisons() {
+        return this.#poisons;
     }
 
     /**
-    * @param {boolean} v
-    */
-    set fastSwitch(v) {
-        if (!Utils.isBoolean(v)) {
+     * @param {Boolean} po
+     */
+    set poisons(po) {
+        if (typeof val !== "boolean") {
+            console.log("not a boolean");
             return false;
         }
-        this.#quickSwitch = v;
+        this.#poisons = po;
     }
 
-    get unbounded() {
-        return this.#boundsFree;
+    /**
+     * @returns {GameMode}
+     */
+    get mode() {
+        return this.#mode;
     }
     /**
-   * @param {boolean} v
-   */
-    set unbounded(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
+     * @param {GameMode} m
+     */
+    set mode(m) {
+        if (!m instanceof GameMode) {
+            throw "not a mode";
         }
-        this.#boundsFree = v;
+        this.#mode = m;
     }
+    /**
+     * @returns {GameLevel}
+     */
+    get level() {
+        return this.#level;
+    }
+    /**
+     * @param {GameLevel} l
+     */
+    set level(l) {
+        if (!l instanceof GameLevel) {
+            throw "not a mode";
+        }
+        this.#level = l;
+    }
+
+    /**
+     * @param {Object} s 
+     */
+    update(opts) {
+        if (typeof opts !== "object") {
+            throw "GameSettings->update:not an object";
+        }
+        const { unbounded, collision, glide, fastSwitch, poisons, level, mode } = opts;
+
+        this.collision = collision;
+        this.unbounded = unbounded;
+        this.glide = glide;
+        this.fastSwitch = fastSwitch;
+        this.poisons = poisons;
+        this.level = level;
+        this.mode = mode;
+
+    }
+
 }class GameSettings {
     #showFPS;
     #showDelta;
     #showDeltaLow;
-    #quickSwitchEnabled;
-    #playerCollisionEnabled;
-    #boundsFreeEnabled;
-    #glidingOverBodyEnabled;
     #displayTimers;
-    #poisonsEnabled;
     #displayTotalFramesRendered;
     constructor() {
         this.#showFPS = true;
         this.#showDelta = true;
         this.#showDeltaLow = false;
-        this.#boundsFreeEnabled = true;
-        this.#quickSwitchEnabled = false;
-        this.#playerCollisionEnabled = false;
-        this.#glidingOverBodyEnabled = false;
-        this.#displayTimers = true;
-        this.#poisonsEnabled = false;
         this.#displayTotalFramesRendered = false;
+        this.#displayTimers = false;
     }
+
     get show_ftotal() {
         return this.#displayTotalFramesRendered;
     }
@@ -2502,19 +2743,7 @@ class Player extends Vipera {
         this.#displayTotalFramesRendered = val;
 
     }
-    get poisoned() {
-        return this.#poisonsEnabled;
-    }
-    /**
-     * @param {Boolean} po
-     */
-    set poisoned(po) {
-        if (typeof val !== "boolean") {
-            console.log("not a boolean");
-            return false;
-        }
-        this.#poisonsEnabled = po;
-    }
+
     /**
      * check if show fps in settings is enabled
      * @returns {boolean}
@@ -2563,61 +2792,9 @@ class Player extends Vipera {
         }
         this.#showDeltaLow = v;
     }
-
-    get collision() {
-        return this.#playerCollisionEnabled;
-    }
     /**
-    * @param {boolean} v
-    */
-    set collision(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
-        }
-        this.#playerCollisionEnabled = v;
-    }
-
-    get glide() {
-        return this.#glidingOverBodyEnabled;
-    }
-
-    /**
-    * @param {boolean} v
-    */
-    set glide(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
-        }
-        this.#glidingOverBodyEnabled = v;
-    }
-
-    get fastSwitch() {
-        return this.#quickSwitchEnabled;
-    }
-
-    /**
-    * @param {boolean} v
-    */
-    set fastSwitch(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
-        }
-        this.#quickSwitchEnabled = v;
-    }
-
-    get unbounded() {
-        return this.#boundsFreeEnabled;
-    }
-    /**
-   * @param {boolean} v
-   */
-    set unbounded(v) {
-        if (!Utils.isBoolean(v)) {
-            return false;
-        }
-        this.#boundsFreeEnabled = v;
-    }
-
+     * @returns {Boolean}
+     */
     get timers() {
         return this.#displayTimers;
     }
@@ -2625,7 +2802,7 @@ class Player extends Vipera {
     * @param {boolean} v
     */
     set timers(v) {
-        if (!Utils.isBoolean(v)) {
+        if (typeof v !== "boolean") {
             return false;
         }
         this.#displayTimers = v;
@@ -2637,16 +2814,11 @@ class Player extends Vipera {
         if (typeof s !== "object") {
             throw "GameSettings->update:not an object";
         }
-        const { fps, delta, deltaLow, timers, unbounded, collision, glide, fastSwitch, poisoned, show_ftotal } = s;
+        const { fps, delta, deltaLow, timers, show_ftotal } = s;
         this.fps = fps;
         this.delta = delta;
         this.deltaLow = deltaLow;
-        this.unbounded = unbounded;
-        this.collision = collision;
-        this.glide = glide;
-        this.fastSwitch = fastSwitch;
         this.timers = timers;
-        this.poisoned = poisoned;
         this.show_ftotal = show_ftotal;
     }
 
@@ -2763,17 +2935,16 @@ class MontiVipera {
     // total frames rendered
     #language;
     #settings;
-    #mode;
+    #options;
     #playerList;
     //get players
     #numberOfPlayers;
-    /**
-     * @param {Modes} _mode 
+    /** 
      * @param {Canvas} _canvas 
      * @param {RenderingContext} rc
      */
-    constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.4";
+    constructor(_canvas, rc) {
+        this.#version = "0.14.1";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -2783,11 +2954,15 @@ class MontiVipera {
         this.timerid = null;
         this.renderingContext = rc;
         this.#playerList = [];
-        // this players
-        this.#mode = _mode;
         this.performance = new PerformanceMonitor();
-        this.options = new GameOptions();
+        this.#options = new GameOptions();
         this.#language = Languages.ENGLISH;
+    }
+    /**
+     * @returns {GameOptions}
+     */
+    get options() {
+        return this.#options;
     }
     get version() {
         return this.#version;
@@ -2801,7 +2976,7 @@ class MontiVipera {
     }
 
     get quickSwitch() {
-        return this.settings.quickSwitch;
+        return this.options.fastSwitch;
     }
     /**
      * @readonly
@@ -2846,15 +3021,13 @@ class MontiVipera {
 
     /**
      * @param {Number} n 
-     * @param {Object} s 
+     * @param {GameOptions} opts //optional
      */
-    NewGame(n, s) {
+    NewGame(n, opts) {
         this.timerid = null;
         // debugger;
-        if (Utils.isCompleteObject(s)) {
-            this.UpdateSettings(s);
-            this.mode = Modes[s.mode];
-            this.SetLevel(s.level);
+        if (opts instanceof GameOptions) {
+            this.#options = opts;
         }
 
         this.ClearTimers();
@@ -2946,43 +3119,23 @@ class MontiVipera {
     SelectVelocity() {
         //pixel per 1/10 second
         let v = 2;
-        switch (this.level) {
-            case Level.EASY:
+        switch (this.options.level.self) {
+            case GameLevel.EASY:
                 v = 2;
                 break;
-            case Level.NORMAL:
+            case GameLevel.NORMAL:
                 v = 4;
                 break;
-            case Level.HARD:
+            case GameLevel.HARD:
                 v = 6;
                 break;
-            case Level.MASTER:
+            case GameLevel.MASTER:
                 v = 8;
                 break;
             default:
                 v = 2;
         }
         return v;
-    }
-    /**
-     * @param {} m
-     */
-    set mode(m) {
-        if (!Modes.valid(m)) {
-            throw "Not a valid mode";
-        }
-        this.#mode = m;
-    }
-
-    get mode() {
-        return this.#mode;
-    }
-
-    SetLevel(l) {
-        if (!Level.valid(l)) {
-            throw "Not a valid level";
-        }
-        this.level = l;
     }
 
     Start() {
@@ -2999,22 +3152,7 @@ class MontiVipera {
         }
     }
     GetEnduranceInterval() {
-        let i = 20;
-        switch (this.level) {
-            case Level.EASY:
-                i = 20;
-                break;
-            case Level.NORMAL:
-                i = 10;
-                break;
-            case Level.HARD:
-            case Level.MASTER:
-                i = 5;
-                break;
-            default:
-                i = 10;
-        }
-        return i;
+        return GameMode.GetEnduranceInterval(this.options.level);
     }
     /**
      * Endurance : you gain [point and] mass in every 20 seconds, your intent is to last longer
@@ -3030,7 +3168,7 @@ class MontiVipera {
         }
         let inter = this.GetEnduranceInterval();
         let interval = inter * 1000;
-        if (this.level !== Level.MASTER) {
+        if (this.options.level.self !== GameLevel.MASTER) {
             this.food = null;
         }
 
@@ -3047,7 +3185,7 @@ class MontiVipera {
             }
             for (const p of this.players) {
                 p.AddMass();
-                if (this.level !== Level.MASTER) {
+                if (this.options.level.self !== GameLevel.MASTER) {
                     p.score++;
                 }
             }
@@ -3064,24 +3202,7 @@ class MontiVipera {
         }, 1000);
     }
     GetChallengeInterval() {
-        let i = 20;
-        switch (this.level) {
-            case Level.EASY:
-                i = 30;
-                break;
-            case Level.NORMAL:
-                i = 20;
-                break;
-            case Level.HARD:
-                i = 10;
-                break;
-            case Level.MASTER:
-                i = 5;
-                break;
-            default:
-                i = 20;
-        }
-        return i;
+        return GameMode.GetChallengeInterval(this.options.level);
     }
     ChallengeMode() {
         //challenge mode
@@ -3184,7 +3305,7 @@ class MontiVipera {
             this.food.Draw(renderctx, this);
         }
         //debugger;
-        if (this.settings.poisoned) {
+        if (this.options.poisoned) {
             this.poison.draw(renderctx, this);
         }
         // this.poison.draw(renderctx, this);
@@ -3209,10 +3330,10 @@ class MontiVipera {
         // CHALLENGE
         // ENDURANCE
         // LONG
-        if (this.mode === Modes.ENDURANCE) {
+        if (this.options.mode.self === GameMode.ENDURANCE) {
             this.EnduranceMode();
         }
-        if (this.mode === Modes.CHALLENGE) {
+        if (this.options.mode.self === GameMode.CHALLENGE) {
             this.ChallengeMode();
         }
         this.pause = false;
@@ -3239,21 +3360,21 @@ class MontiVipera {
         }
     }
     Help() {
-        if (this.#numberOfPlayers > 1) {
+        if (this.pause && this.#numberOfPlayers > 1) {
             this.DisplayMultiControls();
             return;
         }
-        if (this.mode === Modes.ENDURANCE) {
+        if (!this.pause && this.options.mode.self === GameMode.ENDURANCE) {
             let text = Translator.getWord(this.language, "endurance_mode_text");
             let title = "Welcome";
             PopX.OPEN(text, title);
             return;
         }
-        if (this.mode === Modes.CHALLENGE) {
+        if (!this.pause && this.options.mode.self === GameMode.CHALLENGE) {
             let text = Translator.getWord(this.language, "challenge_mode_text");
             let title = "Welcome";
             PopX.OPEN(text, title);
-            return;
+            //return;
         }
         this.DisplayControls();
     }
@@ -3336,4 +3457,4 @@ Object.freeze(MontiVipera);const translateData ={
 // const Translator = Object.create(null);
 // Translator.translate =()=>{
 
-// }//Build Date : 2024-07-11T23:27+04:00
+// }//Build Date : 2024-07-12T04:12+04:00

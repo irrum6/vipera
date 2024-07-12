@@ -15,17 +15,16 @@ class MontiVipera {
     // total frames rendered
     #language;
     #settings;
-    #mode;
+    #options;
     #playerList;
     //get players
     #numberOfPlayers;
-    /**
-     * @param {Modes} _mode 
+    /** 
      * @param {Canvas} _canvas 
      * @param {RenderingContext} rc
      */
-    constructor(_mode, _canvas, rc) {
-        this.#version = "0.13.4";
+    constructor(_canvas, rc) {
+        this.#version = "0.14.1";
         this.#name = "Montivipera Redemption";
         this.timer1 = Date.now();
         this.score = 0;
@@ -35,11 +34,15 @@ class MontiVipera {
         this.timerid = null;
         this.renderingContext = rc;
         this.#playerList = [];
-        // this players
-        this.#mode = _mode;
         this.performance = new PerformanceMonitor();
-        this.options = new GameOptions();
+        this.#options = new GameOptions();
         this.#language = Languages.ENGLISH;
+    }
+    /**
+     * @returns {GameOptions}
+     */
+    get options() {
+        return this.#options;
     }
     get version() {
         return this.#version;
@@ -53,7 +56,7 @@ class MontiVipera {
     }
 
     get quickSwitch() {
-        return this.settings.quickSwitch;
+        return this.options.fastSwitch;
     }
     /**
      * @readonly
@@ -98,15 +101,13 @@ class MontiVipera {
 
     /**
      * @param {Number} n 
-     * @param {Object} s 
+     * @param {GameOptions} opts //optional
      */
-    NewGame(n, s) {
+    NewGame(n, opts) {
         this.timerid = null;
         // debugger;
-        if (Utils.isCompleteObject(s)) {
-            this.UpdateSettings(s);
-            this.mode = Modes[s.mode];
-            this.SetLevel(s.level);
+        if (opts instanceof GameOptions) {
+            this.#options = opts;
         }
 
         this.ClearTimers();
@@ -198,43 +199,23 @@ class MontiVipera {
     SelectVelocity() {
         //pixel per 1/10 second
         let v = 2;
-        switch (this.level) {
-            case Level.EASY:
+        switch (this.options.level.self) {
+            case GameLevel.EASY:
                 v = 2;
                 break;
-            case Level.NORMAL:
+            case GameLevel.NORMAL:
                 v = 4;
                 break;
-            case Level.HARD:
+            case GameLevel.HARD:
                 v = 6;
                 break;
-            case Level.MASTER:
+            case GameLevel.MASTER:
                 v = 8;
                 break;
             default:
                 v = 2;
         }
         return v;
-    }
-    /**
-     * @param {} m
-     */
-    set mode(m) {
-        if (!Modes.valid(m)) {
-            throw "Not a valid mode";
-        }
-        this.#mode = m;
-    }
-
-    get mode() {
-        return this.#mode;
-    }
-
-    SetLevel(l) {
-        if (!Level.valid(l)) {
-            throw "Not a valid level";
-        }
-        this.level = l;
     }
 
     Start() {
@@ -251,22 +232,7 @@ class MontiVipera {
         }
     }
     GetEnduranceInterval() {
-        let i = 20;
-        switch (this.level) {
-            case Level.EASY:
-                i = 20;
-                break;
-            case Level.NORMAL:
-                i = 10;
-                break;
-            case Level.HARD:
-            case Level.MASTER:
-                i = 5;
-                break;
-            default:
-                i = 10;
-        }
-        return i;
+        return GameMode.GetEnduranceInterval(this.options.level);
     }
     /**
      * Endurance : you gain [point and] mass in every 20 seconds, your intent is to last longer
@@ -282,7 +248,7 @@ class MontiVipera {
         }
         let inter = this.GetEnduranceInterval();
         let interval = inter * 1000;
-        if (this.level !== Level.MASTER) {
+        if (this.options.level.self !== GameLevel.MASTER) {
             this.food = null;
         }
 
@@ -299,7 +265,7 @@ class MontiVipera {
             }
             for (const p of this.players) {
                 p.AddMass();
-                if (this.level !== Level.MASTER) {
+                if (this.options.level.self !== GameLevel.MASTER) {
                     p.score++;
                 }
             }
@@ -316,24 +282,7 @@ class MontiVipera {
         }, 1000);
     }
     GetChallengeInterval() {
-        let i = 20;
-        switch (this.level) {
-            case Level.EASY:
-                i = 30;
-                break;
-            case Level.NORMAL:
-                i = 20;
-                break;
-            case Level.HARD:
-                i = 10;
-                break;
-            case Level.MASTER:
-                i = 5;
-                break;
-            default:
-                i = 20;
-        }
-        return i;
+        return GameMode.GetChallengeInterval(this.options.level);
     }
     ChallengeMode() {
         //challenge mode
@@ -436,7 +385,7 @@ class MontiVipera {
             this.food.Draw(renderctx, this);
         }
         //debugger;
-        if (this.settings.poisoned) {
+        if (this.options.poisoned) {
             this.poison.draw(renderctx, this);
         }
         // this.poison.draw(renderctx, this);
@@ -461,10 +410,10 @@ class MontiVipera {
         // CHALLENGE
         // ENDURANCE
         // LONG
-        if (this.mode === Modes.ENDURANCE) {
+        if (this.options.mode.self === GameMode.ENDURANCE) {
             this.EnduranceMode();
         }
-        if (this.mode === Modes.CHALLENGE) {
+        if (this.options.mode.self === GameMode.CHALLENGE) {
             this.ChallengeMode();
         }
         this.pause = false;
@@ -491,21 +440,21 @@ class MontiVipera {
         }
     }
     Help() {
-        if (this.#numberOfPlayers > 1) {
+        if (this.pause && this.#numberOfPlayers > 1) {
             this.DisplayMultiControls();
             return;
         }
-        if (this.mode === Modes.ENDURANCE) {
+        if (!this.pause && this.options.mode.self === GameMode.ENDURANCE) {
             let text = Translator.getWord(this.language, "endurance_mode_text");
             let title = "Welcome";
             PopX.OPEN(text, title);
             return;
         }
-        if (this.mode === Modes.CHALLENGE) {
+        if (!this.pause && this.options.mode.self === GameMode.CHALLENGE) {
             let text = Translator.getWord(this.language, "challenge_mode_text");
             let title = "Welcome";
             PopX.OPEN(text, title);
-            return;
+            //return;
         }
         this.DisplayControls();
     }
